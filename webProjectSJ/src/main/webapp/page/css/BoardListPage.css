@@ -1,0 +1,127 @@
+@charset "UTF-8";
+
+* {
+	margin: 0px;
+	padding: 0px;
+}
+
+.main {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	flex-direction: column;
+	margin: auto;
+	position:relative;
+}
+
+
+.logo {
+	color: #6667AB;
+	font-size: 7rem;
+	font-weight: 900;
+	text-align: center;
+	margin-top: 13%;
+	position: absolute;
+}
+
+.board {
+	width: 1200px;
+	height: 100%;
+	margin-top: 3%;
+	position: absolute;
+}
+
+.boardTable {
+	font-size: 20px;
+	border-collapse: collapse;
+	width: 1200px;
+	margin-top: 180px;
+	border: 1px solid #6667AB;
+	text-align: center;
+	border-left: none;
+	border-right: none;
+}
+
+.boardThead td {
+	background: #6667AB;
+	color: white;
+}
+
+td {
+	height: 40px;
+	border-bottom: 1px solid lightgray;
+	
+}
+
+tr td:nth-child(2) {
+	width: 750px;
+}
+
+a {
+	text-decoration: none;
+}
+
+/* ********페이징******** */
+.pagination li {
+	list-style: none;
+}
+
+.paginationDiv {
+	display: flex;
+	justify-content: center;
+	padding: 3% 0%;
+}
+
+.pagination {
+	flex-direction: row;
+    display: flex;
+    justify-content: center;
+
+}
+.pagination a {
+	display: block;
+	margin: 0 3px;
+	float: left;
+	border: 1px solid lightgray;
+	width: 28px;
+	height: 28px;
+	line-height: 28px;
+	text-align: center;
+	background-color: #fff;
+	font-size: 13px;
+	color: black;
+	text-decoration: none;
+	font-weight: bold;
+}
+
+.pagination>li>a:hover, .pagination>li>a:focus {
+	background-color: #6667AB;
+	color: white;
+}
+
+/* 등록 */
+.bt_wrap {
+    margin-top: 30px;
+    margin-bottom: 30px;
+    text-align: center;
+    font-size: 0;
+}
+
+.bt_wrap a {
+    display: inline-block;
+    min-width: 50px;
+    /* margin-left: 10px; */
+    padding: 10px;
+    border: 1px solid #6667AB;
+    border-radius: 2px;
+    font-size: 1rem;
+}
+
+/* .bt_wrap a:first-child {
+    margin-left: 0;
+}
+ */
+.bt_wrap a.on {
+    background: #6667AB;
+    color: #fff;
+}

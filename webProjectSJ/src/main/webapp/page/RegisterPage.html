@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SooJin : 회원가입</title>
+<link rel="stylesheet" href="css/RegisterPage.css">
+</head>
+<body>
+	<div class="main">
+		<form action="register" method="POST" class="register">
+			<!-- onsubmit="register(this); return false;" -->
+
+			<a class="logo" href="LoginPage.html">TALK</a>
+			<div class="textForm">
+				<input name="username" type="text" id="username" placeholder="이름"
+					autofocus="autofocus" required="required" autocomplete="none">
+			</div>
+			<div class="textForm">
+				<input name="userid" type="text" id="userid" placeholder="아이디"
+					required="required" autocomplete="none">
+			</div>
+			<div class="textForm">
+				<input name="pw" type="password" class="pw" placeholder="비밀번호"
+					required="required">
+			</div>
+			<div class="textForm">
+				<input name="pwConfirm" type="password" class="pw"
+					placeholder="비밀번호 확인" required="required">
+			</div>
+			<div class="textForm">
+				<input name="phone" type="number" id="phone" placeholder="전화번호"
+					required="required">
+			</div>
+
+			<div class="textForm">
+				<input name="useremail" type="text" id="useremail" placeholder="이메일"
+					required="required">
+			</div>
+
+			<div class="textForm">
+				<input name="birth" type="date" id="birth" data-placeholder="생년월일"
+					required="required" aria-required="true">
+			</div>
+			<div class="textForm">
+				여자 <input type="radio" name="gender" id="gender" /> 남자 <input
+					type="radio" name="gender" id="gender" />
+			</div>
+
+
+			<input type="submit" id="registerBtn" value="회 원 가 입" />
+		</form>
+	</div>
+</body>
+</html>

@@ -1,0 +1,120 @@
+@charset "UTF-8";
+
+* {
+	margin: 0px;
+	padding: 0px;
+	text-decoration: none;
+	font-family: sans-serif;
+}
+
+.logo {
+	margin-top: 0px;
+	margin-bottom: 40px;
+	color: #6667AB;
+	font-size: 90px;
+	font-weight: 900;
+}
+
+.main {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	flex-direction: column;
+	padding: 50px 0px;
+	margin: auto;
+}
+
+.register {
+	width: 400px;
+	text-align: center;
+} 
+.textForm {
+	/* border-bottom: 2px solid #adadad; */
+	margin: 30px;
+	padding: 10px 10px;
+	border: 2px solid lightgray;
+	border-radius: 3px;
+}
+
+#userid {
+	width: 100%;
+	border: none;
+	outline: none;
+	font-size: 16px;
+	height: 25px;
+	background: none;
+}
+
+.pw {
+	width: 100%;
+	border: none;
+	outline: none;
+	font-size: 16px;
+	height: 25px;
+	background: none;
+}
+
+#username {
+	width: 100%;
+	border: none;
+	outline: none;
+	font-size: 16px;
+	height: 25px;
+	background: none;
+}
+
+#useremail {
+	width: 100%;
+	border: none;
+	outline: none;
+	font-size: 16px;
+	height: 25px;
+	background: none;
+}
+
+#phone {
+	width: 100%;
+	border: none;
+	outline: none;
+	font-size: 16px;
+	height: 25px;
+	background: none;
+}
+
+#birth {
+	width: 100%;
+}
+
+#gender {
+	font: 16px;
+}
+
+#registerBtn {
+	width: 87%;
+	height: 40px;
+	border: none;
+	background-color: #6667AB;
+	color: white;
+	font-size: 20px;
+	margin-bottom: 40px;
+	border-radius: 3px;
+	font-weight: bold;
+	display: inline;
+}
+
+/*date placeholder*/
+input[type='date']::before {
+	content: attr(data-placeholder);
+	width: 100%;
+}
+
+input[type='date']:focus::before, input[type='date']:valid::before {
+	display: none;
+}
+
+/*number updown hidden*/
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
