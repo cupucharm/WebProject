@@ -1,0 +1,39 @@
+@charset "UTF-8";
+
+*{
+	background-color: #6667AB;
+	color : white;
+	text-decoration: none;
+	text-align: center;
+}
+
+.fulllogo {
+	margin-top: 10%;
+	font-size: 20rem;
+	font-weight: 900;
+}
+
+.check a:hover {
+	color: blue;
+}
+
+.choose {
+	font-size: 30px;
+}
+
+.check {
+	width: 40%;
+	margin: 0 auto;
+	display: flex;
+	justify-content: space-between;
+	flex-direction: row;
+}
+/* 
+#chat {
+	display: flex;
+	justify-content: space-between;
+}
+
+#status {
+	float:right;
+} */

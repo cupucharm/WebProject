@@ -15,7 +15,7 @@ div {
 	margin-top: 5%;
 }
 
-.searchPwCondition {
+.searchIdCondition {
 	height: 40px;
 	width: 20rem;
 	border: 2px solid lightgray;
@@ -25,12 +25,12 @@ div {
     color: #6667AB;
 }
 
-.searchPwDiv {
+.searchIdDiv {
 	margin-top: 30px;
 	width: 100%;
 }
 
-#searchPwBtn {
+#searchIdBtn {
 	/* width: 87%;
 	height: 40px; */
 	border: none;
@@ -43,7 +43,7 @@ div {
 	display: inline;
 }
 
-#checkPw {
+#checkId {
 	margin-top: 30px;
 	color: red;
 }
@@ -63,8 +63,8 @@ div {
 }
 
 /*number updown hidden*/
-.searchPwDiv input[type="number"]::-webkit-outer-spin-button,
-.searchPwDiv input[type="number"]::-webkit-inner-spin-button {
+.searchIdDiv input[type="number"]::-webkit-outer-spin-button,
+.searchIdDiv input[type="number"]::-webkit-inner-spin-button {
     -webkit-appearance: none;
     margin: 0;
 }

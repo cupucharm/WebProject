@@ -1,4 +1,4 @@
-package Member;
+package Board;
 
 import java.io.Serializable;
 import java.util.Objects;
@@ -9,17 +9,16 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class MemberVO implements Serializable {
+public class BoardVO implements Serializable {
 	private static final long serialVersionUID = 5783936267253111186L;
 	
-	private String user_id;
-	private String user_name;
-	private String user_pwd;
-	private String user_phone;
-	private String user_email;
-	private String user_sex;
-	private String user_birth;
-	private String user_condition;
+	private int bno;
+	private String btitle;
+	private String bwriter;
+	private String bdate;
+	private int bhit;
+	private String bcontents;
+	private String bcategory;
 
     @Override
 	public boolean equals(Object obj) {
@@ -29,12 +28,12 @@ public class MemberVO implements Serializable {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		MemberVO other = (MemberVO) obj;
-		return Objects.equals(user_id, other.user_id);
+		BoardVO other = (BoardVO) obj;
+		return bno == other.bno;
 	}
 	
 	@Override
 	public int hashCode() {
-		return Objects.hash(user_id);
+		return Objects.hash(bno);
 	}
 }

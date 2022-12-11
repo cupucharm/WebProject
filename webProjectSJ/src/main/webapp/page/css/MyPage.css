@@ -1,0 +1,78 @@
+@charset "UTF-8";
+
+* {
+	text-align: center;
+}
+
+.logDiv {
+	text-align: center;
+}
+
+.logo {
+	color: #6667AB;
+	font-size: 7rem;
+	font-weight: 900;
+	text-decoration: none;
+}
+
+.memberInfoDiv {
+	text-align: left;
+	display: flex;
+	margin: 0 auto;
+	justify-content: center;
+	margin-bottom: 20px;
+	margin-right: 56.5px;
+}
+
+.pwdCheckTable {
+	text-align: center;
+	display: flex;
+	margin: 0 auto;
+	justify-content: center;
+}
+
+.pwdCheckDiv {
+	text-align: center;
+	display: flex;
+	margin: 0 auto;
+	justify-content: center;
+}
+
+th {
+	text-align: right;
+}
+
+td {
+	text-align: left;
+}
+
+#pwd_msg, #pwd_delete_msg, #update_msg {
+	color: red;
+}
+
+input {
+	margin: 5px;
+	padding: 10px 10px;
+	border: 2px solid lightgray;
+	border-radius: 3px;
+}
+
+#before_update_pwdBtn, #before_delete_pwdBtn {
+	width: 224px;
+}
+
+input[type='text'], input[type='number'] {
+	width: 200px;
+}
+
+input[type='button'] {
+	/* width: 150px; */
+	height: 40px;
+	border: none;
+	background-color: white;
+	color: #6667AB;
+	font-size: 20px;
+	/* margin-bottom: 40px; */
+	font-weight: bold;
+	/* display: inline; */
+}

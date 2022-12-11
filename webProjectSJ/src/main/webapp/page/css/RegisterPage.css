@@ -24,19 +24,22 @@
 	margin: auto;
 }
 
+#uid_valid_msg, #pwd_valid_msg {
+	color: red;
+}
+
 .register {
 	width: 400px;
 	text-align: center;
 } 
 .textForm {
-	/* border-bottom: 2px solid #adadad; */
 	margin: 30px;
 	padding: 10px 10px;
 	border: 2px solid lightgray;
 	border-radius: 3px;
 }
 
-#userid {
+#user_id {
 	width: 100%;
 	border: none;
 	outline: none;
@@ -45,7 +48,7 @@
 	background: none;
 }
 
-.pw {
+.user_pwd {
 	width: 100%;
 	border: none;
 	outline: none;
@@ -54,7 +57,7 @@
 	background: none;
 }
 
-#username {
+#user_name {
 	width: 100%;
 	border: none;
 	outline: none;
@@ -63,7 +66,7 @@
 	background: none;
 }
 
-#useremail {
+#user_email {
 	width: 100%;
 	border: none;
 	outline: none;
@@ -72,7 +75,7 @@
 	background: none;
 }
 
-#phone {
+#user_phone {
 	width: 100%;
 	border: none;
 	outline: none;
@@ -81,11 +84,11 @@
 	background: none;
 }
 
-#birth {
+#user_birth {
 	width: 100%;
 }
 
-#gender {
+#user_sex {
 	font: 16px;
 }
 

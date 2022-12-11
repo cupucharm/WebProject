@@ -1,0 +1,24 @@
+@charset "UTF-8";
+
+#logoDiv {
+	text-align: center;
+}
+
+.ck.ck-editor {
+   	max-width: 1000px;
+}
+.ck-editor__editable {
+    min-height: 300px;
+}
+
+.logo {
+	color: #6667AB;
+	font-size: 7rem;
+	font-weight: 900;
+	text-align: center;
+	text-decoration: none;
+}
+
+h3 {
+	display: inline-block;
+}

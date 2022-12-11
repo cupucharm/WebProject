@@ -11,7 +11,7 @@
 	align-items: center;
 	flex-direction: column;
 	margin: auto;
-	position:relative;
+	margin-top:5%;
 }
 
 
@@ -20,22 +20,18 @@
 	font-size: 7rem;
 	font-weight: 900;
 	text-align: center;
-	margin-top: 13%;
-	position: absolute;
 }
 
 .board {
 	width: 1200px;
 	height: 100%;
 	margin-top: 3%;
-	position: absolute;
 }
 
 .boardTable {
 	font-size: 20px;
 	border-collapse: collapse;
 	width: 1200px;
-	margin-top: 180px;
 	border: 1px solid #6667AB;
 	text-align: center;
 	border-left: none;
@@ -53,8 +49,8 @@ td {
 	
 }
 
-tr td:nth-child(2) {
-	width: 750px;
+tr td:nth-child(3) {
+	width: 650px;
 }
 
 a {
