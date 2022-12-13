@@ -16,15 +16,25 @@
 			<a class="logo" href="">TALK</a>
 		</div>
 		<div class="check">
-		
+
 			<a class="choose" id="chat" href="ChatListPage.jsp">채팅</a> <a
 				class="choose" id="board" href="/webProjectSJ/Board/boardList">게시판</a>
-				
+
 			<c:choose>
-				<c:when test="${not empty login_id}"><a class="choose" class="status" href="../Member/MyPage">마이페이지</a><a class="choose" class="status" href="../Member/logout">로그아웃</a></c:when>				
-				<c:otherwise><a class="choose" class="status" href="LoginPage.jsp">로그인</a><a class="choose" class="status" href="RegisterPage.jsp">회원가입</a></c:otherwise>
+				<c:when test="${admin eq 'admin'}">
+					<a class="choose" class="status" href="../Member/AdminPage">회원관리</a>
+					<a class="choose" class="status" href="../Member/logout">로그아웃</a>
+				</c:when>
+				<c:when test="${not empty login_id}">
+					<a class="choose" class="status" href="../Member/MyPage">마이페이지</a>
+					<a class="choose" class="status" href="../Member/logout">로그아웃</a>
+				</c:when>
+				<c:otherwise>
+					<a class="choose" class="status" href="LoginPage.jsp">로그인</a>
+					<a class="choose" class="status" href="RegisterPage.jsp">회원가입</a>
+				</c:otherwise>
 			</c:choose>
-			
+
 		</div>
 	</div>
 </body>

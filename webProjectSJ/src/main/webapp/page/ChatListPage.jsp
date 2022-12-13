@@ -12,24 +12,36 @@
 
 </head>
 <body>
-	<c:choose>
-		<c:when test="${not empty login_id}">
-			<div id="makeChatRoom">
-				<h3>채팅방 생성하기</h3>
-				<label for="chatRoomName">채팅방 이름 </label> <input type="text"
-					id="chatRoomName">
-				<button id="newChatRoomBtn">채팅방 생성하기</button>
-			</div>
+	<div id="memberInfoDiv">
+		<a class="choose" class="status" href="../Member/MyPage">${login_id}님</a>
+		<a class="choose" class="status" href="../Member/logout">로그아웃</a>
+	</div>
+	<div class="main">
 
-			<div id="cahtRoomList">
-				<h3>채팅방 목록</h3>
-				<div id="showChatRoomList"></div>
-			</div>
-		</c:when>
-		<c:otherwise>
-			<c:redirect url="LoginPage.jsp" ></c:redirect>
-		</c:otherwise>
-	</c:choose>
+		<a class="logo" href="../page/MainPage.jsp">TALK</a>
+	</div>
+	<div id="body">
+	<c:choose>
+			<c:when test="${not empty login_id}">
+				<div id="makeChatRoom">
+					<h2>채팅방 생성하기</h2>
+					<br>
+					<label class="newChat" for="chatRoomName">채팅방 이름 </label> <input type="text"
+						class="newChat" id="chatRoomName">
+					<button class="newChat" id="newChatRoomBtn">채팅방 생성하기</button>
+				</div>
+
+				<div id="cahtRoomList">
+					<h2>채팅방 목록</h2>
+					<br>
+					<div id="showChatRoomList"></div>
+				</div>
+			</c:when>
+			<c:otherwise>
+				<c:redirect url="LoginPage.jsp"></c:redirect>
+			</c:otherwise>
+		</c:choose>
+	</div>
 
 
 	<script>
@@ -46,7 +58,7 @@
 
 
 	<script>
-	let showChatRoomList = document.querySelector("#showChatRoomList");
+	//let showChatRoomList = document.querySelector("#showChatRoomList");
 	let chatRoomName = document.querySelector("#chatRoomName");
 	let inCount = 0;
 	
@@ -56,7 +68,7 @@
 	};
 	
 	function ChatRoomList() {
-		showChatRoomList.innerHTML += "채팅방 이름 : <a href='#' onclick='openChatRoom(chatRoomName.value)'>" + chatRoomName.value + "</a>" + " | 참여 인원 수 : " + inCount + "<br>";
+		showChatRoomList.innerHTML += "채팅방 이름 : <a href='#' onclick='openChatRoom(chatRoomName.value)'>" + chatRoomName.value + "</a>" + " ( 참여 인원 수 : " + inCount + " )<br>";
 	
 	}
 /*	
@@ -90,16 +102,23 @@
         let html = "";
         for (const key of Object.keys(map)) {
             const value = map[key];
+            console.log(value);
 
-            html += "채팅방 이름 : <a href='#' onclick='openChatRoom(" + key + ")'>"+key+"</a> | 참여 인원 수 : " + value;
-            html += "<br/>";
+            if(value != 0) {
+            	 html += "채팅방 이름 : <a href='#' onclick='openChatRoom(" + key + ")'>"+key+"</a> ( 참여 인원 수 : " + value + " )<br/>";
+            }
         }
-        showChatRoomList.value += message.data + "\n";
+        
+        // showChatRoomList.value += message.data + "\n";
+       	console.log(html);
+        showChatRoomList.innerHTML += html + "\n";
     };
     function sendMessage() {
        
     }
     function disconnect() {
+    	
+    	
         webSocket.close();
     }
  

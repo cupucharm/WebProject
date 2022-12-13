@@ -20,7 +20,7 @@
 			</c:when>
 			<c:otherwise>
 				<a class="choose" class="status" href="../page/LoginPage.jsp">로그인</a>
-				<a class="choose" class="status" href="RegisterPage.jsp">회원가입</a>
+				<a class="choose" class="status" href="../page/RegisterPage.jsp">회원가입</a>
 			</c:otherwise>
 		</c:choose>
 	</div>
@@ -35,7 +35,7 @@
 				<option value="title">제목</option>
 				<option value="contents">내용</option>
 				<option value="writer">작성자</option>
-			</select> <input type="text" id="searchInput" name="searchInput">
+			</select> <input type="text" id="searchInput" name="searchInput" value="${searchContent}">
 			<button id="searchBtn">검색</button>
 		</div>
 
@@ -80,15 +80,15 @@
 				<ul class="pagination">
 					<c:if test="${ boardPageVO.prev }">
 						<li><a class="bt prev"
-							href="/webProjectSJ/Board/boardList?pageNum=${ boardPageVO.startPage - 1 }"><</a></li>
+							href="/webProjectSJ/Board/search?searchCondition=${searchCondition}&searchContent=${searchContent}&pageNum=${ boardPageVO.startPage - 1 }"><</a></li>
 					</c:if>
 					<c:forEach begin="${boardPageVO.startPage}"
 						end="${boardPageVO.endPage}" var="num">
-						<li><a <c:if test="${num eq boardPageVO.currentPage }">style="background-color:#6667AB; color:white;"</c:if> href="/webProjectSJ/Board/boardList?pageNum=${num}">${num}</a></li>
+						<li><a <c:if test="${num eq boardPageVO.currentPage }">style="background-color:#6667AB; color:white;"</c:if> href="/webProjectSJ/Board/search?searchCondition=${searchCondition}&searchContent=${searchContent}&pageNum=${num}">${num}</a></li>
 					</c:forEach>
 					<c:if test="${ boardPageVO.next }">
 						<li><a class="bt next"
-							href="/webProjectSJ/Board/boardList?pageNum=${ boardPageVO.endPage + 1  }">></a></li>
+							href="/webProjectSJ/Board/search?searchCondition=${searchCondition}&searchContent=${searchContent}&pageNum=${ boardPageVO.endPage + 1  }">></a></li>
 					</c:if>
 				</ul>
 			</div>

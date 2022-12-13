@@ -93,12 +93,12 @@ public class BoardServlet extends HttpServlet {
 		} else if (request.getRequestURI().equals("/webProjectSJ/Board/boardUpload")) {
 
 			try {
-				
+
 				BufferedReader in = new BufferedReader(new InputStreamReader(request.getInputStream(), "UTF-8"));
 				String jsonStr = in.readLine();
 
 				JSONObject jsonResult = new JSONObject(jsonStr);
-				
+
 				String btitle = jsonResult.getString("btitle");
 				String bwriter = jsonResult.getString("bwriter");
 				String bcategory = jsonResult.getString("bcategory");
@@ -208,11 +208,11 @@ public class BoardServlet extends HttpServlet {
 				String user_id = (String) session.getAttribute("login_id");
 
 				BoardDAO dao = new BoardDAO();
-				List<BoardVO> list = dao.selectBoardList(user_id);
-				
+				List<BoardVO> list = dao.selectMyBoardList(user_id);
+
 				int pageNum = 1;
 				int total = dao.getTotal();
-				
+
 				BoardPageVO boardPageVO = new BoardPageVO(pageNum, total);
 
 				request.setAttribute("listBoards", list);
@@ -220,13 +220,74 @@ public class BoardServlet extends HttpServlet {
 
 				RequestDispatcher dispatch = request.getRequestDispatcher("../page/BoardListPage.jsp");
 				dispatch.forward(request, response);
-				
-				
+
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
-		}
+		} else if (request.getRequestURI().equals("/webProjectSJ/Board/search")) {
+			try {
 
+				String searchCondition = request.getParameter("searchCondition");
+				String searchContent = request.getParameter("searchContent");
+
+				BoardDAO dao = new BoardDAO();
+				int pageNum = 1;
+				
+				if (request.getParameter("pageNum") != null) {
+					pageNum = Integer.parseInt(request.getParameter("pageNum"));
+				}
+
+				List<BoardVO> list = dao.listBoardsSearch(pageNum, searchCondition, searchContent);
+				
+				int total = dao.getTotalBySearch(searchCondition, searchContent);
+
+				BoardPageVO boardPageVO = new BoardPageVO(pageNum, total);
+
+				request.setAttribute("listBoards", list);
+				request.setAttribute("boardPageVO", boardPageVO);
+				request.setAttribute("searchCondition", searchCondition);
+				request.setAttribute("searchContent", searchContent);
+
+				RequestDispatcher dispatch = request.getRequestDispatcher("../page/BoardListSearchPage.jsp");
+				dispatch.forward(request, response);
+
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		} else if (request.getRequestURI().equals("/webProjectSJ/Board/view")) {
+			try {
+
+				String content = request.getParameter("content");
+
+				if (!content.equals("all")) {
+					BoardDAO dao = new BoardDAO();
+					
+					int pageNum = 1;
+
+					if (request.getParameter("pageNum") != null) {
+						pageNum = Integer.parseInt(request.getParameter("pageNum"));
+					}
+
+					List<BoardVO> list = dao.listBoardsCategory(pageNum, content);
+					int total = dao.getTotalByCategory(content);
+
+					BoardPageVO boardPageVO = new BoardPageVO(pageNum, total);
+
+					request.setAttribute("listBoards", list);
+					request.setAttribute("category", content);
+					request.setAttribute("boardPageVO", boardPageVO);
+
+					RequestDispatcher dispatch = request.getRequestDispatcher("../page/BoardListCategoryPage.jsp");
+					dispatch.forward(request, response);
+				} else {
+					response.sendRedirect("/webProjectSJ/Board/boardList");
+				}
+
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+
+		}
 	}
 
 }

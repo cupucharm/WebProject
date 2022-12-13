@@ -10,6 +10,7 @@
 
 h3 {
 	display: inline-block;
+	margin-bottom: 0px;
 }
 
 #editor {
@@ -21,6 +22,52 @@ h3 {
 }
 
 .boardBody {
-	width: 90%;
+	width: 80%;
 	border: 1px solid gray;
+	margin: 0 auto;
+	margin-top : 20px;
+}
+
+input, h3, button {
+	border: none;
+	font-size: 20px;
+}
+
+#bno, #bcategory {
+	margin-right: 40px
+}
+
+.boardHeadDiv {
+	width: 80%;
+	margin: 0 auto;
+}
+
+#backBtn, #deleteBoardBtn, #editBoardBtn {
+	color: white;
+	background-color: #6667AB;
+	border-radius: 3px;
+	padding: 5px 10px;
+}
+
+.boardFoot {
+	display: flex;
+	justify-content: center;
+	margin: 30px auto;
+}
+
+#editor {
+	min-height: 300px;
+	padding: 30px;
+}
+
+#editBoardBtn {
+	margin-right: 15px;
+}
+
+#backBtn {
+	margin-left: 15px;
+}
+
+#writer {
+	width: 13%;
 }

@@ -1,0 +1,51 @@
+@charset "UTF-8";
+
+* {
+	margin: 0px;
+	padding: 0px;
+	font-size: 20px;
+}
+
+#memberInfoDiv {
+	float: right;
+	margin-top: 30px;
+	margin-right: 150px
+}
+
+.main {
+	clear: right;
+	display: flex;
+	justify-content: center;
+	/* align-items: center; */
+	flex-direction: column;
+	margin: auto;
+	margin-top: 5%;
+}
+
+.logo {
+	color: #6667AB;
+	font-size: 7rem;
+	font-weight: 900;
+	text-align: center;
+	text-decoration: none;
+}
+
+#makeChatRoom, #cahtRoomList {
+	margin: 0 auto;
+	width: 60%;
+	margin-top: 30px;
+}
+
+.newChat {
+	font-size: 18px;
+	padding: 1px 0px;
+}
+
+#newChatRoomBtn {
+	border: 1px solid #6667AB;
+	border-radius: 3px;
+	padding: 1px 7px;
+	color: white;
+	background-color: #6667AB;
+	font-weight: 700;
+} 

@@ -14,8 +14,9 @@ public class MemberDAO {
 	private Connection conn;
 	private PreparedStatement pstmt;
 	private DataSource dataFactory;
+	private ResultSet rs;
 
-	public MemberDAO() {
+	private void open() {
 		try {
 			Context context = new InitialContext();
 			Context envContext = (Context) context.lookup("java:/comp/env");
@@ -25,13 +26,30 @@ public class MemberDAO {
 		}
 	}
 
+	private void close() {
+		try {
+			if (pstmt != null) {
+				pstmt.close();
+			}
+			if (conn != null) {
+				conn.close();
+			}
+			if (rs != null) {
+				rs.close();
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+
 	// 회원가입
 	public int insertMember(MemberVO memberVO) throws SQLException {
 		try {
-			Connection con = dataFactory.getConnection();
+			open();
+			conn = dataFactory.getConnection();
 			String query = "insert into tb_member(user_id, user_name, user_pwd, user_phone, user_email, user_sex, user_birth) values(?,?,?,?,?,?,?)";
 
-			pstmt = con.prepareStatement(query);
+			pstmt = conn.prepareStatement(query);
 			pstmt.setString(1, memberVO.getUser_id());
 			pstmt.setString(2, memberVO.getUser_name());
 			pstmt.setString(3, memberVO.getUser_pwd());
@@ -47,10 +65,9 @@ public class MemberDAO {
 			throw e;
 		} finally {
 			try {
-				pstmt.close();
-				conn.close();
+				close();
 			} catch (Exception e) {
-
+				e.printStackTrace();
 			}
 		}
 	}
@@ -59,12 +76,13 @@ public class MemberDAO {
 	public MemberVO isExisted(String user_id, String user_pwd) {
 		MemberVO member = null;
 		try {
+			open();
 			conn = dataFactory.getConnection();
 
 			String query = "select * from tb_member where user_id = ?";
 			pstmt = conn.prepareStatement(query);
 			pstmt.setString(1, user_id);
-			ResultSet rs = pstmt.executeQuery();
+			rs = pstmt.executeQuery();
 
 			if (rs.next()) {
 				if (rs.getString("user_pwd").equals(user_pwd)) {
@@ -84,23 +102,28 @@ public class MemberDAO {
 	public List<MemberVO> listMembers() {
 		List<MemberVO> list = new ArrayList();
 		try {
+			open();
 			conn = dataFactory.getConnection();
 
 			String query = "select * from tb_member";
 
 			pstmt = conn.prepareStatement(query);
-			ResultSet rs = pstmt.executeQuery();
+			rs = pstmt.executeQuery();
 			while (rs.next()) {
 				MemberVO member = new MemberVO(rs.getString("user_id"), rs.getString("user_name"),
 						rs.getString("user_pwd"), rs.getString("user_phone"), rs.getString("user_email"),
 						rs.getString("user_sex"), rs.getString("user_birth"), rs.getString("user_condition"));
 				list.add(member);
 			}
-			rs.close();
-			pstmt.close();
-			conn.close();
+
 		} catch (Exception e) {
 			e.printStackTrace();
+		} finally {
+			try {
+				close();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 		}
 		return list;
 	}
@@ -108,13 +131,14 @@ public class MemberDAO {
 	// 마이페이지
 	public MemberVO memberInfo(String user_id) {
 		try {
+			open();
 			conn = dataFactory.getConnection();
 
 			String query = "select * from tb_member where user_id =?";
 
 			pstmt = conn.prepareStatement(query);
 			pstmt.setString(1, user_id);
-			ResultSet rs = pstmt.executeQuery();
+			rs = pstmt.executeQuery();
 
 			if (rs.next()) {
 				MemberVO member = new MemberVO(rs.getString("user_id"), rs.getString("user_name"),
@@ -122,11 +146,15 @@ public class MemberDAO {
 						rs.getString("user_sex"), rs.getString("user_birth"), rs.getString("user_condition"));
 				return member;
 			}
-			rs.close();
-			pstmt.close();
-			conn.close();
+
 		} catch (Exception e) {
 			e.printStackTrace();
+		} finally {
+			try {
+				close();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 		}
 		return null;
 	}
@@ -134,12 +162,13 @@ public class MemberDAO {
 	// id 중복 확인
 	public MemberVO checkMember(String user_id) {
 		try {
+			open();
 			conn = dataFactory.getConnection();
 			String query = "select * from tb_member where user_id = ?";
 
 			pstmt = conn.prepareStatement(query);
 			pstmt.setString(1, user_id);
-			ResultSet rs = pstmt.executeQuery();
+			rs = pstmt.executeQuery();
 			MemberVO memberVO = null;
 
 			if (rs.next()) {
@@ -147,16 +176,15 @@ public class MemberDAO {
 						rs.getString("user_phone"), rs.getString("user_email"), rs.getString("user_sex"),
 						rs.getString("user_birth"), rs.getString("user_condition"));
 			}
-			rs.close();
 
 			return memberVO;
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
 			try {
-				pstmt.close();
-				conn.close();
+				close();
 			} catch (Exception e) {
+				e.printStackTrace();
 			}
 		}
 		return null;
@@ -167,27 +195,27 @@ public class MemberDAO {
 		String user_id = null;
 
 		try {
+			open();
 			conn = dataFactory.getConnection();
 			String query = "select user_id from tb_member where user_name = ? and user_phone=?";
 
 			pstmt = conn.prepareStatement(query);
 			pstmt.setString(1, user_name);
 			pstmt.setString(2, user_phone);
-			ResultSet rs = pstmt.executeQuery();
+			rs = pstmt.executeQuery();
 
 			if (rs.next()) {
 				user_id = rs.getString("user_id");
 			}
-			rs.close();
 			return user_id;
 
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
 			try {
-				pstmt.close();
-				conn.close();
+				close();
 			} catch (Exception e) {
+				e.printStackTrace();
 			}
 		}
 		return user_id;
@@ -198,6 +226,7 @@ public class MemberDAO {
 		String user_pwd = null;
 
 		try {
+			open();
 			conn = dataFactory.getConnection();
 			String query = "select user_pwd from tb_member where user_id = ? and user_name = ? and user_phone=?";
 
@@ -205,21 +234,20 @@ public class MemberDAO {
 			pstmt.setString(1, user_id);
 			pstmt.setString(2, user_name);
 			pstmt.setString(3, user_phone);
-			ResultSet rs = pstmt.executeQuery();
+			rs = pstmt.executeQuery();
 
 			if (rs.next()) {
 				user_pwd = rs.getString("user_pwd");
 			}
-			rs.close();
 			return user_pwd;
 
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
 			try {
-				pstmt.close();
-				conn.close();
+				close();
 			} catch (Exception e) {
+				e.printStackTrace();
 			}
 		}
 		return user_pwd;
@@ -231,6 +259,7 @@ public class MemberDAO {
 		int num = 0;
 
 		try {
+			open();
 			conn = dataFactory.getConnection();
 			String query = "update tb_member set user_pwd =?, user_name =?, user_phone=?, user_email=? where user_id=?";
 
@@ -249,9 +278,9 @@ public class MemberDAO {
 			e.printStackTrace();
 		} finally {
 			try {
-				pstmt.close();
-				conn.close();
+				close();
 			} catch (Exception e) {
+				e.printStackTrace();
 			}
 		}
 		return num > 0;
@@ -262,26 +291,26 @@ public class MemberDAO {
 		String user_pwd = null;
 
 		try {
+			open();
 			conn = dataFactory.getConnection();
 			String query = "select user_pwd from tb_member where user_id = ?";
 
 			pstmt = conn.prepareStatement(query);
 			pstmt.setString(1, user_id);
-			ResultSet rs = pstmt.executeQuery();
+			rs = pstmt.executeQuery();
 
 			if (rs.next()) {
 				user_pwd = rs.getString("user_pwd");
 			}
-			rs.close();
 			return user_pwd;
 
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
 			try {
-				pstmt.close();
-				conn.close();
+				close();
 			} catch (Exception e) {
+				e.printStackTrace();
 			}
 		}
 		return user_pwd;
@@ -291,10 +320,11 @@ public class MemberDAO {
 	public Boolean deleteMember(String user_id, String user_pwd) {
 		Boolean result = false;
 		try {
-			Connection con = dataFactory.getConnection();
+			open();
+			conn = dataFactory.getConnection();
 			String query = "delete from tb_member where user_id=? and user_pwd=?";
 
-			pstmt = con.prepareStatement(query);
+			pstmt = conn.prepareStatement(query);
 			pstmt.setString(1, user_id);
 			pstmt.setString(2, user_pwd);
 			result = pstmt.executeUpdate() > 0;
@@ -305,45 +335,164 @@ public class MemberDAO {
 			e.printStackTrace();
 		} finally {
 			try {
-				pstmt.close();
-				conn.close();
+				close();
 			} catch (Exception e) {
-
+				e.printStackTrace();
 			}
 		}
 		return result;
 	}
 
-	// id를 검색해서 게시글 가져오기
-//	public MemberVO viewMember(String user_id) {
-//		try {
-//			// connDB();
-//			conn = dataFactory.getConnection();
-//			String query = "select * from tb_member where bwriter = ?";
-//			
-//			pstmt = conn.prepareStatement(query);
-//			pstmt.setString(1, user_id);
-//			ResultSet rs = pstmt.executeQuery();
-//			MemberVO memberVO = null;
-//			
-//			if (rs.next()) {
-//				memberVO = new MemberVO(
-//						rs.getString("id"),	
-//						rs.getString("pwd"),	
-//						rs.getString("name"),	
-//						rs.getString("email"),	
-//						rs.getDate("joinDate"));
-//			}
-//			rs.close();
-//			
-//			return memberBean;
-//		} catch (Exception e) {
-//			e.printStackTrace();
-//		} finally {
-//			try {
-//				pstmt.close();
-//				conn.close();
-//			} catch (Exception e) {}
-//		}
-//		return null;	
+	public List<MemberVO> listMembers(int pageNum) {
+		List<MemberVO> list = new ArrayList<>();
+		try {
+			open();
+			conn = dataFactory.getConnection();
+
+			String query = "SELECT * from (SELECT * ,@ROWNUM:=@ROWNUM+1 as rowNum FROM (SELECT @ROWNUM:=0) AS R, tb_member) t where user_condition !='admin' limit 10 offset ?";
+
+			pstmt = conn.prepareStatement(query);
+			pstmt.setInt(1, pageNum * 10 - 10);
+
+			rs = pstmt.executeQuery();
+			while (rs.next()) {
+				MemberVO member = new MemberVO(rs.getString(2), rs.getString(3), rs.getString(4), rs.getString(5),
+						rs.getString(6), rs.getString(7), rs.getString(8), rs.getString(9));
+				list.add(member);
+			}
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				close();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+		return list;
+	}
+
+	public Boolean isLoginCan(String user_id) {
+		try {
+			open();
+			conn = dataFactory.getConnection();
+
+			String query = "select user_condition from tb_member where user_id = ?";
+			pstmt = conn.prepareStatement(query);
+			pstmt.setString(1, user_id);
+			rs = pstmt.executeQuery();
+
+			if (rs.next()) {
+				if (rs.getString("user_condition").equals("활성화") || rs.getString("user_condition").equals("admin")) {
+					return true;
+				} else
+					return false;
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return false;
+	}
+
+	public Boolean changeCondition(String user_id, String condition) {
+		try {
+			open();
+			conn = dataFactory.getConnection();
+
+			String updateCondition = null;
+			if (condition.equals("비활성화")) {
+				updateCondition = "활성화";
+			} else if (condition.equals("활성화")) {
+				updateCondition = "비활성화";
+			}
+
+			String query = "update tb_member set user_condition='" + updateCondition + "' where user_id=?";
+			pstmt = conn.prepareStatement(query);
+			pstmt.setString(1, user_id);
+			int success = pstmt.executeUpdate();
+
+			return success > 0;
+
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return false;
+	}
+
+	public String getCondition(String user_id) {
+		try {
+			open();
+			conn = dataFactory.getConnection();
+
+			String query = "select user_condition from tb_member where user_id = ?";
+			pstmt = conn.prepareStatement(query);
+			pstmt.setString(1, user_id);
+			rs = pstmt.executeQuery();
+
+			if (rs.next()) {
+				return rs.getString("user_condition");
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return null;
+	}
+
+	public Boolean memberAdminDelete(String user_id) {
+		try {
+			open();
+			conn = dataFactory.getConnection();
+			String query = "delete from tb_member where user_id=?";
+
+			pstmt = conn.prepareStatement(query);
+			pstmt.setString(1, user_id);
+
+			return pstmt.executeUpdate() > 0;
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				close();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+		return false;
+	}
+
+	public List<MemberVO> selectByUid(String searchInput) {
+		List<MemberVO> list = new ArrayList();
+		try {
+			open();
+			conn = dataFactory.getConnection();
+			String query = null;
+
+			query = "select * from tb_member where user_id like ?";
+			pstmt = conn.prepareStatement(query);
+			pstmt.setString(1, "%" + searchInput + "%");
+
+			rs = pstmt.executeQuery();
+			while (rs.next()) {
+				MemberVO member = new MemberVO(rs.getString("user_id"), rs.getString("user_name"),
+						rs.getString("user_pwd"), rs.getString("user_phone"), rs.getString("user_email"),
+						rs.getString("user_sex"), rs.getString("user_birth"), rs.getString("user_condition"));
+				list.add(member);
+			}
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				close();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+		return list;
+	}
 }

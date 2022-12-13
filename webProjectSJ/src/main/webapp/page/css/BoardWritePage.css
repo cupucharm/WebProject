@@ -5,10 +5,11 @@
 }
 
 .ck.ck-editor {
-   	max-width: 1000px;
+	max-width: 1000px;
 }
+
 .ck-editor__editable {
-    min-height: 300px;
+	min-height: 300px;
 }
 
 .logo {
@@ -21,4 +22,21 @@
 
 h3 {
 	display: inline-block;
+}
+
+button {
+	color: white;
+	background-color: #6667AB;
+	border-radius: 3px;
+	padding: 5px 10px;
+	margin: 1%;
+}
+
+.boardFoot {
+	display: flex;
+	justify-content: center;
+}
+
+.main {
+	margin-left: 200px;
 }

@@ -10,14 +10,13 @@ import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.sql.DataSource;
 
-import Member.MemberVO;
-
 public class BoardDAO {
 	private Connection conn;
 	private PreparedStatement pstmt;
 	private DataSource dataFactory;
+	private ResultSet rs;
 
-	public BoardDAO() {
+	private void open() {
 		try {
 			Context context = new InitialContext();
 			Context envContext = (Context) context.lookup("java:/comp/env");
@@ -27,13 +26,30 @@ public class BoardDAO {
 		}
 	}
 
+	private void close() {
+		try {
+			if (pstmt != null) {
+				pstmt.close();
+			}
+			if (conn != null) {
+				conn.close();
+			}
+			if (rs != null) {
+				rs.close();
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+
 	// 게시글 작성
 	public boolean insertBoard(String btitle, String bwriter, String bcategory, String bcontents) throws SQLException {
 		try {
-			Connection con = dataFactory.getConnection();
+			open();
+			conn = dataFactory.getConnection();
 			String query = "insert into tb_board(btitle, bwriter, bcontents, bcategory) values(?,?,?,?)";
 
-			pstmt = con.prepareStatement(query);
+			pstmt = conn.prepareStatement(query);
 			pstmt.setString(1, btitle);
 			pstmt.setString(2, bwriter);
 			pstmt.setString(3, bcontents);
@@ -46,10 +62,9 @@ public class BoardDAO {
 			throw e;
 		} finally {
 			try {
-				pstmt.close();
-				conn.close();
+				close();
 			} catch (Exception e) {
-
+				e.printStackTrace();
 			}
 		}
 	}
@@ -58,6 +73,7 @@ public class BoardDAO {
 	public List<BoardVO> listBoards(int pageNum) {
 		List<BoardVO> list = new ArrayList<>();
 		try {
+			open();
 			conn = dataFactory.getConnection();
 
 			String query = "SELECT * from (SELECT * ,@ROWNUM:=@ROWNUM+1 as rowNum FROM (SELECT @ROWNUM:=0) AS R, tb_board order by rowNum desc) t limit 10 offset ?";
@@ -65,17 +81,20 @@ public class BoardDAO {
 			pstmt = conn.prepareStatement(query);
 			pstmt.setInt(1, pageNum * 10 - 10);
 
-			ResultSet rs = pstmt.executeQuery();
+			rs = pstmt.executeQuery();
 			while (rs.next()) {
 				BoardVO board = new BoardVO(rs.getInt("bno"), rs.getString("btitle"), rs.getString("bwriter"),
 						rs.getString("bdate"), rs.getInt("bhit"), rs.getString("bcontents"), rs.getString("bcategory"));
 				list.add(board);
 			}
-			rs.close();
-			pstmt.close();
-			conn.close();
 		} catch (Exception e) {
 			e.printStackTrace();
+		} finally {
+			try {
+				close();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 		}
 		return list;
 	}
@@ -84,23 +103,22 @@ public class BoardDAO {
 		int result = 0;
 
 		try {
+			open();
 			conn = dataFactory.getConnection();
 			String query = "select count(*) as total from tb_board";
 			pstmt = conn.prepareStatement(query);
 
-			ResultSet rs = pstmt.executeQuery();
+			rs = pstmt.executeQuery();
 
 			if (rs.next()) {
 				result = rs.getInt("total");
 			}
-			rs.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
 			try {
-				pstmt.close();
-				conn.close();
-			} catch (SQLException e) {
+				close();
+			} catch (Exception e) {
 				e.printStackTrace();
 			}
 		}
@@ -112,6 +130,7 @@ public class BoardDAO {
 		BoardVO board = null;
 
 		try {
+			open();
 			conn = dataFactory.getConnection();
 
 			String query = "SELECT * from tb_board where bno = ?";
@@ -119,13 +138,12 @@ public class BoardDAO {
 			pstmt = conn.prepareStatement(query);
 			pstmt.setInt(1, bno);
 
-			ResultSet rs = pstmt.executeQuery();
+			rs = pstmt.executeQuery();
 			if (rs.next()) {
 				board = new BoardVO(rs.getInt("bno"), rs.getString("btitle"), rs.getString("bwriter"),
 						rs.getString("bdate"), rs.getInt("bhit"), rs.getString("bcontents"), rs.getString("bcategory"));
 //				return board;
 			}
-			rs.close();
 			return board;
 
 		} catch (SQLException e) {
@@ -133,10 +151,9 @@ public class BoardDAO {
 			throw e;
 		} finally {
 			try {
-				pstmt.close();
-				conn.close();
+				close();
 			} catch (Exception e) {
-
+				e.printStackTrace();
 			}
 		}
 		// return board;
@@ -145,6 +162,7 @@ public class BoardDAO {
 	public Boolean updateBoard(int realBno, String btitle, String bcontents) {
 		Boolean success = false;
 		try {
+			open();
 			conn = dataFactory.getConnection();
 
 			String query = "update tb_board set btitle =?, bcontents =?, bdate=now() where bno=?";
@@ -162,10 +180,9 @@ public class BoardDAO {
 			e.printStackTrace();
 		} finally {
 			try {
-				pstmt.close();
-				conn.close();
+				close();
 			} catch (Exception e) {
-
+				e.printStackTrace();
 			}
 		}
 		return success;
@@ -174,10 +191,11 @@ public class BoardDAO {
 	public Boolean deleteBoard(int bno) {
 		Boolean result = false;
 		try {
-			Connection con = dataFactory.getConnection();
+			open();
+			conn = dataFactory.getConnection();
 			String query = "delete from tb_board where bno=?";
 
-			pstmt = con.prepareStatement(query);
+			pstmt = conn.prepareStatement(query);
 			pstmt.setInt(1, bno);
 			result = pstmt.executeUpdate() > 0;
 
@@ -187,10 +205,9 @@ public class BoardDAO {
 			e.printStackTrace();
 		} finally {
 			try {
-				pstmt.close();
-				conn.close();
+				close();
 			} catch (Exception e) {
-
+				e.printStackTrace();
 			}
 		}
 		return result;
@@ -199,6 +216,7 @@ public class BoardDAO {
 	public boolean countUp(int bno) {
 		Boolean success = false;
 		try {
+			open();
 			conn = dataFactory.getConnection();
 
 			String query = "update tb_board set bhit=bhit+1 where bno=?";
@@ -214,72 +232,246 @@ public class BoardDAO {
 			e.printStackTrace();
 		} finally {
 			try {
-				pstmt.close();
-				conn.close();
+				close();
 			} catch (Exception e) {
-
+				e.printStackTrace();
 			}
 		}
 		return success;
 	}
 
-	public List<BoardVO> selectBoardList(String user_id) {
+	public List<BoardVO> selectMyBoardList(String user_id) {
 		List<BoardVO> list = new ArrayList();
 		try {
+			open();
 			conn = dataFactory.getConnection();
 
 			String query = "select * from tb_board where bwriter=?";
-			
+
 			pstmt = conn.prepareStatement(query);
-			pstmt.setString(1,  user_id);
-			
-			ResultSet rs = pstmt.executeQuery();
+			pstmt.setString(1, user_id);
+
+			rs = pstmt.executeQuery();
 			while (rs.next()) {
-				BoardVO board = new BoardVO(rs.getInt("bno"), rs.getString("btitle"),
-						rs.getString("bwriter"), rs.getString("bdate"), rs.getInt("bhit"),
-						rs.getString("bcontents"), rs.getString("bcategory"));
+				BoardVO board = new BoardVO(rs.getInt("bno"), rs.getString("btitle"), rs.getString("bwriter"),
+						rs.getString("bdate"), rs.getInt("bhit"), rs.getString("bcontents"), rs.getString("bcategory"));
 				list.add(board);
 			}
-			rs.close();
-			pstmt.close();
-			conn.close();
+
 		} catch (Exception e) {
 			e.printStackTrace();
+		} finally {
+			try {
+				close();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 		}
 		return list;
 	}
 
-	// id를 검색해서 게시글 가져오기
-//	public MemberVO viewMember(String user_id) {
-//		try {
-//			// connDB();
-//			conn = dataFactory.getConnection();
-//			String query = "select * from tb_member where bwriter = ?";
-//			
-//			pstmt = conn.prepareStatement(query);
-//			pstmt.setString(1, user_id);
-//			ResultSet rs = pstmt.executeQuery();
-//			MemberVO memberVO = null;
-//			
-//			if (rs.next()) {
-//				memberVO = new MemberVO(
-//						rs.getString("id"),	
-//						rs.getString("pwd"),	
-//						rs.getString("name"),	
-//						rs.getString("email"),	
-//						rs.getDate("joinDate"));
-//			}
-//			rs.close();
-//			
-//			return memberBean;
-//		} catch (Exception e) {
-//			e.printStackTrace();
-//		} finally {
-//			try {
-//				pstmt.close();
-//				conn.close();
-//			} catch (Exception e) {}
-//		}
-//		return null;	
-//	}
+	public int getTotalByCategory(String content) {
+		int result = 0;
+
+		try {
+			open();
+			conn = dataFactory.getConnection();
+
+			String query = "select count(*) as total from tb_board where bcategory=?";
+			pstmt = conn.prepareStatement(query);
+
+			switch (content) {
+
+			case "notice":
+				pstmt.setString(1, "공지사항");
+				break;
+
+			case "commom":
+				pstmt.setString(1, "일반게시판");
+				break;
+
+			case "Question":
+				pstmt.setString(1, "Q&A");
+				break;
+
+			}
+
+			rs = pstmt.executeQuery();
+
+			if (rs.next()) {
+				result = rs.getInt("total");
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				close();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+		return result;
+	}
+
+	public List<BoardVO> listBoardsCategory(int pageNum, String content) {
+		List<BoardVO> list = new ArrayList<>();
+		try {
+			open();
+			conn = dataFactory.getConnection();
+
+			String query = "SELECT * from (SELECT * ,@ROWNUM:=@ROWNUM+1 as rowNum FROM (SELECT @ROWNUM:=0) AS R, tb_board order by rowNum desc) t where bcategory=? limit 10 offset ?";
+
+			pstmt = conn.prepareStatement(query);
+
+			switch (content) {
+
+			case "notice":
+				pstmt.setString(1, "공지사항");
+				break;
+
+			case "commom":
+				pstmt.setString(1, "일반게시판");
+				break;
+
+			case "Question":
+				pstmt.setString(1, "Q&A");
+				break;
+
+			}
+			pstmt.setInt(2, pageNum * 10 - 10);
+
+			rs = pstmt.executeQuery();
+			while (rs.next()) {
+				BoardVO board = new BoardVO(rs.getInt("bno"), rs.getString("btitle"), rs.getString("bwriter"),
+						rs.getString("bdate"), rs.getInt("bhit"), rs.getString("bcontents"), rs.getString("bcategory"));
+				list.add(board);
+			}
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				close();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+		return list;
+	}
+
+	public int getTotalBySearch(String searchCondition, String searchContent) {
+		int result = 0;
+
+		try {
+			open();
+			conn = dataFactory.getConnection();
+
+			String query = null;
+
+			switch (searchCondition) {
+			case "titleAndContents":
+				query = "select count(*) as total from tb_board where bcontents like ? or btitle like ?";
+				pstmt = conn.prepareStatement(query);
+				pstmt.setString(1, "%" + searchContent + "%");
+				pstmt.setString(2, "%" + searchContent + "%");
+				break;
+
+			case "title":
+				query = "select count(*) as total from tb_board where btitle like ?";
+				pstmt = conn.prepareStatement(query);
+				pstmt.setString(1, "%" + searchContent + "%");
+				break;
+
+			case "contents":
+				query = "select count(*) as total from tb_board where bcontents like ?";
+				pstmt = conn.prepareStatement(query);
+				pstmt.setString(1, "%" + searchContent + "%");
+				break;
+
+			case "writer":
+				query = "select count(*) as total from tb_board where bwriter like ?";
+				pstmt = conn.prepareStatement(query);
+				pstmt.setString(1, "%" + searchContent + "%");
+				break;
+
+			}
+
+			rs = pstmt.executeQuery();
+
+			if (rs.next()) {
+				result = rs.getInt("total");
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				close();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+		return result;
+	}
+
+	public List<BoardVO> listBoardsSearch(int pageNum, String searchCondition, String searchContent) {
+		List<BoardVO> list = new ArrayList<>();
+		try {
+			open();
+			conn = dataFactory.getConnection();
+
+			String query = "SELECT * from (SELECT * ,@ROWNUM:=@ROWNUM+1 as rowNum FROM (SELECT @ROWNUM:=0) AS R, tb_board order by rowNum desc) t where ?=? limit 10 offset ?";
+
+			pstmt = conn.prepareStatement(query);
+
+			switch (searchCondition) {
+			case "titleAndContents":
+				query = "SELECT * from (SELECT * ,@ROWNUM:=@ROWNUM+1 as rowNum FROM (SELECT @ROWNUM:=0) AS R, tb_board order by rowNum desc) t where bcontents like ? or btitle like ? limit 10 offset ?";
+				pstmt = conn.prepareStatement(query);
+				pstmt.setString(1, "%" + searchContent + "%");
+				pstmt.setString(2, "%" + searchContent + "%");
+				pstmt.setInt(3, pageNum * 10 - 10);
+				break;
+
+			case "title":
+				query = "SELECT * from (SELECT * ,@ROWNUM:=@ROWNUM+1 as rowNum FROM (SELECT @ROWNUM:=0) AS R, tb_board order by rowNum desc) t where btitle like ? limit 10 offset ?";
+				pstmt = conn.prepareStatement(query);
+				pstmt.setString(1, "%" + searchContent + "%");
+				pstmt.setInt(2, pageNum * 10 - 10);
+				break;
+
+			case "contents":
+				query = "SELECT * from (SELECT * ,@ROWNUM:=@ROWNUM+1 as rowNum FROM (SELECT @ROWNUM:=0) AS R, tb_board order by rowNum desc) t where bcontents like ? limit 10 offset ?";
+				pstmt = conn.prepareStatement(query);
+				pstmt.setString(1, "%" + searchContent + "%");
+				pstmt.setInt(2, pageNum * 10 - 10);
+				break;
+
+			case "writer":
+				query = "SELECT * from (SELECT * ,@ROWNUM:=@ROWNUM+1 as rowNum FROM (SELECT @ROWNUM:=0) AS R, tb_board order by rowNum desc) t where bwriter like ? limit 10 offset ?";
+				pstmt = conn.prepareStatement(query);
+				pstmt.setString(1, "%" + searchContent + "%");
+				pstmt.setInt(2, pageNum * 10 - 10);
+				break;
+
+			}
+
+			rs = pstmt.executeQuery();
+			while (rs.next()) {
+				BoardVO board = new BoardVO(rs.getInt("bno"), rs.getString("btitle"), rs.getString("bwriter"),
+						rs.getString("bdate"), rs.getInt("bhit"), rs.getString("bcontents"), rs.getString("bcategory"));
+				list.add(board);
+			}
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				close();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+		return list;
+	}
+
 }

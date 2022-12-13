@@ -48,8 +48,8 @@
 
 
 			<div class="textForm">
-				<input type="radio" name="user_sex" id="user_sex" value="F" /> 여자 <input
-					type="radio" name="user_sex" id="user_sex" value="M" /> 남자
+				<input type="radio" name="user_sex" id="user_sexF" value="F" /> 여자 <input
+					type="radio" name="user_sex" id="user_sexM" value="M" /> 남자
 			</div>
 			<div class="textForm">
 				<input name="user_birth" type="date" id="user_birth"

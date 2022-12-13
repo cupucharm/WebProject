@@ -25,7 +25,7 @@
 				<input type="text" name="hit" id="hit" class="boardHead"
 					readonly="readonly" value="${boardVO.bhit}">
 			</div>
-			<div class="boardHeadDiv">
+			<div class="inline">
 				<h3 id="btitle" class="boardHead">제목</h3>
 				<input type="text" name="title" id="title" class="boardHead"
 					readonly="readonly" value="${boardVO.btitle}">
@@ -50,10 +50,10 @@
 			<c:if test="${ boardVO.bwriter eq me}">
 				<input type="button" id="editBoardBtn" value="수정"
 					onclick="location.href='/webProjectSJ/Board/editBoard?realBno=${boardVO.bno}&num=${num}&page=${page}'">
-				<button data-bno="${boardVO.bno}" data-page="${page}" type="button" id="deleteBoardBtn"
-					value="삭제">삭제</button>
+				<button data-bno="${boardVO.bno}" data-page="${page}" type="button"
+					id="deleteBoardBtn" value="삭제">삭제</button>
 			</c:if>
-			<input type="button" value="돌아가기"
+			<input id="backBtn" type="button" value="목록"
 				onclick="location.href='/webProjectSJ/Board/boardList?pageNum=${page}'">
 
 

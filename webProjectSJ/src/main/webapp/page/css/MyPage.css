@@ -4,6 +4,14 @@
 	text-align: center;
 }
 
+button {
+	border: none;
+	background-color: white;
+	color: #6667AB;
+	font-size: 15px;
+	font: bold;
+}
+
 .logDiv {
 	text-align: center;
 }
@@ -75,4 +83,13 @@ input[type='button'] {
 	/* margin-bottom: 40px; */
 	font-weight: bold;
 	/* display: inline; */
+}
+
+button {
+	font-size: 17px;
+	font-weight: 650;
+}
+
+#myBoardList {
+	margin-bottom: 2%;
 }

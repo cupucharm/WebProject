@@ -81,6 +81,11 @@
 		</div>
 
 		<!-- <div id="update_msg"></div> -->
+		
+				<div>
+			<button id="myBoardList" class="mylistBtn" onclick="location.href='/webProjectSJ/Board/myBoardList'">내가 쓴 글 목록</button>
+		</div>
+		
 
 		<div class="changeMemberDiv" id="changeMemberDiv">
 			<button id="updateMemberBtn" class="changeMemberBtn" 
@@ -93,10 +98,7 @@
 	
 		</div>
 		
-				<div>
-			<button id="myBoardList" class="mylistBtn" onclick="location.href='/webProjectSJ/Board/myBoardList'">내가 쓴 글 목록</button>
-		</div>
-
+		
 
 	</div>
 

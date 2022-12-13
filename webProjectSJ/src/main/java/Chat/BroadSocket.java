@@ -41,25 +41,44 @@ public class BroadSocket {
 	public void handleOpen(@PathParam("roomName") String roomName, Session userSession, EndpointConfig config)
 			throws IOException {
 
+//		// 채팅방 인원수 초기화
+//				int count = roomNameAndCount.getOrDefault(roomName, 0);
+//				roomNameAndCount.put(roomName, count + 1);
+//				HashSet<String> userList = roomNameAndUser.getOrDefault(roomName, new HashSet<>());
+
 		String queryString = userSession.getQueryString();
 		if ("list".equals(queryString)) {
-			JSONObject jsonObject = new JSONObject();
-	        jsonObject.put("roomNameAndCount", roomNameAndCount);
+			// 여기는 리스트
 
-	        try {
-	        	userSession.getBasicRemote().sendText(String.valueOf(jsonObject));
-	        } catch (IOException e) {
-	            throw new RuntimeException(e);
-	        }
+			// 채팅방 목록을 가져옴
+			// 채팅방 이름, 카운트 수를 front로 넘길 준비를 함.
+			// HashSet으로 front로 넘김
+
+			JSONObject jsonObject = new JSONObject();
+			jsonObject.put("roomNameAndCount", roomNameAndCount);
+			System.out.println("여기보세요" + String.valueOf(jsonObject));
+			try {
+				// client로 데이터를 넘기는 부분
+				userSession.getBasicRemote().sendText(String.valueOf(jsonObject));
+				return;
+			} catch (IOException e) {
+				throw new RuntimeException(e);
+			}
 		}
+
+		HttpSession session = (HttpSession) config.getUserProperties().get(HttpSessionConfigurator.Session);
+		String userId = (String) session.getAttribute("login_id");
+
+		// 이쪽으로넘오여모녀 채팅이 시작된거심
+		// 이쪽에서룸네임을 가져와서 +1
 
 		// 채팅방 인원수 초기화
 		int count = roomNameAndCount.getOrDefault(roomName, 0);
 		roomNameAndCount.put(roomName, count + 1);
 		HashSet<String> userList = roomNameAndUser.getOrDefault(roomName, new HashSet<>());
 
-		HttpSession session = (HttpSession) config.getUserProperties().get(HttpSessionConfigurator.Session);
-		String userId = (String) session.getAttribute("login_id");
+		System.out.println("1111111111" + roomName);
+		System.out.println("--------" + roomNameAndCount.get(roomName));
 
 		// 페이지 새로그침 시 웹 소켓 세션 갱
 		// Hash의 경우에는 기존에 key값을 put하면 계속 갱신됨
@@ -84,6 +103,7 @@ public class BroadSocket {
 		}
 
 		roomNameAndUser.put(roomName, userList);
+
 	}
 
 	// WebSocket으로 메시지가 오면 요청되는 함수
@@ -109,11 +129,19 @@ public class BroadSocket {
 
 	// WebSocket과 브라우저가 접속이 끊기면 요청되는 함수
 	@OnClose
-	public void handleClose(Session userSession) {
+	public void handleClose(@PathParam("roomName") String roomName, Session userSession) {
 		// session 리스트로 접속 끊은 세션을 제거한다.
 
 		// 콘솔에 접속 끊김 로그를 출력한다.
 		System.out.println("client is now disconnected...");
+
+		userAndSocketSeession.remove(userSession);
+		roomNameAndCount.put(roomName, roomNameAndCount.get(roomName) - 1);
+		if (roomNameAndCount.get(roomName) == 0) {
+			roomNameAndCount.remove(roomName);
+			roomNameAndUser.remove(roomName);
+		}
+
 		sessionUsers.remove(userSession);
 		if (configs.containsKey(userSession)) {
 			configs.remove(userSession);
