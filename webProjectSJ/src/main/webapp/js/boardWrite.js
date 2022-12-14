@@ -2,51 +2,38 @@
  * 
  */
 window.onload = () => {
-	let bwriter = document.querySelector('#bwriter');
-	let uploadBtn = document.querySelector("#uploadBtn");
-	let btitle = document.querySelector("#btitle");
-	let bcategory = document.querySelector("#bcategory");
 
 	ClassicEditor
 		.create(document.querySelector('#bcontents'), { language: "ko" })
 		.catch(error => {
 			console.error(error);
 		});
+		
+		
+		let addFileListBtn = document.querySelector("#addFileListBtn");
 
-
-	if (uploadBtn != null) {
-		uploadBtn.onclick = () => {
-			checkNull();
+	if (addFileListBtn != null) {
+		addFileListBtn.onclick = () => {
+			addFileList();
 		}
 	}
 
-	async function checkNull() {
-		if (!(btitle != null && bcategory != null 
-			&& bcontents != null )) {
-			alert("내용을 확인하세요.");
-		} else {
-			uploadBoard();
-		}
+	async function addFileList() {
+		file_list.innerHTML += "첨부파일 : <input type='file' name='filename1' id='filename1' multiple><br />";
 	}
 
-	function uploadBoard() {
-		let bcontents = document.querySelector(".ck-content");
-
-		let param = {
-			"btitle": btitle.value,
-			"bcategory": bcategory.value,
-			"bcontents": bcontents.innerHTML,
-			"bwriter": bwriter.value
-		};
+	
+	
+	let boardUpload = document.querySelector("#boardUpload");
+	boardUpload.addEventListener("submit", (e) => {
+		e.preventDefault();	//폼 수행을 정지시킨다.
 
 		fetch('/webProjectSJ/Board/boardUpload', {
-			//option
-			method: 'POST',
-			headers: {
-				'Content-Type': 'application/json;charset=utf-8'
-			},
-			body: JSON.stringify(param)
-		})
+			
+				method: 'POST',
+          		cache: 'no-cache',
+          		body: new FormData(boardUpload)})
+
 			.then(response => response.json())
 			.then(jsonResult => {
 				alert(jsonResult.message);
@@ -54,8 +41,6 @@ window.onload = () => {
 					location.href = jsonResult.url;
 				}
 			});
-	}
-
-
+	});
 
 }

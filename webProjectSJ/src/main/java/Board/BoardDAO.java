@@ -21,6 +21,8 @@ public class BoardDAO {
 			Context context = new InitialContext();
 			Context envContext = (Context) context.lookup("java:/comp/env");
 			dataFactory = (DataSource) envContext.lookup("jdbc/webproSJDB");
+			conn = dataFactory.getConnection();
+			// conn.setAutoCommit(false);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -43,10 +45,10 @@ public class BoardDAO {
 	}
 
 	// 게시글 작성
-	public boolean insertBoard(String btitle, String bwriter, String bcategory, String bcontents) throws SQLException {
+//	public boolean insertBoard(String btitle, String bwriter, String bcategory, String bcontents) throws SQLException {
+	public int insertBoard(String btitle, String bwriter, String bcategory, String bcontents) throws SQLException {
 		try {
 			open();
-			conn = dataFactory.getConnection();
 			String query = "insert into tb_board(btitle, bwriter, bcontents, bcategory) values(?,?,?,?)";
 
 			pstmt = conn.prepareStatement(query);
@@ -54,8 +56,25 @@ public class BoardDAO {
 			pstmt.setString(2, bwriter);
 			pstmt.setString(3, bcontents);
 			pstmt.setString(4, bcategory);
+			
+			pstmt.executeUpdate();
 
-			return pstmt.executeUpdate() > 0;
+			pstmt.close();
+
+			query = "select LAST_INSERT_ID()";
+			pstmt = conn.prepareStatement(query);
+			rs = pstmt.executeQuery();
+			int number = 0;
+			if (rs.next()) {
+				number = rs.getInt(1);
+			}
+			rs.close();
+			pstmt.close();
+			//conn.commit();
+
+			return number;
+
+			// return pstmt.executeUpdate() > 0;
 
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -74,7 +93,6 @@ public class BoardDAO {
 		List<BoardVO> list = new ArrayList<>();
 		try {
 			open();
-			conn = dataFactory.getConnection();
 
 			String query = "SELECT * from (SELECT * ,@ROWNUM:=@ROWNUM+1 as rowNum FROM (SELECT @ROWNUM:=0) AS R, tb_board order by rowNum desc) t limit 10 offset ?";
 
@@ -104,7 +122,6 @@ public class BoardDAO {
 
 		try {
 			open();
-			conn = dataFactory.getConnection();
 			String query = "select count(*) as total from tb_board";
 			pstmt = conn.prepareStatement(query);
 
@@ -131,7 +148,6 @@ public class BoardDAO {
 
 		try {
 			open();
-			conn = dataFactory.getConnection();
 
 			String query = "SELECT * from tb_board where bno = ?";
 
@@ -163,7 +179,6 @@ public class BoardDAO {
 		Boolean success = false;
 		try {
 			open();
-			conn = dataFactory.getConnection();
 
 			String query = "update tb_board set btitle =?, bcontents =?, bdate=now() where bno=?";
 
@@ -192,7 +207,6 @@ public class BoardDAO {
 		Boolean result = false;
 		try {
 			open();
-			conn = dataFactory.getConnection();
 			String query = "delete from tb_board where bno=?";
 
 			pstmt = conn.prepareStatement(query);
@@ -217,7 +231,6 @@ public class BoardDAO {
 		Boolean success = false;
 		try {
 			open();
-			conn = dataFactory.getConnection();
 
 			String query = "update tb_board set bhit=bhit+1 where bno=?";
 
@@ -244,7 +257,6 @@ public class BoardDAO {
 		List<BoardVO> list = new ArrayList();
 		try {
 			open();
-			conn = dataFactory.getConnection();
 
 			String query = "select * from tb_board where bwriter=?";
 
@@ -275,7 +287,6 @@ public class BoardDAO {
 
 		try {
 			open();
-			conn = dataFactory.getConnection();
 
 			String query = "select count(*) as total from tb_board where bcategory=?";
 			pstmt = conn.prepareStatement(query);
@@ -317,7 +328,6 @@ public class BoardDAO {
 		List<BoardVO> list = new ArrayList<>();
 		try {
 			open();
-			conn = dataFactory.getConnection();
 
 			String query = "SELECT * from (SELECT * ,@ROWNUM:=@ROWNUM+1 as rowNum FROM (SELECT @ROWNUM:=0) AS R, tb_board order by rowNum desc) t where bcategory=? limit 10 offset ?";
 
@@ -364,7 +374,6 @@ public class BoardDAO {
 
 		try {
 			open();
-			conn = dataFactory.getConnection();
 
 			String query = null;
 
@@ -417,7 +426,6 @@ public class BoardDAO {
 		List<BoardVO> list = new ArrayList<>();
 		try {
 			open();
-			conn = dataFactory.getConnection();
 
 			String query = "SELECT * from (SELECT * ,@ROWNUM:=@ROWNUM+1 as rowNum FROM (SELECT @ROWNUM:=0) AS R, tb_board order by rowNum desc) t where ?=? limit 10 offset ?";
 

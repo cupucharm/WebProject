@@ -1,18 +1,22 @@
 package Board;
 
 import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.sql.SQLException;
+import java.time.LocalDate;
 import java.util.List;
+import java.util.Map;
 
+import org.apache.tomcat.util.http.fileupload.FileItem;
+import org.apache.tomcat.util.http.fileupload.disk.DiskFileItemFactory;
+import org.apache.tomcat.util.http.fileupload.servlet.ServletFileUpload;
 import org.json.JSONObject;
 
-import Board.BoardDAO;
-import Board.BoardPageVO;
-import Member.MemberDAO;
-import Member.MemberVO;
 import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -42,7 +46,7 @@ public class BoardServlet extends HttpServlet {
 
 		request.setCharacterEncoding("utf-8");
 		response.setContentType("text/html;charset=utf-8");
-		PrintWriter out = response.getWriter();
+		//PrintWriter out = response.getWriter();
 
 		if (request.getRequestURI().equals("/webProjectSJ/Board/boardList")) {
 
@@ -62,7 +66,7 @@ public class BoardServlet extends HttpServlet {
 			request.setAttribute("listBoards", list);
 			request.setAttribute("boardPageVO", boardPageVO);
 
-			System.out.println(list.toString());
+			// System.out.println(list.toString());
 
 			RequestDispatcher dispatch = request.getRequestDispatcher("../page/BoardListPage.jsp");
 			dispatch.forward(request, response);
@@ -72,12 +76,15 @@ public class BoardServlet extends HttpServlet {
 				int num = Integer.parseInt(request.getParameter("num"));
 				int page = Integer.parseInt(request.getParameter("page"));
 
-				BoardDAO dao = new BoardDAO();
-				dao.countUp(bno);
-				BoardVO boardVO = dao.getBoardVO(bno);
+				BoardDAO boardDao = new BoardDAO();
+				BoardFileDAO boardFileDao = new BoardFileDAO();
+				boardDao.countUp(bno);
+				BoardVO boardVO = boardDao.getBoardVO(bno);
+				List<BoardFileVO> boardFile = boardFileDao.list(bno);
 				request.setAttribute("boardVO", boardVO);
 				request.setAttribute("num", num);
 				request.setAttribute("page", page);
+				request.setAttribute("boardFile", boardFile);
 			} catch (SQLException e) {
 				e.printStackTrace();
 			}
@@ -92,41 +99,71 @@ public class BoardServlet extends HttpServlet {
 
 		} else if (request.getRequestURI().equals("/webProjectSJ/Board/boardUpload")) {
 
+			// try {
+
+			// BufferedReader in = new BufferedReader(new
+			// InputStreamReader(request.getInputStream(), "UTF-8"));
+			// String jsonStr = in.readLine();
+			// JSONObject jsonResult = new JSONObject(jsonStr);
+
+			// 저장소 객체 새성
+			DiskFileItemFactory factory = new DiskFileItemFactory();
+
+			// 업로드 파일 임시로 저장할 경로 설정
+			factory.setRepository(new File("/Users/choisujin/Documents/upload"));
+
+			// 파일 업로드 객체에 저장소 설정
+			ServletFileUpload upload = new ServletFileUpload(factory);
+
+			System.out.println(request.getRemoteAddr());
+			// 요청 객체를 파싱한다
 			try {
+				PrintWriter out = response.getWriter();
+				//out = response.getWriter();
+				Map<String, List<FileItem>> mapItems = upload.parseParameterMap(request);
 
-				BufferedReader in = new BufferedReader(new InputStreamReader(request.getInputStream(), "UTF-8"));
-				String jsonStr = in.readLine();
+				String btitle = new String(mapItems.get("btitle").get(0).getString().getBytes("ISO-8859-1"), "utf-8");
+				String bwriter = new String(mapItems.get("bwriter").get(0).getString().getBytes("ISO-8859-1"), "utf-8");
+				String bcategory = new String(mapItems.get("bcategory").get(0).getString().getBytes("ISO-8859-1"),
+						"utf-8");
+				String bcontents = new String(mapItems.get("bcontents").get(0).getString().getBytes("ISO-8859-1"),
+						"utf-8");
 
-				JSONObject jsonResult = new JSONObject(jsonStr);
+				JSONObject jsonResult = new JSONObject();
 
-				String btitle = jsonResult.getString("btitle");
-				String bwriter = jsonResult.getString("bwriter");
-				String bcategory = jsonResult.getString("bcategory");
-				String bcontents = jsonResult.getString("bcontents");
+				// 첨부파일 정보 얻어 저장
+				FileItem fileItem = mapItems.get("filename1").get(0);
+				String real_name = "/Users/choisujin/Documents/upload/" + System.nanoTime();
+				fileItem.write(new File(real_name));
 
 				if (btitle != null && btitle.length() > 0 && bcategory != null && bcategory.length() > 0
 						&& bcontents != null && bcontents.length() > 0) {
 					BoardDAO dao = new BoardDAO();
+					BoardFileDAO boardFileDAO = new BoardFileDAO();
 
-					Boolean boardInsert = dao.insertBoard(btitle, bwriter, bcategory, bcontents);
+					try {
+						int number = dao.insertBoard(btitle, bwriter, bcategory, bcontents);
+						BoardFileVO boardFile = new BoardFileVO(0, number, fileItem.getName(), real_name,
+								fileItem.getContentType(), LocalDate.now().toString(), fileItem.getSize());
 
-					if (boardInsert) {
+						boardFileDAO.insertBoardFile(boardFile);
 						jsonResult.put("status", true);
 						jsonResult.put("message", "게시글이 정상적으로 등록되었습니다.");
-					} else {
+						jsonResult.put("url", "/webProjectSJ/Board/boardList");
+					} catch (SQLException e) {
+						e.printStackTrace();
 						jsonResult.put("status", false);
 						jsonResult.put("message", "게시글 작성을 실패했습니다.");
 					}
-					jsonResult.put("url", "/webProjectSJ/Board/boardList");
 
 				} else {
 					jsonResult.put("status", false);
 					jsonResult.put("message", "게시글 작성을 실패했습니다. 빈칸을 채워주세요.");
 					jsonResult.put("url", "/webProjectSJ/Board/boardList");
 				}
-				out.println(jsonResult.toString());
 
-			} catch (SQLException e) {
+				out.println(jsonResult.toString());
+			} catch (Exception e) {
 				e.printStackTrace();
 			}
 
@@ -151,11 +188,12 @@ public class BoardServlet extends HttpServlet {
 			}
 		} else if (request.getRequestURI().equals("/webProjectSJ/Board/updateBoard")) {
 			try {
+				PrintWriter out = response.getWriter();
 				BufferedReader in = new BufferedReader(new InputStreamReader(request.getInputStream(), "UTF-8"));
 				String jsonStr = in.readLine();
 
 				JSONObject jsonResult = new JSONObject(jsonStr);
-				System.out.println(jsonResult);
+				// System.out.println(jsonResult);
 
 				int realBno = Integer.parseInt(jsonResult.getString("realBno"));
 				int num = Integer.parseInt(jsonResult.getString("num"));
@@ -182,6 +220,7 @@ public class BoardServlet extends HttpServlet {
 			}
 		} else if (request.getRequestURI().equals("/webProjectSJ/Board/deleteBoard")) {
 			try {
+				PrintWriter out = response.getWriter();
 				int bno = Integer.parseInt(request.getParameter("bno"));
 				String page = request.getParameter("page");
 
@@ -232,13 +271,13 @@ public class BoardServlet extends HttpServlet {
 
 				BoardDAO dao = new BoardDAO();
 				int pageNum = 1;
-				
+
 				if (request.getParameter("pageNum") != null) {
 					pageNum = Integer.parseInt(request.getParameter("pageNum"));
 				}
 
 				List<BoardVO> list = dao.listBoardsSearch(pageNum, searchCondition, searchContent);
-				
+
 				int total = dao.getTotalBySearch(searchCondition, searchContent);
 
 				BoardPageVO boardPageVO = new BoardPageVO(pageNum, total);
@@ -261,7 +300,7 @@ public class BoardServlet extends HttpServlet {
 
 				if (!content.equals("all")) {
 					BoardDAO dao = new BoardDAO();
-					
+
 					int pageNum = 1;
 
 					if (request.getParameter("pageNum") != null) {
@@ -287,7 +326,32 @@ public class BoardServlet extends HttpServlet {
 				e.printStackTrace();
 			}
 
+		} else if (request.getRequestURI().equals("/webProjectSJ/Board/download.do")) {
+				
+			//String file_repo = "/Users/choisujin/Documents/upload";
+			String realFileName = (String) request.getParameter("realFileName");
+			String orgfileName = (String) request.getParameter("orgfileName");
+			System.out.println("realFileName = " + realFileName);
+			OutputStream out = response.getOutputStream();
+			//String downFile = file_repo + "/" + fileName;
+			File f = new File(realFileName);
+			
+			response.setHeader("Cache-Control", "no-cache");
+			response.addHeader("Content-disposition", "attachment; fileName="+orgfileName);
+			
+			FileInputStream in = new FileInputStream(f);
+			byte[] buffer = new byte[1024*8];
+			while(true) {
+				int count = in.read(buffer);
+				if(count == -1) 
+					break;
+				out.write(buffer, 0, count);
+			}
+			in.close();
+			out.close();
+			
 		}
+
 	}
 
 }

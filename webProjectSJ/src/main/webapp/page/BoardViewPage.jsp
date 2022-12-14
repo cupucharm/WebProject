@@ -43,6 +43,20 @@
 			<div id="editor">${boardVO.bcontents}</div>
 		</div>
 
+		<div class="downloadFile">
+			<c:if test="${not empty boardFile}">
+				첨부파일 <select name="fileSelect" id="fileSelect">
+					<c:forEach var="boardFile" items="${boardFile}">
+						<option value="${boardFile.forg_name }">${boardFile.forg_name }</option>
+					</c:forEach>
+				</select>
+				<c:forEach var="boardFile" items="${boardFile}">
+					<a
+						href="${pageContext.request.contextPath}/Board/download.do?realFileName=${boardFile.freal_name }&orgfileName=${boardFile.forg_name}" id="downloadA">
+						다운로드</a>
+				</c:forEach>
+			</c:if>
+		</div>
 
 		<div class="boardFoot">
 
