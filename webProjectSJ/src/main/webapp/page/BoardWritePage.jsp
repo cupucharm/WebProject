@@ -18,6 +18,19 @@
 </head>
 <body>
 
+	<div id="memberInfoDiv">
+		<c:choose>
+			<c:when test="${not empty login_id}">
+				<a class="choose" class="status" href="../Member/MyPage">${login_id}님</a>
+				<a class="choose" class="status" href="../Member/logout">로그아웃</a>
+			</c:when>
+			<c:otherwise>
+				<a class="choose" class="status" href="../page/LoginPage.jsp">로그인</a>
+				<a class="choose" class="status" href="RegisterPage.jsp">회원가입</a>
+			</c:otherwise>
+		</c:choose>
+	</div>
+
 	<div class="logo" id="logoDiv">
 		<a class="logo" href="MainPage.jsp">TALK</a>
 	</div>
@@ -49,10 +62,29 @@
 				<textarea name="bcontents" id="bcontents" placeholder="내용을 입력하세요."></textarea>
 			</div>
 			<div class="uploadFile">
-				<input type="button" value="첨부파일 추가하기" id="addFileListBtn" name="addFileListBtn">
-				
-				<div id = "file_list"></div>
-				<!-- 첨부파일 : <input type="file" name="filename1" id="filename1"><br /> -->
+				<!-- <input type="button" value="첨부파일 추가하기" id="addFileListBtn" name="addFileListBtn" multiple="multiple">
+				<div id = "file_list"></div> -->
+				<!-- 첨부파일 : <input type="file" name="filename1" id="filename1" multiple="multiple"><br /> -->
+
+				<table>
+					<tbody>
+						<tr>
+							<th><label>첨부파일</label></th>
+							<td><input type="file" name="filename1" id="filename1" /></td>
+							<td><input type="button" value="추가" class="insertFile"></td>
+						</tr>
+					</tbody>
+					<tfoot>
+						<tr style="display: none">
+							<th><label>첨부파일</label></th>
+							<td><input type="file" name="filename1" id="filename1" /></td>
+							<td style="display: none"><input type="button" value="추가"
+								class="insertFile"></td>
+							<td><input type="button" value="삭제" class="deleteFile"></td>
+						</tr>
+					</tfoot>
+				</table>
+				<br />
 			</div>
 		</div>
 		<div class="boardFoot">
