@@ -154,7 +154,7 @@ public class BoardServlet extends HttpServlet {
 									fileItem.getContentType(), LocalDate.now().toString(), fileItem.getSize());
 
 							boardFileDAO.insertBoardFile(boardFile);
-
+							
 						}
 						jsonResult.put("status", true);
 						jsonResult.put("message", "게시글이 정상적으로 등록되었습니다.");
