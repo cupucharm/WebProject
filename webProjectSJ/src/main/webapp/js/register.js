@@ -12,7 +12,7 @@ window.onload = () => {
 	}
 	
 	async function dupUidCheck() {
-		let response = await fetch('/webProjectSJ/Member/dupUidCheck?user_id=' + user_id.value);
+		let response = await fetch('/webProjectSJ/Member/dupUidCheck.do?user_id=' + user_id.value);
 		let jsonResult = await response.json();
 
 		uid_valid_msg.innerHTML = jsonResult.message;
@@ -29,7 +29,7 @@ window.onload = () => {
 	}
 
 	async function pwdCheck() {
-		let response = await fetch('/webProjectSJ/Member/pwdCheck?user_pwd=' + user_pwd.value+'&pwdConfirm=' +pwdConfirm.value);
+		let response = await fetch('/webProjectSJ/Member/pwdCheck.do?user_pwd=' + user_pwd.value+'&pwdConfirm=' +pwdConfirm.value);
 		let jsonResult = await response.json();
 
 		pwd_valid_msg.innerHTML = jsonResult.message;
@@ -56,7 +56,7 @@ window.onload = () => {
 			"user_birth": user_birth.value
 		};
 
-		fetch('/webProjectSJ/Member/register', {
+		fetch('/webProjectSJ/Member/register.do', {
 			//option
 			method: 'POST',
 			headers: {

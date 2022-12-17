@@ -31,7 +31,7 @@
 				</c:when>
 				<c:otherwise>
 					<a class="choose" class="status" href="LoginPage.jsp">로그인</a>
-					<a class="choose" class="status" href="RegisterPage.jsp">회원가입</a>
+					<a class="choose" class="status" href="<c:url value='/Member/registerForm.do'/>">회원가입</a>
 				</c:otherwise>
 			</c:choose>
 

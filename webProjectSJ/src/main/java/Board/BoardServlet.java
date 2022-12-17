@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.PrintWriter;
+import java.net.URLEncoder;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.List;
@@ -337,14 +338,14 @@ public class BoardServlet extends HttpServlet {
 
 		} else if (request.getRequestURI().equals("/webProjectSJ/Board/download.do")) {
 
-			// String file_repo = "/Users/choisujin/Documents/upload";
 			String realFileName = (String) request.getParameter("realFileName");
 			String orgfileName = (String) request.getParameter("orgfileName");
 			System.out.println("realFileName = " + realFileName);
 			OutputStream out = response.getOutputStream();
-			// String downFile = file_repo + "/" + fileName;
 			File f = new File(realFileName);
 
+			orgfileName = URLEncoder.encode(orgfileName, "utf-8").replaceAll("[+]", " ");
+			
 			response.setHeader("Cache-Control", "no-cache");
 			response.addHeader("Content-disposition", "attachment; fileName=" + orgfileName);
 
