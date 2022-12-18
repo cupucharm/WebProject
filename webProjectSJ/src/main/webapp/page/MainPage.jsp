@@ -23,14 +23,14 @@
 			<c:choose>
 				<c:when test="${admin eq 'admin'}">
 					<a class="choose" class="status" href="../Member/AdminPage">회원관리</a>
-					<a class="choose" class="status" href="../Member/logout">로그아웃</a>
+					<a class="choose" class="status" href="<c:url value='/Member/logout.do'/>">로그아웃</a>
 				</c:when>
 				<c:when test="${not empty login_id}">
 					<a class="choose" class="status" href="../Member/MyPage">마이페이지</a>
-					<a class="choose" class="status" href="../Member/logout">로그아웃</a>
+					<a class="choose" class="status" href="Member/logout.do">로그아웃</a>
 				</c:when>
 				<c:otherwise>
-					<a class="choose" class="status" href="LoginPage.jsp">로그인</a>
+					<a class="choose" class="status" href="<c:url value='/Member/loginForm.do'/>">로그인</a>
 					<a class="choose" class="status" href="<c:url value='/Member/registerForm.do'/>">회원가입</a>
 				</c:otherwise>
 			</c:choose>

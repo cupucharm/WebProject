@@ -12,7 +12,7 @@
 </head>
 <body>
 	<div class="main">
-		<a class="logo" href="<c:url value='/page/MainPage.jsp'/>">TALK</a>
+		<a class="logo" href="<c:url value='/'/>">TALK</a>
 <hr>
 		<div class="searchPwDiv">
 			<!-- <table class="searchPw">
@@ -58,11 +58,11 @@
 
 		<div class="changePage">
 			<button id="searchPw" class="changePageBtn"
-				onclick="location.href='SearchIdPage.jsp'">아이디 찾기</button>
+				onclick="location.href='searchIdForm.do'">아이디 찾기</button>
 			<button id="login" class="changePageBtn"
-				onclick="location.href='LoginPage.jsp'">로그인</button>
+				onclick="location.href='loginForm.do'">로그인</button>
 			<button id="searchPw" class="changePageBtn"
-				onclick="location.href='RegisterPage.jsp'">회원가입</button>
+				onclick="location.href='registerForm.do'">회원가입</button>
 		</div>
 	</div>
 </body>

@@ -12,13 +12,14 @@ import org.json.JSONObject;
 import Board.BoardDAO;
 import Board.BoardPageVO;
 import jakarta.servlet.RequestDispatcher;
+import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 
 public class MemberAction {
 
-	public void register(HttpServletRequest request, HttpServletResponse response) throws Exception {
+	public void register(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException  {
 		BufferedReader in = new BufferedReader(new InputStreamReader(request.getInputStream(), "UTF-8"));
 		String jsonStr = in.readLine();
 
@@ -46,7 +47,7 @@ public class MemberAction {
 					memberDAO.insertMember(new MemberVO(user_id, user_name, user_pwd, user_phone, user_email,
 							user_sex, user_birth, "활성화"));
 					jsonResult.put("status", true);
-					jsonResult.put("url", "/webProjectSJ/page/LoginPage.jsp");
+					jsonResult.put("url", "/webProjectSJ/Member/loginForm.do");
 					jsonResult.put("message", user_id + "님 회원가입을 축하드립니다!");
 				} else {
 					jsonResult.put("status", false);
@@ -65,7 +66,7 @@ public class MemberAction {
 		out.println(jsonResult.toString());
 	}
 
-	public void registerForm(HttpServletRequest request, HttpServletResponse response) {
+	public void registerForm(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		try {
 			RequestDispatcher dispatcher = request.getRequestDispatcher("../page/RegisterPage.jsp");
 			dispatcher.forward(request, response);
@@ -75,7 +76,7 @@ public class MemberAction {
 		}
 	}
 
-	public void login(HttpServletRequest request, HttpServletResponse response) throws Exception {
+	public void login(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException  {
 		HttpSession session = request.getSession();
 		session.setMaxInactiveInterval(1800);
 		
@@ -96,27 +97,35 @@ public class MemberAction {
 				session.setAttribute("admin", "admin");
 			}
 
-			response.sendRedirect("../page/MainPage.jsp");
+			response.sendRedirect("/webProjectSJ");
 		} else if (!login_can) {
 			request.setAttribute("loginFail", "<script>alert('로그인할 수 없는 계정입니다.');</script>");
 
-			RequestDispatcher dispatch = request.getRequestDispatcher("../page/LoginPage.jsp");
+			RequestDispatcher dispatch = request.getRequestDispatcher("loginForm.do");
 			dispatch.forward(request, response);
 
 		} else {
 			request.setAttribute("loginFail", "<script>alert('로그인 실패했습니다. 다시 로그인해주세요.');</script>");
-
-			RequestDispatcher dispatch = request.getRequestDispatcher("../page/LoginPage.jsp");
+			
+			RequestDispatcher dispatch = request.getRequestDispatcher("loginForm.do");
 			dispatch.forward(request, response);
 		}
 
 	}
 
-	public void loginForm(HttpServletRequest request, HttpServletResponse response) {
+	public void loginForm(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		//response.sendRedirect("../page/LoginPage.jsp");
 		
+		try {
+			RequestDispatcher dispatcher = request.getRequestDispatcher("../page/LoginPage.jsp");
+			dispatcher.forward(request, response);
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 
-	public void logout(HttpServletRequest request, HttpServletResponse response)  throws Exception{
+	public void logout(HttpServletRequest request, HttpServletResponse response)  throws ServletException, IOException {
 		HttpSession session = request.getSession();
 		session.setMaxInactiveInterval(1800);
 		
@@ -127,7 +136,7 @@ public class MemberAction {
 
 	}
 
-	public void MyPage(HttpServletRequest request, HttpServletResponse response)  throws Exception{
+	public void MyPage(HttpServletRequest request, HttpServletResponse response)  throws ServletException, IOException {
 		HttpSession session = request.getSession();
 		session.setMaxInactiveInterval(1800);
 		
@@ -143,7 +152,7 @@ public class MemberAction {
 		dispatch.forward(request, response);
 	}
 
-	public void dupUidCheck(HttpServletRequest request, HttpServletResponse response) throws IOException {
+	public void dupUidCheck(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		PrintWriter out = response.getWriter();
 		
 		String user_id = request.getParameter("user_id");
@@ -168,7 +177,7 @@ public class MemberAction {
 		out.println(jsonResult.toString());
 	}
 
-	public void pwdCheck(HttpServletRequest request, HttpServletResponse response) throws IOException {
+	public void pwdCheck(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		PrintWriter out = response.getWriter();
 		
 		String user_pwd = request.getParameter("user_pwd");
@@ -186,7 +195,7 @@ public class MemberAction {
 		out.println(jsonResult.toString());
 	}
 
-	public void searchId(HttpServletRequest request, HttpServletResponse response) throws IOException {
+	public void searchId(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		PrintWriter out = response.getWriter();
 		
 		String user_name = request.getParameter("user_name");
@@ -207,8 +216,18 @@ public class MemberAction {
 		}
 		out.println(jsonResult.toString());
 	}
+	
+	public void searchIdForm(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		try {
+			RequestDispatcher dispatcher = request.getRequestDispatcher("../page/SearchIdPage.jsp");
+			dispatcher.forward(request, response);
 
-	public void searchPw(HttpServletRequest request, HttpServletResponse response) throws IOException {
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	public void searchPw(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		PrintWriter out = response.getWriter();
 		
 		String user_id = request.getParameter("user_id");
@@ -230,8 +249,18 @@ public class MemberAction {
 		}
 		out.println(jsonResult.toString());
 	}
+	
+	public void searchPwForm(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		try {
+			RequestDispatcher dispatcher = request.getRequestDispatcher("../page/SearchPwPage.jsp");
+			dispatcher.forward(request, response);
 
-	public void updateMember(HttpServletRequest request, HttpServletResponse response) throws IOException {
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	public void updateMember(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		HttpSession session = request.getSession();
 		session.setMaxInactiveInterval(1800);
 		
@@ -260,7 +289,7 @@ public class MemberAction {
 
 	}
 
-	public void pwdUpdateCheck(HttpServletRequest request, HttpServletResponse response) throws IOException {
+	public void pwdUpdateCheck(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		HttpSession session = request.getSession();
 		session.setMaxInactiveInterval(1800);
 		
@@ -284,7 +313,7 @@ public class MemberAction {
 		out.println(jsonResult.toString());
 	}
 
-	public void memberDelete(HttpServletRequest request, HttpServletResponse response) throws IOException {
+	public void memberDelete(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		HttpSession session = request.getSession();
 		session.setMaxInactiveInterval(1800);
 		
@@ -311,7 +340,7 @@ public class MemberAction {
 		out.println(jsonResult.toString());
 	}
 
-	public void memberEdit(HttpServletRequest request, HttpServletResponse response)  throws Exception{
+	public void memberEdit(HttpServletRequest request, HttpServletResponse response)  throws ServletException, IOException {
 		String user_id = request.getParameter("user_id");
 
 		MemberDAO memberDAO = new MemberDAO();
@@ -323,7 +352,7 @@ public class MemberAction {
 		dispatch.forward(request, response);
 	}
 
-	public void AdminPage(HttpServletRequest request, HttpServletResponse response)  throws Exception{
+	public void AdminPage(HttpServletRequest request, HttpServletResponse response)  throws ServletException, IOException {
 		int pageNum = 1;
 
 		if (request.getParameter("pageNum") != null) {
@@ -347,7 +376,7 @@ public class MemberAction {
 		dispatch.forward(request, response);
 	}
 
-	public void memberCondition(HttpServletRequest request, HttpServletResponse response)  throws Exception{
+	public void memberCondition(HttpServletRequest request, HttpServletResponse response)  throws ServletException, IOException {
 		String user_id = request.getParameter("user_id");
 
 		MemberDAO dao = new MemberDAO();
@@ -358,7 +387,7 @@ public class MemberAction {
 		response.sendRedirect("AdminPage");
 	}
 
-	public void memberAdminDelete(HttpServletRequest request, HttpServletResponse response)  throws Exception{
+	public void memberAdminDelete(HttpServletRequest request, HttpServletResponse response)  throws ServletException, IOException {
 		String user_id = request.getParameter("user_id");
 
 		MemberDAO dao = new MemberDAO();
@@ -374,7 +403,7 @@ public class MemberAction {
 		dispatch.forward(request, response);
 	}
 
-	public void searchAdmin(HttpServletRequest request, HttpServletResponse response)  throws Exception{
+	public void searchAdmin(HttpServletRequest request, HttpServletResponse response)  throws ServletException, IOException {
 		String searchInput = request.getParameter("searchInput");
 
 		MemberDAO dao = new MemberDAO();

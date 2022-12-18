@@ -94,6 +94,12 @@ public class MemberDAO {
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+		} finally {
+			try {
+				close();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 		}
 		return member;
 	}
@@ -384,16 +390,22 @@ public class MemberDAO {
 			rs = pstmt.executeQuery();
 
 			if (rs.next()) {
-				if (rs.getString("user_condition").equals("활성화") || rs.getString("user_condition").equals("admin")) {
-					return true;
-				} else
+				if (rs.getString("user_condition").equals("비활성화")) {
 					return false;
+				} else
+					return true;
 			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+		} finally {
+			try {
+				close();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 		}
-		return false;
+		return true;
 	}
 
 	public Boolean changeCondition(String user_id, String condition) {
@@ -418,6 +430,12 @@ public class MemberDAO {
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+		} finally {
+			try {
+				close();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 		}
 		return false;
 	}
@@ -438,6 +456,12 @@ public class MemberDAO {
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+		} finally {
+			try {
+				close();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 		}
 		return null;
 	}

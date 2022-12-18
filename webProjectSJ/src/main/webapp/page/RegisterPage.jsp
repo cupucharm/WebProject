@@ -14,7 +14,7 @@
 	<div class="main">
 		<form action="../Member/register" method="POST" class="register" onsubmit="return false;">
 
-			<a class="logo" href="MainPage.jsp">TALK</a>
+			<a class="logo" href="/webProjectSJ">TALK</a>
 
 			<div class="textForm">
 				<input name="user_id" type="text" id="user_id" placeholder="아이디"
