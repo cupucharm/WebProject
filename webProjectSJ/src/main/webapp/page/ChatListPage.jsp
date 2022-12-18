@@ -7,7 +7,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>SooJin : 채팅방 목록</title>
-<link rel="stylesheet" href="css/ChatListPage.css">
+<link rel="stylesheet" href="<c:url value='/page/css/ChatListPage.css'/>">
 <!-- <script type="text/javascript" src="../js/chatList.js"></script> -->
 
 </head>
