@@ -12,7 +12,7 @@ window.onload = () => {
 
 	async function pwdUpdateCheck() {
 
-		let response = await fetch('/webProjectSJ/Member/pwdUpdateCheck?user_pwd=' + before_pwd.value + '&user_id=' + user_id.value);
+		let response = await fetch('/webProjectSJ/Member/pwdUpdateCheck.do?user_pwd=' + before_pwd.value + '&user_id=' + user_id.value);
 		let jsonResult = await response.json();
 
 		update_msg.innerHTML = jsonResult.message;
@@ -65,14 +65,14 @@ window.onload = () => {
 		document.getElementById("update_msg").style.display = "none";
 
 
-		fetch('/webProjectSJ/Member/pwdUpdateCheck?user_pwd=' + before_pwd.value)
+		fetch('/webProjectSJ/Member/pwdUpdateCheck.do?user_pwd=' + before_pwd.value)
 			.then(response => response.json())
 			.then(jsonResult => {
 				if (jsonResult.status == false) {
 					alert(jsonResult.message);
 				} else {
 
-					fetch('/webProjectSJ/Member/updateMember?user_pwd=' + user_pwd.value + '&user_name=' + user_name.value
+					fetch('/webProjectSJ/Member/updateMember.do?user_pwd=' + user_pwd.value + '&user_name=' + user_name.value
 						+ '&user_phone=' + user_phone.value + '&user_email=' + user_email.value)
 						.then(response => response.json())
 						.then(jsonResult => {
@@ -87,7 +87,7 @@ window.onload = () => {
 								
 								alert(jsonResult.message);	
 								
-								window.location.href = '/webProjectSJ/Member/MyPage';
+								location.href = jsonResult.url;
 							}
 							location.reload();
 						})

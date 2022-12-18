@@ -27,7 +27,7 @@
 			/Member/login.do:Member.MemberAction:login
 			/Member/loginForm.do:Member.MemberAction:loginForm
 			/Member/logout.do:Member.MemberAction:logout
-			/Member/MyPage.do:Member.MemberAction:MyPage
+			/Member/myPage.do:Member.MemberAction:myPage
 			/Member/dupUidCheck.do:Member.MemberAction:dupUidCheck
 			/Member/pwdCheck.do:Member.MemberAction:pwdCheck
 			/Member/searchId.do:Member.MemberAction:searchId
@@ -37,11 +37,14 @@
 			/Member/updateMember.do:Member.MemberAction:updateMember
 			/Member/pwdUpdateCheck.do:Member.MemberAction:pwdUpdateCheck
 			/Member/memberDelete.do:Member.MemberAction:memberDelete
+			/Member/memberDeleteForm.do:Member.MemberAction:memberDeleteForm
 			/Member/memberEdit.do:Member.MemberAction:memberEdit
-			/Member/AdminPage.do:Member.MemberAction:AdminPage
+			/Member/adminPage.do:Member.MemberAction:adminPage
 			/Member/memberCondition.do:Member.MemberAction:memberCondition
 			/Member/memberAdminDelete.do:Member.MemberAction:memberAdminDelete
 			/Member/searchAdmin.do:Member.MemberAction:searchAdmin
+			
+			
   		</param-value>
 		</init-param>
 	</servlet>

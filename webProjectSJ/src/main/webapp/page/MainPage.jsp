@@ -22,11 +22,11 @@
 
 			<c:choose>
 				<c:when test="${admin eq 'admin'}">
-					<a class="choose" class="status" href="../Member/AdminPage">회원관리</a>
+					<a class="choose" class="status" href="Member/adminPage.do">회원관리</a>
 					<a class="choose" class="status" href="<c:url value='/Member/logout.do'/>">로그아웃</a>
 				</c:when>
 				<c:when test="${not empty login_id}">
-					<a class="choose" class="status" href="../Member/MyPage">마이페이지</a>
+					<a class="choose" class="status" href="Member/myPage.do">마이페이지</a>
 					<a class="choose" class="status" href="Member/logout.do">로그아웃</a>
 				</c:when>
 				<c:otherwise>

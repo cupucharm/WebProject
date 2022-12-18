@@ -14,7 +14,7 @@
 
 	<div class="main">
 		<div class="logDiv">
-			<a class="logo" href="../page/MainPage.jsp">TALK</a>
+			<a class="logo" href="/webProjectSJ">TALK</a>
 		</div>
 		<h1 id="login_name">${login_id}님</h1>
 
@@ -82,7 +82,7 @@
 
 		<div class="changeMemberDiv" id="changeMemberDiv">
 			<input type="button" id="updateMemberBtn" class="changeMemberBtn" value="회원 정보 수정"> 
-			<input type="button" id="deleteMemberBtn" class="changeMemberBtn" value="취소" onclick="history.back()">
+			<input type="button" id="deleteMemberBtn" class="changeMemberBtn" value="취소" onclick="location.href='/webProjectSJ/Member/myPage.do'">
 		</div>
 
 

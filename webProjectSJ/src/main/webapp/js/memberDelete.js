@@ -12,7 +12,7 @@ window.onload = () => {
 
 	async function pwdUpdateCheck() {
 
-		let response = await fetch('/webProjectSJ/Member/pwdUpdateCheck?user_pwd=' + before_pwd.value);
+		let response = await fetch('/webProjectSJ/Member/pwdUpdateCheck.do?user_pwd=' + before_pwd.value);
 		let jsonResult = await response.json();
 
 		pwd_msg.innerHTML = jsonResult.message;
@@ -32,20 +32,20 @@ window.onload = () => {
 
 		document.getElementById("pwd_msg").style.display = "none";
 
-		fetch('/webProjectSJ/Member/pwdUpdateCheck?user_pwd=' + before_pwd.value )
+		fetch('/webProjectSJ/Member/pwdUpdateCheck.do?user_pwd=' + before_pwd.value )
 			.then(response => response.json())
 			.then(jsonResult => {
 				if (jsonResult.status == false) {
 					alert(jsonResult.message);
 				} else {
-					fetch('/webProjectSJ/Member/memberDelete')
+					fetch('/webProjectSJ/Member/memberDelete.do')
 						.then(response => response.json())
 						.then(jsonResult => {
 							if (jsonResult.status == false) {
 								alert(jsonResult.message);
 							} else {
 								alert(jsonResult.message);
-								window.location.href = '/webProjectSJ/page/MainPage.jsp';
+								window.location.href = '/webProjectSJ';
 							}
 						})
 				location.reload();

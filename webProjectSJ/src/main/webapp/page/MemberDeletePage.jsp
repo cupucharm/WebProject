@@ -14,7 +14,7 @@
 
 	<div class="main">
 		<div class="logDiv">
-			<a class="logo" href="../page/MainPage.jsp">TALK</a>
+			<a class="logo" href="/webProjectSJ">TALK</a>
 		</div>
 		<h1 id="login_name">${login_id}님</h1>
 
@@ -39,7 +39,7 @@
 			<div class="changeMemberDiv" id="changeMemberDiv">
 				<button id="deleteMemberBtn" class="changeMemberBtn">회원 탈퇴</button>
 				<button id="cancel" class="changeMemberBtn"
-					onclick="location.href='/webProjectSJ/Member/MyPage'">취소</button>
+					onclick="location.href='/webProjectSJ/Member/myPage.do'">취소</button>
 			</div>
 
 		</div>

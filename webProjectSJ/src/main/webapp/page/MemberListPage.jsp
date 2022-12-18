@@ -18,7 +18,7 @@
 	</c:if>
 
 	<div class="main">
-		<a class="logo" href="../page/MainPage.jsp">TALK</a>
+		<a class="logo" href="/webProjectSJ">TALK</a>
 
 		<div id="search">
 
@@ -59,10 +59,10 @@
 							<td>${memberList.user_sex}</td>
 							<td>${memberList.user_birth}</td>
 							<td><button id="memberCondition"
-									onclick="location.href='/webProjectSJ/Member/memberCondition?user_id=${memberList.user_id}'">${memberList.user_condition}</button></td>
+									onclick="location.href='/webProjectSJ/Member/memberCondition.do?user_id=${memberList.user_id}'">${memberList.user_condition}</button></td>
 							<td><c:if test="${memberList.user_condition eq '비활성화' }">
 									<button id="deleteMember"
-										onclick="location.href='/webProjectSJ/Member/memberAdminDelete?user_id=${memberList.user_id}'">회원탈퇴</button>
+										onclick="location.href='/webProjectSJ/Member/memberAdminDelete.do?user_id=${memberList.user_id}'">회원탈퇴</button>
 								</c:if></td>
 							<c:set var="i">${i+1}</c:set>
 						</tr>
@@ -75,15 +75,15 @@
 				<ul class="pagination">
 					<c:if test="${ boardPageVO.prev }">
 						<li><a class="bt prev"
-							href="/webProjectSJ/Board/AdminPage?pageNum=${ boardPageVO.startPage - 1 }"><</a></li>
+							href="/webProjectSJ/Member/adminPage.do?pageNum=${ boardPageVO.startPage - 1 }"><</a></li>
 					</c:if>
 					<c:forEach begin="${boardPageVO.startPage}"
 						end="${boardPageVO.endPage}" var="num">
-						<li><a <c:if test="${num eq boardPageVO.currentPage }">style="background-color:#6667AB; color:white;"</c:if> href="/webProjectSJ/Member/AdminPage?pageNum=${num}">${num}</a></li>
+						<li><a <c:if test="${num eq boardPageVO.currentPage }">style="background-color:#6667AB; color:white;"</c:if> href="/webProjectSJ/Member/adminPage.do?pageNum=${num}">${num}</a></li>
 					</c:forEach>
 					<c:if test="${ boardPageVO.next }">
 						<li><a class="bt next"
-							href="/webProjectSJ/Member/AdminPage?pageNum=${ boardPageVO.endPage + 1  }">></a></li>
+							href="/webProjectSJ/Member/adminPage.do?pageNum=${ boardPageVO.endPage + 1  }">></a></li>
 					</c:if>
 				</ul>
 			</div>

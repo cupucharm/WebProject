@@ -136,7 +136,7 @@ public class MemberAction {
 
 	}
 
-	public void MyPage(HttpServletRequest request, HttpServletResponse response)  throws ServletException, IOException {
+	public void myPage(HttpServletRequest request, HttpServletResponse response)  throws ServletException, IOException {
 		HttpSession session = request.getSession();
 		session.setMaxInactiveInterval(1800);
 		
@@ -281,6 +281,7 @@ public class MemberAction {
 		if (update) {
 			jsonResult.put("status", true);
 			jsonResult.put("message", "회원 정보가 수정되었습니다.");
+			jsonResult.put("url", "/webProjectSJ/Member/myPage.do");
 		} else {
 			jsonResult.put("status", false);
 			jsonResult.put("message", "회원 정보 수정을 실패했습니다.");
@@ -339,6 +340,16 @@ public class MemberAction {
 		}
 		out.println(jsonResult.toString());
 	}
+	
+	public void memberDeleteForm(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		try {
+			RequestDispatcher dispatcher = request.getRequestDispatcher("../page/MemberDeletePage.jsp");
+			dispatcher.forward(request, response);
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
 
 	public void memberEdit(HttpServletRequest request, HttpServletResponse response)  throws ServletException, IOException {
 		String user_id = request.getParameter("user_id");
@@ -352,7 +363,7 @@ public class MemberAction {
 		dispatch.forward(request, response);
 	}
 
-	public void AdminPage(HttpServletRequest request, HttpServletResponse response)  throws ServletException, IOException {
+	public void adminPage(HttpServletRequest request, HttpServletResponse response)  throws ServletException, IOException {
 		int pageNum = 1;
 
 		if (request.getParameter("pageNum") != null) {
@@ -384,7 +395,7 @@ public class MemberAction {
 		if (condition != null) {
 			Boolean update = dao.changeCondition(user_id, condition);
 		}
-		response.sendRedirect("AdminPage");
+		response.sendRedirect("adminPage.do");
 	}
 
 	public void memberAdminDelete(HttpServletRequest request, HttpServletResponse response)  throws ServletException, IOException {
@@ -399,7 +410,7 @@ public class MemberAction {
 			request.setAttribute("message", user_id + "님 삭제를 실패했습니다.");
 		}
 
-		RequestDispatcher dispatch = request.getRequestDispatcher("AdminPage");
+		RequestDispatcher dispatch = request.getRequestDispatcher("adminPage.do");
 		dispatch.forward(request, response);
 	}
 

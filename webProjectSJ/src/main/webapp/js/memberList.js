@@ -15,7 +15,7 @@ window.onload = () => {
 	function searchByUid() {
 		let searchInput = document.querySelector("#searchInput");
 
-		window.location.href = '/webProjectSJ/Member/searchAdmin?searchInput=' + searchInput.value;
+		window.location.href = '/webProjectSJ/Member/searchAdmin.do?searchInput=' + searchInput.value;
 	}
 
 }
