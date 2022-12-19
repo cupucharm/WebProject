@@ -35,7 +35,7 @@ window.onload = () => {
 		console.log(param);
 		console.log(JSON.stringify(param));
 
-		fetch('/webProjectSJ/Board/updateBoard', {
+		fetch('/webProjectSJ/Board/updateBoard.do', {
 			//option
 			method: 'POST',
 			headers: {

@@ -39,6 +39,17 @@
 			/Member/memberCondition.do:Member.MemberAction:memberCondition
 			/Member/memberAdminDelete.do:Member.MemberAction:memberAdminDelete
 			/Member/searchAdmin.do:Member.MemberAction:searchAdmin
+			/Board/boardList.do:Board.BoardAction:boardList
+			/Board/boardView.do:Board.BoardAction:boardView
+			/Board/boardUpload.do:Board.BoardAction:boardUpload
+			/Board/editBoard.do:Board.BoardAction:editBoard
+			/Board/updateBoard.do:Board.BoardAction:updateBoard
+			/Board/deleteBoard.do:Board.BoardAction:deleteBoard
+			/Board/myBoardList.do:Board.BoardAction:myBoardList
+			/Board/search.do:Board.BoardAction:search
+			/Board/view.do:Board.BoardAction:view
+			/Board/download.do:Board.BoardAction:download
+			/Board/boardWriteForm.do:Board.BoardAction:boardWriteForm
   		</param-value>
     </init-param>
   </servlet>

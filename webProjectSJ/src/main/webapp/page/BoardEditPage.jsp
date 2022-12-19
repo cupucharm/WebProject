@@ -55,7 +55,7 @@
 			<input type="button"
 				id="updateBoardBtn" value="확인"> <input type="button"
 				id="backBtn" value="취소"
-				onclick="location.href='/webProjectSJ/Board/boardView?bno=${boardVO.bno}&num=${num}&page=${page}'">
+				onclick="location.href='/webProjectSJ/Board/boardView.do?bno=${boardVO.bno}&num=${num}&page=${page}'">
 
 		</div>
 	</div>

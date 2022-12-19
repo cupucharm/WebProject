@@ -19,14 +19,15 @@
 <body>
 
 	<div id="memberInfoDiv">
-		<c:choose>
+	
+	<c:choose>
 			<c:when test="${not empty login_id}">
-				<a class="choose" class="status" href="../Member/MyPage">${login_id}님</a>
-				<a class="choose" class="status" href="../Member/logout">로그아웃</a>
+				<a class="choose" class="status" href="/webProjectSJ/Member/myPage.do">${login_id}님</a>
+				<a class="choose" class="status" href="/webProjectSJ/Member/logout.do">로그아웃</a>
 			</c:when>
 			<c:otherwise>
-				<a class="choose" class="status" href="../page/LoginPage.jsp">로그인</a>
-				<a class="choose" class="status" href="RegisterPage.jsp">회원가입</a>
+				<a class="choose" class="status" href="/webProjectSJ/Member/loginForm.do">로그인</a>
+				<a class="choose" class="status" href="/webProjectSJ/Member/registerForm.do">회원가입</a>
 			</c:otherwise>
 		</c:choose>
 	</div>
@@ -90,7 +91,7 @@
 		<div class="boardFoot">
 			<input type="submit" id="uploadBtn" value="게시글 등록">
 
-			<button onclick="location.href='/webProjectSJ/Board/boardList'">취소</button>
+			<button onclick="location.href='/webProjectSJ/Board/boardList.do'">취소</button>
 		</div>
 	</form>
 

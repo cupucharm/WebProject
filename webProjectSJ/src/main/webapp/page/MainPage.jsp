@@ -18,7 +18,7 @@
 		<div class="check">
 
 			<a class="choose" id="chat" href="ChatListPage.jsp">채팅</a> <a
-				class="choose" id="board" href="/webProjectSJ/Board/boardList">게시판</a>
+				class="choose" id="board" href="/webProjectSJ/Board/boardList.do">게시판</a>
 
 			<c:choose>
 				<c:when test="${admin eq 'admin'}">

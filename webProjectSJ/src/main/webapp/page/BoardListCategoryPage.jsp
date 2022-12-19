@@ -15,14 +15,15 @@
 	<div id="memberInfoDiv">
 		<c:choose>
 			<c:when test="${not empty login_id}">
-				<a class="choose" class="status" href="../Member/MyPage">${login_id}님</a>
-				<a class="choose" class="status" href="../Member/logout">로그아웃</a>
+				<a class="choose" class="status" href="/webProjectSJ/Member/myPage.do">${login_id}님</a>
+				<a class="choose" class="status" href="/webProjectSJ/Member/logout.do">로그아웃</a>
 			</c:when>
 			<c:otherwise>
-				<a class="choose" class="status" href="../page/LoginPage.jsp">로그인</a>
-				<a class="choose" class="status" href="../page/RegisterPage.jsp">회원가입</a>
+				<a class="choose" class="status" href="/webProjectSJ/Member/loginForm.do">로그인</a>
+				<a class="choose" class="status" href="/webProjectSJ/Member/registerForm.do">회원가입</a>
 			</c:otherwise>
 		</c:choose>
+			
 	</div>
 
 	<div class="main">
@@ -67,7 +68,7 @@
 							<td>${i}</td>
 							<td>${boardList.bcategory}</td>
 							<td><a
-								href="/webProjectSJ/Board/boardView?bno=${boardList.bno}&num=${i}&page=${pageVO.currentPage}">${boardList.btitle}</a></td>
+								href="/webProjectSJ/Board/boardView.do?bno=${boardList.bno}&num=${i}&page=${pageVO.currentPage}">${boardList.btitle}</a></td>
 							<td>${boardList.bwriter}</td>
 							<td>${boardList.bdate}</td>
 							<td>${boardList.bhit}</td>
@@ -80,21 +81,21 @@
 				<ul class="pagination">
 					<c:if test="${ pageVO.prev }">
 						<li><a class="bt next"
-							href="/webProjectSJ/Board/view?content=${ category }&pageNum=1"><<</a></li>
+							href="/webProjectSJ/Board/view.do?content=${ category }&pageNum=1"><<</a></li>
 						<li><a class="bt prev"
-							href="/webProjectSJ/Board/view?content=${ category }&pageNum=${ pageVO.startPage - 1 }"><</a></li>
+							href="/webProjectSJ/Board/view.do?content=${ category }&pageNum=${ pageVO.startPage - 1 }"><</a></li>
 					</c:if>
 					<c:forEach begin="${pageVO.startPage}"
 						end="${pageVO.endPage}" var="num">
 						<li><a
 							<c:if test="${num eq pageVO.currentPage }">style="background-color:#6667AB; color:white;"</c:if>
-							href="/webProjectSJ/Board/view?content=${ category }&pageNum=${num}">${num}</a></li>
+							href="/webProjectSJ/Board/view.do?content=${ category }&pageNum=${num}">${num}</a></li>
 					</c:forEach>
 					<c:if test="${ pageVO.next }">
 						<li><a class="bt next"
-							href="/webProjectSJ/Board/view?content=${ category }&pageNum=${ pageVO.endPage + 1  }">></a></li>
+							href="/webProjectSJ/Board/view.do?content=${ category }&pageNum=${ pageVO.endPage + 1  }">></a></li>
 						<li><a class="bt next"
-							href="/webProjectSJ/Board/view?content=${ category }&pageNum=${ pageVO.realEnd  }">>></a></li>
+							href="/webProjectSJ/Board/view.do?content=${ category }&pageNum=${ pageVO.realEnd  }">>></a></li>
 					</c:if>
 				</ul>
 			</div>

@@ -17,8 +17,7 @@ window.onload = () => {
 		let searchCondition = select.options[selectValue].value;
 		let searchInput = document.querySelector("#searchInput");
 
-		
-		window.location.href = '/webProjectSJ/Board/search?searchCondition=' + searchCondition +'&searchContent='+searchInput.value+ '&pageNum=1';
+		window.location.href = '/webProjectSJ/Board/search.do?searchCondition=' + searchCondition +'&searchContent='+searchInput.value+ '&pageNum=1';
 	}
 	
 	
@@ -31,7 +30,7 @@ window.onload = () => {
 	}
 	
 	 function boardViewAll() {
-		window.location.href = '/webProjectSJ/Board/view?content=' + all.value + '&pageNum=1';
+		window.location.href = '/webProjectSJ/Board/view.do?content=' + all.value + '&pageNum=1';
 	}
 	
 	let notice = document.querySelector("#notice");
@@ -43,7 +42,7 @@ window.onload = () => {
 	}
 	
 	 function boardViewNotice() {
-		window.location.href = '/webProjectSJ/Board/view?content=' + notice.value + '&pageNum=1';
+		window.location.href = '/webProjectSJ/Board/view.do?content=' + notice.value + '&pageNum=1';
 	}
 	
 	let commom = document.querySelector("#commom");
@@ -55,7 +54,7 @@ window.onload = () => {
 	}
 	
 	 function boardViewCommon() {
-		window.location.href = '/webProjectSJ/Board/view?content=' + commom.value + '&pageNum=1';
+		window.location.href = '/webProjectSJ/Board/view.do?content=' + commom.value + '&pageNum=1';
 	}
 	
 	let Question = document.querySelector("#Question");
@@ -67,7 +66,7 @@ window.onload = () => {
 	}
 	
 	 function boardViewQuestion() {
-		window.location.href = '/webProjectSJ/Board/view?content=' + Question.value + '&pageNum=1';
+		window.location.href = '/webProjectSJ/Board/view.do?content=' + Question.value + '&pageNum=1';
 	}
 	
 	}

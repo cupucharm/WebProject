@@ -14,7 +14,7 @@
 <body>
 	<div class="main">
 		<div class="logo" id="logoDiv">
-			<a class="logo" href="../page/MainPage.jsp">TALK</a>
+			<a class="logo" href="/webProjectSJ">TALK</a>
 		</div>
 		<div class="boardHeadDiv">
 			<div class="inline">
@@ -63,12 +63,12 @@
 
 			<c:if test="${ boardVO.bwriter eq me}">
 				<input type="button" id="editBoardBtn" value="수정"
-					onclick="location.href='/webProjectSJ/Board/editBoard?realBno=${boardVO.bno}&num=${num}&page=${page}'">
+					onclick="location.href='/webProjectSJ/Board/editBoard.do?realBno=${boardVO.bno}&num=${num}&page=${page}'">
 				<button data-bno="${boardVO.bno}" data-page="${page}" type="button"
 					id="deleteBoardBtn" value="삭제">삭제</button>
 			</c:if>
 			<input id="backBtn" type="button" value="목록"
-				onclick="location.href='/webProjectSJ/Board/boardList?pageNum=${page}'">
+				onclick="location.href='/webProjectSJ/Board/boardList.do?pageNum=${page}'">
 
 
 

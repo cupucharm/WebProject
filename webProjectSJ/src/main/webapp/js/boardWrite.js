@@ -46,7 +46,7 @@ window.onload = () => {
 	boardUpload.addEventListener("submit", (e) => {
 		e.preventDefault();	//폼 수행을 정지시킨다.
 
-		fetch('/webProjectSJ/Board/boardUpload', {
+		fetch('/webProjectSJ/Board/boardUpload.do', {
 
 			method: 'POST',
 			cache: 'no-cache',
