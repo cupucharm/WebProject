@@ -1,4 +1,4 @@
-package Member;
+package Servlet;
 
 import jakarta.servlet.ServletConfig;
 import jakarta.servlet.ServletException;
@@ -11,7 +11,7 @@ import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.Map;
 
-public class MemberServlet extends HttpServlet {
+public class MyServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
 	Map<String, Object> className2ObjectMap = new HashMap<>();
@@ -19,7 +19,7 @@ public class MemberServlet extends HttpServlet {
 	Map<String, Method> methodMap = new HashMap<>();
 	String contextPath;
 
-	public MemberServlet() {
+	public MyServlet() {
 		super();
 	}
 
@@ -89,5 +89,4 @@ public class MemberServlet extends HttpServlet {
 			}
 		}
 	}
-
 }

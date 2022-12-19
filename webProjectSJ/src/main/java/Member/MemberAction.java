@@ -430,6 +430,4 @@ public class MemberAction {
 		RequestDispatcher dispatch = request.getRequestDispatcher("../page/MemberListPage.jsp");
 		dispatch.forward(request, response);
 	}
-	
-	
 }
