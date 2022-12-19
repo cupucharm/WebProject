@@ -62,10 +62,10 @@ public class BoardServlet extends HttpServlet {
 
 			List<BoardVO> list = boardDAO.listBoards(pageNum);
 
-			BoardPageVO boardPageVO = new BoardPageVO(pageNum, total);
+			PageVO pageVO = new PageVO(pageNum, total);
 
 			request.setAttribute("listBoards", list);
-			request.setAttribute("boardPageVO", boardPageVO);
+			request.setAttribute("pageVO", pageVO);
 
 			// System.out.println(list.toString());
 
@@ -262,10 +262,10 @@ public class BoardServlet extends HttpServlet {
 				int pageNum = 1;
 				int total = dao.getTotal();
 
-				BoardPageVO boardPageVO = new BoardPageVO(pageNum, total);
+				PageVO pageVO = new PageVO(pageNum, total);
 
 				request.setAttribute("listBoards", list);
-				request.setAttribute("boardPageVO", boardPageVO);
+				request.setAttribute("pageVO", pageVO);
 
 				RequestDispatcher dispatch = request.getRequestDispatcher("../page/BoardListPage.jsp");
 				dispatch.forward(request, response);
@@ -290,10 +290,10 @@ public class BoardServlet extends HttpServlet {
 
 				int total = dao.getTotalBySearch(searchCondition, searchContent);
 
-				BoardPageVO boardPageVO = new BoardPageVO(pageNum, total);
+				PageVO pageVO = new PageVO(pageNum, total);
 
 				request.setAttribute("listBoards", list);
-				request.setAttribute("boardPageVO", boardPageVO);
+				request.setAttribute("pageVO", pageVO);
 				request.setAttribute("searchCondition", searchCondition);
 				request.setAttribute("searchContent", searchContent);
 
@@ -320,11 +320,11 @@ public class BoardServlet extends HttpServlet {
 					List<BoardVO> list = dao.listBoardsCategory(pageNum, content);
 					int total = dao.getTotalByCategory(content);
 
-					BoardPageVO boardPageVO = new BoardPageVO(pageNum, total);
+					PageVO pageVO = new PageVO(pageNum, total);
 
 					request.setAttribute("listBoards", list);
 					request.setAttribute("category", content);
-					request.setAttribute("boardPageVO", boardPageVO);
+					request.setAttribute("pageVO", pageVO);
 
 					RequestDispatcher dispatch = request.getRequestDispatcher("../page/BoardListCategoryPage.jsp");
 					dispatch.forward(request, response);

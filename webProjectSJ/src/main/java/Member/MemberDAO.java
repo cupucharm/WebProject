@@ -519,4 +519,30 @@ public class MemberDAO {
 		}
 		return list;
 	}
+
+	public int getTotal() {
+		int result = 0;
+
+		try {
+			open();
+			conn = dataFactory.getConnection();
+			String query = "select count(*) as total from tb_member where user_condition != 'admin'";
+			pstmt = conn.prepareStatement(query);
+
+			rs = pstmt.executeQuery();
+
+			if (rs.next()) {
+				result = rs.getInt("total");
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				close();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+		return result;
+	}
 }

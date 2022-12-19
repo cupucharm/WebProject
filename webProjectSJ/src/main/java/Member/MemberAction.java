@@ -10,7 +10,7 @@ import java.util.List;
 import org.json.JSONObject;
 
 import Board.BoardDAO;
-import Board.BoardPageVO;
+import Board.PageVO;
 import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -374,14 +374,12 @@ public class MemberAction {
 		BoardDAO boardDAO = new BoardDAO();
 
 		List<MemberVO> list = memberDAO.listMembers(pageNum);
-		int total = boardDAO.getTotal();
+		int total = memberDAO.getTotal();
 
-		BoardPageVO boardPageVO = new BoardPageVO(pageNum, total);
+		PageVO pageVO = new PageVO(pageNum, total);
 
 		request.setAttribute("listMembers", list);
-		request.setAttribute("boardPageVO", boardPageVO);
-
-		System.out.println(list.toString());
+		request.setAttribute("pageVO", pageVO);
 
 		RequestDispatcher dispatch = request.getRequestDispatcher("../page/MemberListPage.jsp");
 		dispatch.forward(request, response);
@@ -424,10 +422,10 @@ public class MemberAction {
 		int pageNum = 1;
 		int total = boardDao.getTotal();
 
-		BoardPageVO boardPageVO = new BoardPageVO(pageNum, total);
+		PageVO pageVO = new PageVO(pageNum, total);
 
 		request.setAttribute("listMembers", list);
-		request.setAttribute("boardPageVO", boardPageVO);
+		request.setAttribute("pageVO", pageVO);
 
 		RequestDispatcher dispatch = request.getRequestDispatcher("../page/MemberListPage.jsp");
 		dispatch.forward(request, response);

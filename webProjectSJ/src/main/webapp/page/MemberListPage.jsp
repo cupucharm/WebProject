@@ -46,7 +46,7 @@
 				</thead>
 				<tbody class="boardTbody">
 				<tbody>
-					<c:set var="i" value="${boardPageVO.currentPage*10-10+1}"></c:set>
+					<c:set var="i" value="${pageVO.currentPage*10-10+1}"></c:set>
 
 					<c:forEach var="memberList" items="${listMembers}">
 						<tr>
@@ -73,17 +73,21 @@
 			</table>
 			<div class="paginationDiv">
 				<ul class="pagination">
-					<c:if test="${ boardPageVO.prev }">
+					<c:if test="${ pageVO.prev }">
+					<li><a class="bt prev"
+							href="/webProjectSJ/Member/adminPage.do?pageNum=1"><<</a></li>
 						<li><a class="bt prev"
-							href="/webProjectSJ/Member/adminPage.do?pageNum=${ boardPageVO.startPage - 1 }"><</a></li>
+							href="/webProjectSJ/Member/adminPage.do?pageNum=${ pageVO.startPage - 1 }"><</a></li>
 					</c:if>
-					<c:forEach begin="${boardPageVO.startPage}"
-						end="${boardPageVO.endPage}" var="num">
-						<li><a <c:if test="${num eq boardPageVO.currentPage }">style="background-color:#6667AB; color:white;"</c:if> href="/webProjectSJ/Member/adminPage.do?pageNum=${num}">${num}</a></li>
+					<c:forEach begin="${pageVO.startPage}"
+						end="${pageVO.endPage}" var="num">
+						<li><a <c:if test="${num eq pageVO.currentPage }">style="background-color:#6667AB; color:white;"</c:if> href="/webProjectSJ/Member/adminPage.do?pageNum=${num}">${num}</a></li>
 					</c:forEach>
-					<c:if test="${ boardPageVO.next }">
+					<c:if test="${ pageVO.next }">
 						<li><a class="bt next"
-							href="/webProjectSJ/Member/adminPage.do?pageNum=${ boardPageVO.endPage + 1  }">></a></li>
+							href="/webProjectSJ/Member/adminPage.do?pageNum=${ pageVO.endPage + 1  }">></a></li>
+							<li><a class="bt next"
+							href="/webProjectSJ/Member/adminPage.do?pageNum=${ pageVO.realEnd  }">>></a></li>
 					</c:if>
 				</ul>
 			</div>

@@ -3,7 +3,7 @@ package Board;
 import lombok.Data;
 
 @Data
-public class BoardPageVO {
+public class PageVO {
 	public static final int amount = 10;
 	
 	private int startPage;
@@ -14,7 +14,7 @@ public class BoardPageVO {
 	private boolean prev;
 	private boolean next;
 	
-	public BoardPageVO(int currentPage, int total) {
+	public PageVO(int currentPage, int total) {
 		this.currentPage = currentPage;
 		this.total = total;
 		this.endPage = (int)Math.ceil(this.currentPage * 0.1) * amount;
