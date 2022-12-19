@@ -10,6 +10,7 @@ public class BoardPageVO {
 	private int endPage;
 	private int currentPage;
 	private int total;		// DB에 있는 게시글 수
+	private int realEnd; 
 	private boolean prev;
 	private boolean next;
 	
@@ -19,7 +20,7 @@ public class BoardPageVO {
 		this.endPage = (int)Math.ceil(this.currentPage * 0.1) * amount;
 		this.startPage = this.endPage - amount + 1;
 		
-		int realEnd = (int)Math.ceil(this.total / (double)amount);
+		realEnd = (int)Math.ceil(this.total / (double)amount);
 		
 		if(this.endPage > realEnd) {
 			this.endPage = realEnd;

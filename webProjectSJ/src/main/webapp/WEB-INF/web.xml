@@ -43,8 +43,6 @@
 			/Member/memberCondition.do:Member.MemberAction:memberCondition
 			/Member/memberAdminDelete.do:Member.MemberAction:memberAdminDelete
 			/Member/searchAdmin.do:Member.MemberAction:searchAdmin
-			
-			
   		</param-value>
 		</init-param>
 	</servlet>

@@ -79,6 +79,8 @@
 			<div class="paginationDiv">
 				<ul class="pagination">
 					<c:if test="${ boardPageVO.prev }">
+					<li><a class="bt next"
+							href="/webProjectSJ/Board/boardList?pageNum=1"><<</a></li>
 						<li><a class="bt prev"
 							href="/webProjectSJ/Board/boardList?pageNum=${ boardPageVO.startPage - 1 }"><</a></li>
 					</c:if>
@@ -89,6 +91,8 @@
 					<c:if test="${ boardPageVO.next }">
 						<li><a class="bt next"
 							href="/webProjectSJ/Board/boardList?pageNum=${ boardPageVO.endPage + 1  }">></a></li>
+							<li><a class="bt next"
+							href="/webProjectSJ/Board/boardList?pageNum=${ boardPageVO.realEnd  }">>></a></li>
 					</c:if>
 				</ul>
 			</div>

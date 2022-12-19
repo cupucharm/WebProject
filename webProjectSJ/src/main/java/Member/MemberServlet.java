@@ -24,42 +24,42 @@ public class MemberServlet extends HttpServlet {
 	}
 
 	public void init(ServletConfig config) throws ServletException {
-contextPath = config.getServletContext().getContextPath();
-		
+		contextPath = config.getServletContext().getContextPath();
+
 		String actionNames = config.getInitParameter("actionNames");
 		actionNames = actionNames.trim();
-		
+
 		try {
-		for (String line : actionNames.split("\n")) {
-			line = line.trim();
-			
-			String [] actionInfo = line.split(":");
-			//클래스를 로딩한다
-			Class<?> cls = Class.forName(actionInfo[1]);
-			
-			//클래스명이 존재하는지 확인한다 
-			if (!className2ObjectMap.containsKey(actionInfo[1])) {
-				//클래스를 이용하여 객체를 생성한다
-				Object object = cls.getDeclaredConstructor().newInstance();
-				
-				//생성된 객체를 클래스 명으로 해서 맵에 추가함 
-				className2ObjectMap.put(actionInfo[1], object);
-				
-				//생성된 객체를 URL 명으로 해서 맵에 추가함
-				objectMap.put(actionInfo[0], object);
-			} else {
-				
-				//클래스명으로 해서 생성된 객체를 URL 명으로 해서 맵에 추가함
-				objectMap.put(actionInfo[0], className2ObjectMap.get(actionInfo[1]));
+			for (String line : actionNames.split("\n")) {
+				line = line.trim();
+
+				String[] actionInfo = line.split(":");
+				// 클래스를 로딩한다
+				Class<?> cls = Class.forName(actionInfo[1]);
+
+				// 클래스명이 존재하는지 확인한다
+				if (!className2ObjectMap.containsKey(actionInfo[1])) {
+					// 클래스를 이용하여 객체를 생성한다
+					Object object = cls.getDeclaredConstructor().newInstance();
+
+					// 생성된 객체를 클래스 명으로 해서 맵에 추가함
+					className2ObjectMap.put(actionInfo[1], object);
+
+					// 생성된 객체를 URL 명으로 해서 맵에 추가함
+					objectMap.put(actionInfo[0], object);
+				} else {
+
+					// 클래스명으로 해서 생성된 객체를 URL 명으로 해서 맵에 추가함
+					objectMap.put(actionInfo[0], className2ObjectMap.get(actionInfo[1]));
+				}
+				Method method = cls.getMethod(actionInfo[2], HttpServletRequest.class, HttpServletResponse.class);
+				methodMap.put(actionInfo[0], method);
 			}
-			Method method = cls.getMethod(actionInfo[2], HttpServletRequest.class, HttpServletResponse.class);
-			methodMap.put(actionInfo[0], method);
-		}
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
+
 	}
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
@@ -89,5 +89,5 @@ contextPath = config.getServletContext().getContextPath();
 			}
 		}
 	}
-	
+
 }
