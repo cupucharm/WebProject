@@ -9,7 +9,7 @@
 <title>SooJin : Chatting</title>
 
 <link rel="stylesheet"
-	href="<c:url value='/page/css/ChattingPage.css'/>">
+	href="<c:url value='/css/ChattingPage.css'/>">
 </head>
 <body>
 	<h1>현재 채팅룸 : ${p}</h1>

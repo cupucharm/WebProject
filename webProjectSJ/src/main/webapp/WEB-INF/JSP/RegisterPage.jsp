@@ -7,7 +7,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>SooJin : 회원가입</title>
-<link rel="stylesheet" href="<c:url value='/page/css/RegisterPage.css'/>">
+<link rel="stylesheet" href="<c:url value='/css/RegisterPage.css'/>">
 <script type="text/javascript" src="../js/register.js"></script>
 </head>
 <body>

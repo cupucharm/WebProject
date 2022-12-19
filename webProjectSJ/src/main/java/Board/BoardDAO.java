@@ -45,7 +45,6 @@ public class BoardDAO {
 	}
 
 	// 게시글 작성
-//	public boolean insertBoard(String btitle, String bwriter, String bcategory, String bcontents) throws SQLException {
 	public int insertBoard(String btitle, String bwriter, String bcategory, String bcontents) throws SQLException {
 		try {
 			open();
@@ -74,8 +73,6 @@ public class BoardDAO {
 
 			return number;
 
-			// return pstmt.executeUpdate() > 0;
-
 		} catch (SQLException e) {
 			e.printStackTrace();
 			throw e;
@@ -94,7 +91,7 @@ public class BoardDAO {
 		try {
 			open();
 
-			String query = "SELECT * from (SELECT * ,@ROWNUM:=@ROWNUM+1 as rowNum FROM (SELECT @ROWNUM:=0) AS R, tb_board order by rowNum desc) t limit 10 offset ?";
+			String query = "SELECT * from (SELECT * ,@ROWNUM:=@ROWNUM+1 as rowNum FROM (SELECT @ROWNUM:=0) AS R, tb_board order by bparentNo desc, bno) t limit 10 offset ?";
 
 			pstmt = conn.prepareStatement(query);
 			pstmt.setInt(1, pageNum * 10 - 10);
@@ -329,7 +326,7 @@ public class BoardDAO {
 		try {
 			open();
 
-			String query = "SELECT * from (SELECT * ,@ROWNUM:=@ROWNUM+1 as rowNum FROM (SELECT @ROWNUM:=0) AS R, tb_board order by rowNum desc) t where bcategory=? limit 10 offset ?";
+			String query = "SELECT * from (SELECT * ,@ROWNUM:=@ROWNUM+1 as rowNum FROM (SELECT @ROWNUM:=0) AS R, tb_board order by bparentNo desc, bno) t where bcategory=? limit 10 offset ?";
 
 			pstmt = conn.prepareStatement(query);
 
@@ -427,13 +424,13 @@ public class BoardDAO {
 		try {
 			open();
 
-			String query = "SELECT * from (SELECT * ,@ROWNUM:=@ROWNUM+1 as rowNum FROM (SELECT @ROWNUM:=0) AS R, tb_board order by rowNum desc) t where ?=? limit 10 offset ?";
+			String query = "SELECT * from (SELECT * ,@ROWNUM:=@ROWNUM+1 as rowNum FROM (SELECT @ROWNUM:=0) AS R, tb_board order by bparentNo desc, bno) t where ?=? limit 10 offset ?";
 
 			pstmt = conn.prepareStatement(query);
 
 			switch (searchCondition) {
 			case "titleAndContents":
-				query = "SELECT * from (SELECT * ,@ROWNUM:=@ROWNUM+1 as rowNum FROM (SELECT @ROWNUM:=0) AS R, tb_board order by rowNum desc) t where bcontents like ? or btitle like ? limit 10 offset ?";
+				query = "SELECT * from (SELECT * ,@ROWNUM:=@ROWNUM+1 as rowNum FROM (SELECT @ROWNUM:=0) AS R, tb_board order by bparentNo desc, bno) t where bcontents like ? or btitle like ? limit 10 offset ?";
 				pstmt = conn.prepareStatement(query);
 				pstmt.setString(1, "%" + searchContent + "%");
 				pstmt.setString(2, "%" + searchContent + "%");
@@ -441,21 +438,21 @@ public class BoardDAO {
 				break;
 
 			case "title":
-				query = "SELECT * from (SELECT * ,@ROWNUM:=@ROWNUM+1 as rowNum FROM (SELECT @ROWNUM:=0) AS R, tb_board order by rowNum desc) t where btitle like ? limit 10 offset ?";
+				query = "SELECT * from (SELECT * ,@ROWNUM:=@ROWNUM+1 as rowNum FROM (SELECT @ROWNUM:=0) AS R, tb_board order by bparentNo desc, bno) t where btitle like ? limit 10 offset ?";
 				pstmt = conn.prepareStatement(query);
 				pstmt.setString(1, "%" + searchContent + "%");
 				pstmt.setInt(2, pageNum * 10 - 10);
 				break;
 
 			case "contents":
-				query = "SELECT * from (SELECT * ,@ROWNUM:=@ROWNUM+1 as rowNum FROM (SELECT @ROWNUM:=0) AS R, tb_board order by rowNum desc) t where bcontents like ? limit 10 offset ?";
+				query = "SELECT * from (SELECT * ,@ROWNUM:=@ROWNUM+1 as rowNum FROM (SELECT @ROWNUM:=0) AS R, tb_board order by bparentNo desc, bno) t where bcontents like ? limit 10 offset ?";
 				pstmt = conn.prepareStatement(query);
 				pstmt.setString(1, "%" + searchContent + "%");
 				pstmt.setInt(2, pageNum * 10 - 10);
 				break;
 
 			case "writer":
-				query = "SELECT * from (SELECT * ,@ROWNUM:=@ROWNUM+1 as rowNum FROM (SELECT @ROWNUM:=0) AS R, tb_board order by rowNum desc) t where bwriter like ? limit 10 offset ?";
+				query = "SELECT * from (SELECT * ,@ROWNUM:=@ROWNUM+1 as rowNum FROM (SELECT @ROWNUM:=0) AS R, tb_board order by bparentNo desc, bno) t where bwriter like ? limit 10 offset ?";
 				pstmt = conn.prepareStatement(query);
 				pstmt.setString(1, "%" + searchContent + "%");
 				pstmt.setInt(2, pageNum * 10 - 10);

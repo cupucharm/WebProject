@@ -8,7 +8,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>SooJin : 회원 관리</title>
 <link rel="stylesheet"
-	href="<c:url value='/page/css/MemberListPage.css'/>">
+	href="<c:url value='/css/MemberListPage.css'/>">
 	<script type="text/javascript" src="../js/memberList.js"></script> 
 </head>
 <body>

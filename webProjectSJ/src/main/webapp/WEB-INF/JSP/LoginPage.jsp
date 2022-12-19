@@ -9,7 +9,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>SooJin : LoginPage</title>
 <%-- ${loginFail} --%>
-<link rel="stylesheet" href="<c:url value='/page/css/LoginPage.css'/>">
+<link rel="stylesheet" href="<c:url value='/css/LoginPage.css'/>">
 </head>
 <body>
 	<div class="main">

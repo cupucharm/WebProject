@@ -26,7 +26,7 @@ import jakarta.servlet.http.HttpSession;
 
 public class BoardAction {
 
-	public void boardList(HttpServletRequest request, HttpServletResponse response)
+	public String boardList(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		int pageNum = 1;
 
@@ -44,25 +44,16 @@ public class BoardAction {
 		request.setAttribute("listBoards", list);
 		request.setAttribute("pageVO", pageVO);
 
-		// System.out.println(list.toString());
-
-		RequestDispatcher dispatch = request.getRequestDispatcher("../page/BoardListPage.jsp");
-		dispatch.forward(request, response);
+		return "/BoardListPage.jsp";
 
 	}
 
-	public void boardWriteForm(HttpServletRequest request, HttpServletResponse response)
+	public String boardWriteForm(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		try {
-			RequestDispatcher dispatcher = request.getRequestDispatcher("../page/BoardWritePage.jsp");
-			dispatcher.forward(request, response);
-
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+		return "/BoardWritePage.jsp";
 	}
 
-	public void boardView(HttpServletRequest request, HttpServletResponse response)
+	public String boardView(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		HttpSession session = request.getSession();
 
@@ -92,20 +83,11 @@ public class BoardAction {
 		if (login_id != null) {
 			session.setAttribute("me", login_id);
 		}
-		RequestDispatcher dispatch = request.getRequestDispatcher("../page/BoardViewPage.jsp");
-		dispatch.forward(request, response);
-
+		return "/BoardViewPage.jsp";
 	}
 
-	public void boardUpload(HttpServletRequest request, HttpServletResponse response)
+	public JSONObject boardUpload(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		// try {
-
-		// BufferedReader in = new BufferedReader(new
-		// InputStreamReader(request.getInputStream(), "UTF-8"));
-		// String jsonStr = in.readLine();
-		// JSONObject jsonResult = new JSONObject(jsonStr);
-
 		// 저장소 객체 새성
 		DiskFileItemFactory factory = new DiskFileItemFactory();
 
@@ -117,17 +99,15 @@ public class BoardAction {
 
 		System.out.println(request.getRemoteAddr());
 		// 요청 객체를 파싱한다
+		JSONObject jsonResult = new JSONObject();
 		try {
 			PrintWriter out = response.getWriter();
-			// out = response.getWriter();
 			Map<String, List<FileItem>> mapItems = upload.parseParameterMap(request);
 
 			String btitle = new String(mapItems.get("btitle").get(0).getString().getBytes("ISO-8859-1"), "utf-8");
 			String bwriter = new String(mapItems.get("bwriter").get(0).getString().getBytes("ISO-8859-1"), "utf-8");
 			String bcategory = new String(mapItems.get("bcategory").get(0).getString().getBytes("ISO-8859-1"), "utf-8");
 			String bcontents = new String(mapItems.get("bcontents").get(0).getString().getBytes("ISO-8859-1"), "utf-8");
-
-			JSONObject jsonResult = new JSONObject();
 
 			if (btitle != null && btitle.length() > 0 && bcategory != null && bcategory.length() > 0
 					&& bcontents != null && bcontents.length() > 0) {
@@ -138,13 +118,11 @@ public class BoardAction {
 
 					int number = dao.insertBoard(btitle, bwriter, bcategory, bcontents);
 
-					// for (int i =0; i < mapItems.)
 					// 첨부파일 정보 얻어 저장
 					for (FileItem fileItem : mapItems.get("filename1")) {
 						if (fileItem.getSize() == 0)
 							continue;
 
-						// FileItem fileItem = mapItems.get("filename1").get(0);
 						String real_name = "/Users/choisujin/Documents/upload/" + System.nanoTime();
 						fileItem.write(new File(real_name));
 
@@ -169,13 +147,14 @@ public class BoardAction {
 				jsonResult.put("url", "/webProjectSJ/Board/boardList.do");
 			}
 
-			out.println(jsonResult.toString());
+			return jsonResult;
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		return jsonResult;
 	}
 
-	public void editBoard(HttpServletRequest request, HttpServletResponse response)
+	public String editBoard(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		try {
 			int bno = Integer.parseInt(request.getParameter("realBno"));
@@ -190,22 +169,20 @@ public class BoardAction {
 			request.setAttribute("num", num);
 			request.setAttribute("page", page);
 
-			RequestDispatcher dispatch = request.getRequestDispatcher("../page/BoardEditPage.jsp");
-			dispatch.forward(request, response);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		return "/BoardEditPage.jsp";
 	}
 
-	public void updateBoard(HttpServletRequest request, HttpServletResponse response)
+	public JSONObject updateBoard(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		try {
-			PrintWriter out = response.getWriter();
-			BufferedReader in = new BufferedReader(new InputStreamReader(request.getInputStream(), "UTF-8"));
-			String jsonStr = in.readLine();
+		PrintWriter out = response.getWriter();
+		BufferedReader in = new BufferedReader(new InputStreamReader(request.getInputStream(), "UTF-8"));
+		String jsonStr = in.readLine();
 
-			JSONObject jsonResult = new JSONObject(jsonStr);
-			// System.out.println(jsonResult);
+		JSONObject jsonResult = new JSONObject(jsonStr);
+		try {
 
 			int realBno = Integer.parseInt(jsonResult.getString("realBno"));
 			int num = Integer.parseInt(jsonResult.getString("num"));
@@ -226,14 +203,16 @@ public class BoardAction {
 				jsonResult.put("url", "boardView.do?bno=" + realBno + "&num=" + num + "&page=" + page);
 			}
 
-			out.println(jsonResult.toString());
+			return jsonResult;
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		return jsonResult;
 	}
 
-	public void deleteBoard(HttpServletRequest request, HttpServletResponse response)
+	public JSONObject deleteBoard(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
+		JSONObject jsonResult = new JSONObject();
 		try {
 			PrintWriter out = response.getWriter();
 			int bno = Integer.parseInt(request.getParameter("bno"));
@@ -241,7 +220,6 @@ public class BoardAction {
 
 			BoardDAO dao = new BoardDAO();
 			Boolean success = dao.deleteBoard(bno);
-			JSONObject jsonResult = new JSONObject();
 
 			if (success) {
 				jsonResult.put("status", success);
@@ -253,13 +231,14 @@ public class BoardAction {
 				jsonResult.put("url", "/webProjectSJ/Board/boardList.do?pageNum=" + page);
 			}
 
-			out.println(jsonResult.toString());
+			return jsonResult;
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		return jsonResult;
 	}
 
-	public void myBoardList(HttpServletRequest request, HttpServletResponse response)
+	public String myBoardList(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		HttpSession session = request.getSession();
 
@@ -280,15 +259,13 @@ public class BoardAction {
 			request.setAttribute("listBoards", list);
 			request.setAttribute("pageVO", pageVO);
 
-			RequestDispatcher dispatch = request.getRequestDispatcher("../page/BoardListPage.jsp");
-			dispatch.forward(request, response);
-
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		return "/BoardListPage.jsp";
 	}
 
-	public void search(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	public String search(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		try {
 
 			String searchCondition = request.getParameter("searchCondition");
@@ -312,12 +289,10 @@ public class BoardAction {
 			request.setAttribute("searchCondition", searchCondition);
 			request.setAttribute("searchContent", searchContent);
 
-			RequestDispatcher dispatch = request.getRequestDispatcher("../page/BoardListSearchPage.jsp");
-			dispatch.forward(request, response);
-
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		return "/BoardListSearchPage.jsp";
 	}
 
 	public void view(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

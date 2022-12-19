@@ -8,7 +8,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>SooJin : where to go</title>
-<link rel="stylesheet" href="<c:url value='/page/css/MainPage.css'/>">
+<link rel="stylesheet" href="<c:url value='/css/MainPage.css'/>">
 </head>
 <body>
 	<div class="main">
@@ -17,7 +17,7 @@
 		</div>
 		<div class="check">
 
-			<a class="choose" id="chat" href="ChatListPage.jsp">채팅</a> <a
+			<a class="choose" id="chat" href="/webProjectSJ/Chat/chatListForm.do">채팅</a> <a
 				class="choose" id="board" href="/webProjectSJ/Board/boardList.do">게시판</a>
 
 			<c:choose>

@@ -1,5 +1,6 @@
 package Servlet;
 
+import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletConfig;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -7,9 +8,12 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.Map;
+
+import org.json.JSONObject;
 
 public class MyServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
@@ -81,10 +85,21 @@ public class MyServlet extends HttpServlet {
 		Object obj = objectMap.get(path);
 		Method method = methodMap.get(path);
 		if (obj != null && method != null) {
+			// action.execute(request, response);
 			try {
-				method.invoke(obj, request, response);
+				Object ret = method.invoke(obj, request, response);
+
+				if (ret != null) {
+					if (ret.getClass().equals(String.class)) {
+						RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/JSP" + (String) ret);
+						dispatcher.forward(request, response);
+					} else if (ret.getClass().equals(JSONObject.class)) {
+						JSONObject jsonResult = (JSONObject) ret;
+						PrintWriter out = response.getWriter();
+						out.println(jsonResult == null ? "{status:false}" : jsonResult.toString());
+					}
+				}
 			} catch (Exception e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}

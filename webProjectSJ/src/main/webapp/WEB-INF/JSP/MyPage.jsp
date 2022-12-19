@@ -7,7 +7,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>SooJin : MyPage</title>
-<link rel="stylesheet" href="<c:url value='/page/css/MyPage.css'/>">
+<link rel="stylesheet" href="<c:url value='/css/MyPage.css'/>">
 </head>
 <body>
 
@@ -83,7 +83,7 @@
 		<!-- <div id="update_msg"></div> -->
 		
 				<div>
-			<button id="myBoardList" class="mylistBtn" onclick="location.href='/webProjectSJ/Board/myBoardList'">내가 쓴 글 목록</button>
+			<button id="myBoardList" class="mylistBtn" onclick="location.href='/webProjectSJ/Board/myBoardList.do'">내가 쓴 글 목록</button>
 		</div>
 		
 

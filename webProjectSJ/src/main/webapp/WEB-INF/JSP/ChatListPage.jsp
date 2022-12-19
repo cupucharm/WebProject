@@ -7,27 +7,26 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>SooJin : 채팅방 목록</title>
-<link rel="stylesheet" href="<c:url value='/page/css/ChatListPage.css'/>">
+<link rel="stylesheet" href="<c:url value='/css/ChatListPage.css'/>">
 <!-- <script type="text/javascript" src="../js/chatList.js"></script> -->
 
 </head>
 <body>
 	<div id="memberInfoDiv">
-		<a class="choose" class="status" href="../Member/MyPage">${login_id}님</a>
-		<a class="choose" class="status" href="../Member/logout">로그아웃</a>
+		<a class="choose" class="status" href="/webProjectSJ/Member/myPage.do">${login_id}님</a>
+		<a class="choose" class="status" href="/webProjectSJ/Member/logout.do">로그아웃</a>
 	</div>
 	<div class="main">
 
-		<a class="logo" href="../page/MainPage.jsp">TALK</a>
+		<a class="logo" href="/webProjectSJ">TALK</a>
 	</div>
 	<div id="body">
-	<c:choose>
+		<c:choose>
 			<c:when test="${not empty login_id}">
 				<div id="makeChatRoom">
 					<h2>채팅방 생성하기</h2>
-					<br>
-					<label class="newChat" for="chatRoomName">채팅방 이름 </label> <input type="text"
-						class="newChat" id="chatRoomName">
+					<br> <label class="newChat" for="chatRoomName">채팅방 이름
+					</label> <input type="text" class="newChat" id="chatRoomName">
 					<button class="newChat" id="newChatRoomBtn">채팅방 생성하기</button>
 				</div>
 
@@ -38,7 +37,7 @@
 				</div>
 			</c:when>
 			<c:otherwise>
-				<c:redirect url="LoginPage.jsp"></c:redirect>
+				<c:redirect url="/Member/loginForm.do"></c:redirect>
 			</c:otherwise>
 		</c:choose>
 	</div>
@@ -46,7 +45,7 @@
 
 	<script>
 		function openChatRoom(chatRoomName){
-			window.open("../chat/add?p="+chatRoomName,
+			window.open("../Chat/add.do?p="+chatRoomName,
 					"popupname",
 					"toolbar=0,location=0,directories=0,status=0,menubar=0,scrollbars=yes,copyhistory=0, width=500, height=820"
 			);

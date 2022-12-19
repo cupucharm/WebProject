@@ -7,7 +7,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>SooJin : 아이디 찾기</title>
-<link rel="stylesheet" href="<c:url value='/page/css/SearchIdPage.css'/>">
+<link rel="stylesheet" href="<c:url value='/css/SearchIdPage.css'/>">
 <script type="text/javascript" src="../js/search.js"></script>
 </head>
 <body>

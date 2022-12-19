@@ -8,7 +8,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>SooJin : 게시글</title>
 <link rel="stylesheet"
-	href="<c:url value='/page/css/BoardViewPage.css'/>">
+	href="<c:url value='/css/BoardViewPage.css'/>">
 <script type="text/javascript" src="../js/boardDelete.js"></script>
 </head>
 <body>

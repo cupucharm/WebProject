@@ -8,7 +8,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>SooJin : 게시판</title>
 <link rel="stylesheet"
-	href="<c:url value='/page/css/BoardListPage.css'/>">
+	href="<c:url value='/css/BoardListPage.css'/>">
 <script type="text/javascript" src="../js/boardSearch.js"></script>
 </head>
 <body>
@@ -23,7 +23,6 @@
 				<a class="choose" class="status" href="/webProjectSJ/Member/registerForm.do">회원가입</a>
 			</c:otherwise>
 		</c:choose>
-			
 	</div>
 
 	<div class="main">
@@ -31,12 +30,13 @@
 
 		<div id="search">
 			<select name="searchSelect" id="searchSelect">
-				<option value="titleAndContents" selected="selected">제목 +
+				<option id="titleAndContents" value="titleAndContents">제목 +
 					내용</option>
-				<option value="title">제목</option>
-				<option value="contents">내용</option>
-				<option value="writer">작성자</option>
-			</select> <input type="text" id="searchInput" name="searchInput">
+				<option id="title" value="title">제목</option>
+				<option id="contents" value="contents">내용</option>
+				<option id="writer" value="writer">작성자</option>
+			</select> <input type="text" id="searchInput" name="searchInput"
+				value="${searchContent}">
 			<button id="searchBtn">검색</button>
 		</div>
 
@@ -80,22 +80,22 @@
 			<div class="paginationDiv">
 				<ul class="pagination">
 					<c:if test="${ pageVO.prev }">
-						<li><a class="bt next"
-							href="/webProjectSJ/Board/view.do?content=${ category }&pageNum=1"><<</a></li>
+					<li><a class="bt prev"
+							href="/webProjectSJ/Board/search.do?searchCondition=${searchCondition}&searchContent=${searchContent}&pageNum=1"><<</a></li>
 						<li><a class="bt prev"
-							href="/webProjectSJ/Board/view.do?content=${ category }&pageNum=${ pageVO.startPage - 1 }"><</a></li>
+							href="/webProjectSJ/Board/search.do?searchCondition=${searchCondition}&searchContent=${searchContent}&pageNum=${ pageVO.startPage - 1 }"><</a></li>
 					</c:if>
 					<c:forEach begin="${pageVO.startPage}"
 						end="${pageVO.endPage}" var="num">
 						<li><a
 							<c:if test="${num eq pageVO.currentPage }">style="background-color:#6667AB; color:white;"</c:if>
-							href="/webProjectSJ/Board/view.do?content=${ category }&pageNum=${num}">${num}</a></li>
+							href="/webProjectSJ/Board/search.do?searchCondition=${searchCondition}&searchContent=${searchContent}&pageNum=${num}">${num}</a></li>
 					</c:forEach>
 					<c:if test="${ pageVO.next }">
 						<li><a class="bt next"
-							href="/webProjectSJ/Board/view.do?content=${ category }&pageNum=${ pageVO.endPage + 1  }">></a></li>
+							href="/webProjectSJ/Board/search.do?searchCondition=${searchCondition}&searchContent=${searchContent}&pageNum=${ pageVO.endPage + 1  }">></a></li>
 						<li><a class="bt next"
-							href="/webProjectSJ/Board/view.do?content=${ category }&pageNum=${ pageVO.realEnd  }">>></a></li>
+							href="/webProjectSJ/Board/search.do?searchCondition=${searchCondition}&searchContent=${searchContent}&pageNum=${ pageVO.realEnd  }">>></a></li>
 					</c:if>
 				</ul>
 			</div>

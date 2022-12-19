@@ -19,14 +19,13 @@ import jakarta.servlet.http.HttpSession;
 
 public class MemberAction {
 
-	public void register(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException  {
+	public JSONObject register(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException  {
 		BufferedReader in = new BufferedReader(new InputStreamReader(request.getInputStream(), "UTF-8"));
 		String jsonStr = in.readLine();
 
-		PrintWriter out = response.getWriter();
 		JSONObject jsonMember = new JSONObject(jsonStr);
 
-		String user_id = (String) jsonMember.get("user_id");
+		String user_id = jsonMember.getString("user_id");
 		String user_name = (String) jsonMember.get("user_name");
 		String user_pwd = (String) jsonMember.get("user_pwd");
 		String pwdConfirm = (String) jsonMember.get("pwdConfirm");
@@ -63,17 +62,11 @@ public class MemberAction {
 			jsonResult.put("status", false);
 			jsonResult.put("message", "[ " + user_id + " ] " + "이미 사용 중인 아이디입니다.");
 		}
-		out.println(jsonResult.toString());
+		return jsonResult;
 	}
 
-	public void registerForm(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		try {
-			RequestDispatcher dispatcher = request.getRequestDispatcher("../page/RegisterPage.jsp");
-			dispatcher.forward(request, response);
-
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+	public String registerForm(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		return "/RegisterPage.jsp";
 	}
 
 	public void login(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException  {
@@ -113,16 +106,9 @@ public class MemberAction {
 
 	}
 
-	public void loginForm(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		//response.sendRedirect("../page/LoginPage.jsp");
+	public String loginForm(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
-		try {
-			RequestDispatcher dispatcher = request.getRequestDispatcher("../page/LoginPage.jsp");
-			dispatcher.forward(request, response);
-
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+		return "/LoginPage.jsp";
 	}
 
 	public void logout(HttpServletRequest request, HttpServletResponse response)  throws ServletException, IOException {
@@ -132,11 +118,11 @@ public class MemberAction {
 		session = request.getSession();
 		session.invalidate();
 
-		response.sendRedirect("../page/MainPage.jsp");
+		response.sendRedirect("/webProjectSJ");
 
 	}
 
-	public void myPage(HttpServletRequest request, HttpServletResponse response)  throws ServletException, IOException {
+	public String myPage(HttpServletRequest request, HttpServletResponse response)  throws ServletException, IOException {
 		HttpSession session = request.getSession();
 		session.setMaxInactiveInterval(1800);
 		
@@ -148,12 +134,10 @@ public class MemberAction {
 
 		request.setAttribute("session_login_name", login_name);
 
-		RequestDispatcher dispatch = request.getRequestDispatcher("../page/MyPage.jsp");
-		dispatch.forward(request, response);
+		return "/MyPage.jsp";
 	}
 
-	public void dupUidCheck(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		PrintWriter out = response.getWriter();
+	public JSONObject dupUidCheck(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
 		String user_id = request.getParameter("user_id");
 
@@ -174,11 +158,10 @@ public class MemberAction {
 			jsonResult.put("status", false);
 			jsonResult.put("message", "아이디를 확인하세요.");
 		}
-		out.println(jsonResult.toString());
+		return jsonResult;
 	}
 
-	public void pwdCheck(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		PrintWriter out = response.getWriter();
+	public JSONObject pwdCheck(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
 		String user_pwd = request.getParameter("user_pwd");
 		String pwdConfirm = request.getParameter("pwdConfirm");
@@ -192,11 +175,10 @@ public class MemberAction {
 			jsonResult.put("status", false);
 			jsonResult.put("message", "비밀번호가 불일치합니다.");
 		}
-		out.println(jsonResult.toString());
+		return jsonResult;
 	}
 
-	public void searchId(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		PrintWriter out = response.getWriter();
+	public JSONObject searchId(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
 		String user_name = request.getParameter("user_name");
 		String user_phone = request.getParameter("user_phone");
@@ -214,22 +196,14 @@ public class MemberAction {
 			jsonResult.put("status", false);
 			jsonResult.put("message", "일치하는 회원정보가 없습니다.");
 		}
-		out.println(jsonResult.toString());
+		return jsonResult;
 	}
 	
-	public void searchIdForm(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		try {
-			RequestDispatcher dispatcher = request.getRequestDispatcher("../page/SearchIdPage.jsp");
-			dispatcher.forward(request, response);
-
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+	public String searchIdForm(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		return "/SearchIdPage.jsp";
 	}
 
-	public void searchPw(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		PrintWriter out = response.getWriter();
-		
+	public JSONObject searchPw(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String user_id = request.getParameter("user_id");
 		String user_name = request.getParameter("user_name");
 		String user_phone = request.getParameter("user_phone");
@@ -247,24 +221,17 @@ public class MemberAction {
 			jsonResult.put("status", false);
 			jsonResult.put("message", "일치하는 회원정보가 없습니다.");
 		}
-		out.println(jsonResult.toString());
+		return jsonResult;
 	}
 	
-	public void searchPwForm(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		try {
-			RequestDispatcher dispatcher = request.getRequestDispatcher("../page/SearchPwPage.jsp");
-			dispatcher.forward(request, response);
-
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+	public String searchPwForm(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		return "/SearchPwPage.jsp";
 	}
 
-	public void updateMember(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	public JSONObject updateMember(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		HttpSession session = request.getSession();
 		session.setMaxInactiveInterval(1800);
 		
-		PrintWriter out = response.getWriter();
 		
 		String user_pwd = request.getParameter("user_pwd");
 		String user_name = request.getParameter("user_name");
@@ -286,15 +253,12 @@ public class MemberAction {
 			jsonResult.put("status", false);
 			jsonResult.put("message", "회원 정보 수정을 실패했습니다.");
 		}
-		out.println(jsonResult.toString());
-
+		return jsonResult;
 	}
 
-	public void pwdUpdateCheck(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	public JSONObject pwdUpdateCheck(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		HttpSession session = request.getSession();
 		session.setMaxInactiveInterval(1800);
-		
-		PrintWriter out = response.getWriter();
 		
 		String user_pwd = request.getParameter("user_pwd");
 		String user_id = (String) session.getAttribute("login_id");
@@ -311,16 +275,15 @@ public class MemberAction {
 			jsonResult.put("status", false);
 			jsonResult.put("message", "비밀번호가 불일치합니다.");
 		}
-		out.println(jsonResult.toString());
+		return jsonResult;
 	}
 
-	public void memberDelete(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	public JSONObject memberDelete(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		HttpSession session = request.getSession();
 		session.setMaxInactiveInterval(1800);
 		
 		String user_id = (String) session.getAttribute("login_id");
 		String user_pwd = (String) session.getAttribute("login_pwd");
-		PrintWriter out = response.getWriter();
 
 		JSONObject jsonResult = new JSONObject();
 		try {
@@ -338,20 +301,14 @@ public class MemberAction {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		out.println(jsonResult.toString());
+		return jsonResult;
 	}
 	
-	public void memberDeleteForm(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		try {
-			RequestDispatcher dispatcher = request.getRequestDispatcher("../page/MemberDeletePage.jsp");
-			dispatcher.forward(request, response);
-
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+	public String memberDeleteForm(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		return "/MemberDeletePage.jsp";
 	}
 
-	public void memberEdit(HttpServletRequest request, HttpServletResponse response)  throws ServletException, IOException {
+	public String memberEdit(HttpServletRequest request, HttpServletResponse response)  throws ServletException, IOException {
 		String user_id = request.getParameter("user_id");
 
 		MemberDAO memberDAO = new MemberDAO();
@@ -359,11 +316,10 @@ public class MemberAction {
 
 		request.setAttribute("memberInfo", member);
 
-		RequestDispatcher dispatch = request.getRequestDispatcher("../page/MemberEditPage.jsp");
-		dispatch.forward(request, response);
+		return "/MemberEditPage.jsp";
 	}
 
-	public void adminPage(HttpServletRequest request, HttpServletResponse response)  throws ServletException, IOException {
+	public String adminPage(HttpServletRequest request, HttpServletResponse response)  throws ServletException, IOException {
 		int pageNum = 1;
 
 		if (request.getParameter("pageNum") != null) {
@@ -371,7 +327,6 @@ public class MemberAction {
 		}
 
 		MemberDAO memberDAO = new MemberDAO();
-		BoardDAO boardDAO = new BoardDAO();
 
 		List<MemberVO> list = memberDAO.listMembers(pageNum);
 		int total = memberDAO.getTotal();
@@ -381,8 +336,7 @@ public class MemberAction {
 		request.setAttribute("listMembers", list);
 		request.setAttribute("pageVO", pageVO);
 
-		RequestDispatcher dispatch = request.getRequestDispatcher("../page/MemberListPage.jsp");
-		dispatch.forward(request, response);
+		return "/MemberListPage.jsp";
 	}
 
 	public void memberCondition(HttpServletRequest request, HttpServletResponse response)  throws ServletException, IOException {
@@ -391,12 +345,12 @@ public class MemberAction {
 		MemberDAO dao = new MemberDAO();
 		String condition = dao.getCondition(user_id);
 		if (condition != null) {
-			Boolean update = dao.changeCondition(user_id, condition);
+			dao.changeCondition(user_id, condition);
 		}
 		response.sendRedirect("adminPage.do");
 	}
 
-	public void memberAdminDelete(HttpServletRequest request, HttpServletResponse response)  throws ServletException, IOException {
+	public String memberAdminDelete(HttpServletRequest request, HttpServletResponse response)  throws ServletException, IOException {
 		String user_id = request.getParameter("user_id");
 
 		MemberDAO dao = new MemberDAO();
@@ -408,11 +362,10 @@ public class MemberAction {
 			request.setAttribute("message", user_id + "님 삭제를 실패했습니다.");
 		}
 
-		RequestDispatcher dispatch = request.getRequestDispatcher("adminPage.do");
-		dispatch.forward(request, response);
+		return "adminPage.do";
 	}
 
-	public void searchAdmin(HttpServletRequest request, HttpServletResponse response)  throws ServletException, IOException {
+	public String searchAdmin(HttpServletRequest request, HttpServletResponse response)  throws ServletException, IOException {
 		String searchInput = request.getParameter("searchInput");
 
 		MemberDAO dao = new MemberDAO();
@@ -427,7 +380,6 @@ public class MemberAction {
 		request.setAttribute("listMembers", list);
 		request.setAttribute("pageVO", pageVO);
 
-		RequestDispatcher dispatch = request.getRequestDispatcher("../page/MemberListPage.jsp");
-		dispatch.forward(request, response);
+		return "/MemberListPage.jsp";
 	}
 }

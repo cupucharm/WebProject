@@ -8,7 +8,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>SooJin : 게시판</title>
 <link rel="stylesheet"
-	href="<c:url value='/page/css/BoardListPage.css'/>">
+	href="<c:url value='/css/BoardListPage.css'/>">
 <script type="text/javascript" src="../js/boardSearch.js"></script>
 </head>
 <body>
@@ -23,10 +23,11 @@
 				<a class="choose" class="status" href="/webProjectSJ/Member/registerForm.do">회원가입</a>
 			</c:otherwise>
 		</c:choose>
+			
 	</div>
 
 	<div class="main">
-		<a class="logo" href="/webProjectSJ">TALK</a>
+		<a class="logo" href="../page/MainPage.jsp">TALK</a>
 
 		<div id="search">
 			<select name="searchSelect" id="searchSelect">
@@ -79,27 +80,29 @@
 			<div class="paginationDiv">
 				<ul class="pagination">
 					<c:if test="${ pageVO.prev }">
-					<li><a class="bt next"
-							href="/webProjectSJ/Board/boardList.do?pageNum=1"><<</a></li>
+						<li><a class="bt next"
+							href="/webProjectSJ/Board/view.do?content=${ category }&pageNum=1"><<</a></li>
 						<li><a class="bt prev"
-							href="/webProjectSJ/Board/boardList.do?pageNum=${ pageVO.startPage - 1 }"><</a></li>
+							href="/webProjectSJ/Board/view.do?content=${ category }&pageNum=${ pageVO.startPage - 1 }"><</a></li>
 					</c:if>
 					<c:forEach begin="${pageVO.startPage}"
 						end="${pageVO.endPage}" var="num">
-						<li><a <c:if test="${num eq pageVO.currentPage }">style="background-color:#6667AB; color:white;"</c:if> href="/webProjectSJ/Board/boardList.do?pageNum=${num}">${num}</a></li>
+						<li><a
+							<c:if test="${num eq pageVO.currentPage }">style="background-color:#6667AB; color:white;"</c:if>
+							href="/webProjectSJ/Board/view.do?content=${ category }&pageNum=${num}">${num}</a></li>
 					</c:forEach>
 					<c:if test="${ pageVO.next }">
 						<li><a class="bt next"
-							href="/webProjectSJ/Board/boardList.do?pageNum=${ pageVO.endPage + 1  }">></a></li>
-							<li><a class="bt next"
-							href="/webProjectSJ/Board/boardList.do?pageNum=${ pageVO.realEnd  }">>></a></li>
+							href="/webProjectSJ/Board/view.do?content=${ category }&pageNum=${ pageVO.endPage + 1  }">></a></li>
+						<li><a class="bt next"
+							href="/webProjectSJ/Board/view.do?content=${ category }&pageNum=${ pageVO.realEnd  }">>></a></li>
 					</c:if>
 				</ul>
 			</div>
 
 			<div class="bt_wrap">
 				<c:if test="${ isLogon }">
-					<a href="/webProjectSJ/Board/boardWriteForm.do" class="on">게시글
+					<a href="/webProjectSJ/page/BoardWritePage.jsp" class="on">게시글
 						작성</a>
 				</c:if>
 			</div>
