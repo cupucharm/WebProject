@@ -24,7 +24,7 @@ h3 {
 	display: inline-block;
 }
 
-button, #uploadBtn {
+button, #uploadBtn, #replyBtn {
 	color: white;
 	background-color: #6667AB;
 	border-radius: 3px;

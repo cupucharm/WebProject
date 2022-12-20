@@ -404,7 +404,6 @@ public class BoardAction {
 
 		BoardDAO boardDAO = new BoardDAO();
 		request.setAttribute("boardVO", boardDAO.getBoardVO(bno));
-		//request.setAttribute("login_id", session.getAttribute("login_id"));
 
 		return "/BoardWritePage.jsp";
 	}

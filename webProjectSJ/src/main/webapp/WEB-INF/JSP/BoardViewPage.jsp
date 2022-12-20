@@ -27,7 +27,7 @@
 			<div class="inline">
 				<h3 id="btitle" class="boardHead">제목</h3>
 				<c:if test="${boardVO.bno != boardVO.bparentNo }">
-				<a id="parentNo" class="boardHead" href="/webProjectSJ/Board/boardView.do?bno=${boardVO.bparentNo}&num=${num}&page=${page}" >[원글]</a>
+				<a id="parentNo" class="boardHead" href="/webProjectSJ/Board/boardView.do?bno=${boardVO.bparentNo}&num=${num}&page=${page}" >[원글 보기]</a>
 				<input type="text"
 					readonly="readonly" value="[답변]" style="width: 50px">
 				</c:if>

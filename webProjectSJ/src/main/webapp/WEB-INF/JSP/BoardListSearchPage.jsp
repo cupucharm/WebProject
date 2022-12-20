@@ -30,11 +30,12 @@
 
 		<div id="search">
 			<select name="searchSelect" id="searchSelect">
-				<option id="titleAndContents" value="titleAndContents">제목 +
+				<option id="titleAndContents" value="titleAndContents" 
+				<c:if test="${searchCondition eq 'titleAndContents'}">selected</c:if>>제목 +
 					내용</option>
-				<option id="title" value="title">제목</option>
-				<option id="contents" value="contents">내용</option>
-				<option id="writer" value="writer">작성자</option>
+				<option id="title" value="title" <c:if test="${searchCondition eq 'title'}">selected</c:if>>제목</option>
+				<option id="contents" value="contents" <c:if test="${searchCondition eq 'contents'}">selected</c:if>>내용</option>
+				<option id="writer" value="writer" <c:if test="${searchCondition eq 'writer'}">selected</c:if>>작성자</option>
 			</select> <input type="text" id="searchInput" name="searchInput"
 				value="${searchContent}">
 			<button id="searchBtn">검색</button>

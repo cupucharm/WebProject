@@ -9,19 +9,6 @@ window.onload = () => {
 			console.error(error);
 		});
 
-	/*		
-			let addFileListBtn = document.querySelector("#addFileListBtn");
-	
-		if (addFileListBtn != null) {
-			addFileListBtn.onclick = () => {
-				addFileList();
-			}
-		}
-	
-		async function addFileList() {
-			file_list.innerHTML += "첨부파일 : <input type='file' name='filename1' id='filename1' multiple><br />";
-		}
-	*/
 
 	let tbody = document.querySelector("tbody");
 	let tr = document.querySelector("tfoot tr");
@@ -41,28 +28,6 @@ window.onload = () => {
 	insertFile.addEventListener("click", insertFileEventHandler);
 
 
-	/*
-		let boardUpload = document.querySelector("#boardUpload");
-		boardUpload.addEventListener("submit", (e) => {
-			e.preventDefault();	//폼 수행을 정지시킨다.
-	
-			fetch('/webProjectSJ/Board/boardUpload.do', {
-	
-				method: 'POST',
-				cache: 'no-cache',
-				body: new FormData(boardUpload)
-			})
-	
-				.then(response => response.json())
-				.then(jsonResult => {
-					alert(jsonResult.message);
-					if (jsonResult.status == true) {
-						location.href = jsonResult.url;
-					}
-				});
-		});
-	*/
-
 	let replyBtn = document.querySelector("#replyBtn");
 	if (replyBtn != null) {
 		replyBtn.onclick = e => {
@@ -71,7 +36,7 @@ window.onload = () => {
 	}
 
 	function reply(e) {
-		e.preventDefault();	//폼 수행을 정지시킨다.
+		e.preventDefault();	
 		bcontents.value = document.querySelector(".ck-content").innerHTML;
 		fetch('/webProjectSJ/Board/reply.do', {
 
@@ -97,7 +62,7 @@ window.onload = () => {
 	}
 
 	function upload(e) {
-		e.preventDefault();	//폼 수행을 정지시킨다.
+		e.preventDefault();	
 		bcontents.value = document.querySelector(".ck-content").innerHTML;
 		fetch('/webProjectSJ/Board/boardUpload.do', {
 
