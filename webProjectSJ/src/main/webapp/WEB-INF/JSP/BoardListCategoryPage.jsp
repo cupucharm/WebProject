@@ -67,8 +67,14 @@
 						<tr>
 							<td>${i}</td>
 							<td>${boardList.bcategory}</td>
-							<td><a
-								href="/webProjectSJ/Board/boardView.do?bno=${boardList.bno}&num=${i}&page=${pageVO.currentPage}">${boardList.btitle}</a></td>
+							<td style="text-align: left;"><a
+								href="/webProjectSJ/Board/boardView.do?bno=${boardList.bno}&num=${i}&page=${pageVO.currentPage}">
+
+									<c:choose>
+										<c:when test="${boardList.bno == boardList.bparentNo}">${boardList.btitle}</c:when>
+										<c:otherwise>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  ➥&nbsp;[답변] ${boardList.btitle}</c:otherwise>
+									</c:choose>
+							</a></td>
 							<td>${boardList.bwriter}</td>
 							<td>${boardList.bdate}</td>
 							<td>${boardList.bhit}</td>
