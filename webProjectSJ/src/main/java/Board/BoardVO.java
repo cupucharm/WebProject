@@ -3,12 +3,14 @@ package Board;
 import java.io.Serializable;
 import java.util.Objects;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@Builder
 public class BoardVO implements Serializable {
 	private static final long serialVersionUID = 5783936267253111186L;
 	
@@ -19,6 +21,9 @@ public class BoardVO implements Serializable {
 	private int bhit;
 	private String bcontents;
 	private String bcategory;
+	private int bparentNo;
+	private int blikecount;
+	private int bdislikecount;
 
     @Override
 	public boolean equals(Object obj) {

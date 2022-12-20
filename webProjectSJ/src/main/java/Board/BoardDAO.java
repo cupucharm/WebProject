@@ -45,17 +45,19 @@ public class BoardDAO {
 	}
 
 	// 게시글 작성
-	public int insertBoard(String btitle, String bwriter, String bcategory, String bcontents) throws SQLException {
+	public int insertBoard(String btitle, String bwriter, String bcategory, String bcontents, int parentNo)
+			throws SQLException {
 		try {
 			open();
-			String query = "insert into tb_board(btitle, bwriter, bcontents, bcategory) values(?,?,?,?)";
+			String query = "insert into tb_board(btitle, bwriter, bcontents, bcategory, bparentNo) values(?,?,?,?,?)";
 
 			pstmt = conn.prepareStatement(query);
 			pstmt.setString(1, btitle);
 			pstmt.setString(2, bwriter);
 			pstmt.setString(3, bcontents);
 			pstmt.setString(4, bcategory);
-			
+			pstmt.setInt(5, parentNo);
+
 			pstmt.executeUpdate();
 
 			pstmt.close();
@@ -69,7 +71,7 @@ public class BoardDAO {
 			}
 			rs.close();
 			pstmt.close();
-			//conn.commit();
+			// conn.commit();
 
 			return number;
 
@@ -99,7 +101,8 @@ public class BoardDAO {
 			rs = pstmt.executeQuery();
 			while (rs.next()) {
 				BoardVO board = new BoardVO(rs.getInt("bno"), rs.getString("btitle"), rs.getString("bwriter"),
-						rs.getString("bdate"), rs.getInt("bhit"), rs.getString("bcontents"), rs.getString("bcategory"));
+						rs.getString("bdate"), rs.getInt("bhit"), rs.getString("bcontents"), rs.getString("bcategory"),
+						rs.getInt("bparentNo"), rs.getInt("blikecount"), rs.getInt("bdislikecount"));
 				list.add(board);
 			}
 		} catch (Exception e) {
@@ -154,8 +157,8 @@ public class BoardDAO {
 			rs = pstmt.executeQuery();
 			if (rs.next()) {
 				board = new BoardVO(rs.getInt("bno"), rs.getString("btitle"), rs.getString("bwriter"),
-						rs.getString("bdate"), rs.getInt("bhit"), rs.getString("bcontents"), rs.getString("bcategory"));
-//				return board;
+						rs.getString("bdate"), rs.getInt("bhit"), rs.getString("bcontents"), rs.getString("bcategory"),
+						rs.getInt("bparentNo"), rs.getInt("blikecount"), rs.getInt("bdislikecount"));
 			}
 			return board;
 
@@ -169,7 +172,6 @@ public class BoardDAO {
 				e.printStackTrace();
 			}
 		}
-		// return board;
 	}
 
 	public Boolean updateBoard(int realBno, String btitle, String bcontents) {
@@ -263,7 +265,8 @@ public class BoardDAO {
 			rs = pstmt.executeQuery();
 			while (rs.next()) {
 				BoardVO board = new BoardVO(rs.getInt("bno"), rs.getString("btitle"), rs.getString("bwriter"),
-						rs.getString("bdate"), rs.getInt("bhit"), rs.getString("bcontents"), rs.getString("bcategory"));
+						rs.getString("bdate"), rs.getInt("bhit"), rs.getString("bcontents"), rs.getString("bcategory"),
+						rs.getInt("bparentNo"), rs.getInt("blikecount"), rs.getInt("bdislikecount"));
 				list.add(board);
 			}
 
@@ -350,7 +353,8 @@ public class BoardDAO {
 			rs = pstmt.executeQuery();
 			while (rs.next()) {
 				BoardVO board = new BoardVO(rs.getInt("bno"), rs.getString("btitle"), rs.getString("bwriter"),
-						rs.getString("bdate"), rs.getInt("bhit"), rs.getString("bcontents"), rs.getString("bcategory"));
+						rs.getString("bdate"), rs.getInt("bhit"), rs.getString("bcontents"), rs.getString("bcategory"),
+						rs.getInt("bparentNo"), rs.getInt("blikecount"), rs.getInt("bdislikecount"));
 				list.add(board);
 			}
 
@@ -463,7 +467,8 @@ public class BoardDAO {
 			rs = pstmt.executeQuery();
 			while (rs.next()) {
 				BoardVO board = new BoardVO(rs.getInt("bno"), rs.getString("btitle"), rs.getString("bwriter"),
-						rs.getString("bdate"), rs.getInt("bhit"), rs.getString("bcontents"), rs.getString("bcategory"));
+						rs.getString("bdate"), rs.getInt("bhit"), rs.getString("bcontents"), rs.getString("bcategory"),
+						rs.getInt("bparentNo"), rs.getInt("blikecount"), rs.getInt("bdislikecount"));
 				list.add(board);
 			}
 
@@ -477,6 +482,29 @@ public class BoardDAO {
 			}
 		}
 		return list;
+	}
+
+	public int getParentNo() {
+		try {
+			open();
+			String query = "select MAX(bno) from tb_board";
+			pstmt = conn.prepareStatement(query);
+			rs = pstmt.executeQuery();
+			if (rs.next()) {
+				return (rs.getInt(1) + 1);
+			}
+			rs.close();
+			pstmt.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				close();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+		return 0;
 	}
 
 }

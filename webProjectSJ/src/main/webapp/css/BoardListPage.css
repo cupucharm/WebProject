@@ -59,7 +59,8 @@ td {
 }
 
 tr td:nth-child(3) {
-	width: 650px;
+	width: 400px;
+    padding-left: 50px;
 }
 
 a {

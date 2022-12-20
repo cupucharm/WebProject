@@ -27,7 +27,7 @@
 	</div>
 
 	<div class="main">
-		<a class="logo" href="../page/MainPage.jsp">TALK</a>
+		<a class="logo" href="/webProjectSJ">TALK</a>
 
 		<div id="search">
 			<select name="searchSelect" id="searchSelect">
@@ -102,7 +102,7 @@
 
 			<div class="bt_wrap">
 				<c:if test="${ isLogon }">
-					<a href="/webProjectSJ/page/BoardWritePage.jsp" class="on">게시글
+					<a href="/webProjectSJ/Board/boardWriteForm.do" class="on">게시글
 						작성</a>
 				</c:if>
 			</div>

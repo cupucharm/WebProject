@@ -7,8 +7,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>SooJin : 게시글</title>
-<link rel="stylesheet"
-	href="<c:url value='/css/BoardViewPage.css'/>">
+<link rel="stylesheet" href="<c:url value='/css/BoardViewPage.css'/>">
 <script type="text/javascript" src="../js/boardDelete.js"></script>
 </head>
 <body>
@@ -27,6 +26,11 @@
 			</div>
 			<div class="inline">
 				<h3 id="btitle" class="boardHead">제목</h3>
+				<c:if test="${boardVO.bno != boardVO.bparentNo }">
+				<a id="parentNo" class="boardHead" href="/webProjectSJ/Board/boardView.do?bno=${boardVO.bparentNo}&num=${num}&page=${page}" >[원글]</a>
+				<input type="text"
+					readonly="readonly" value="[답변]" style="width: 50px">
+				</c:if>
 				<input type="text" name="title" id="title" class="boardHead"
 					readonly="readonly" value="${boardVO.btitle}">
 			</div>
@@ -60,7 +64,11 @@
 
 		<div class="boardFoot">
 
-
+			<c:if test="${boardVO.bno == boardVO.bparentNo && not empty login_id}">
+				<a id="replyBtn"
+					href="<c:url value='/Board/replyForm.do?bno=${boardVO.bno}'/>">답글</a>
+				<br />
+			</c:if>
 			<c:if test="${ boardVO.bwriter eq me}">
 				<input type="button" id="editBoardBtn" value="수정"
 					onclick="location.href='/webProjectSJ/Board/editBoard.do?realBno=${boardVO.bno}&num=${num}&page=${page}'">

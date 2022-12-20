@@ -19,7 +19,8 @@ import jakarta.servlet.http.HttpSession;
 
 public class MemberAction {
 
-	public JSONObject register(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException  {
+	public JSONObject register(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
 		BufferedReader in = new BufferedReader(new InputStreamReader(request.getInputStream(), "UTF-8"));
 		String jsonStr = in.readLine();
 
@@ -43,8 +44,8 @@ public class MemberAction {
 
 				if (user_pwd.equals(pwdConfirm)) {
 					MemberDAO memberDAO = new MemberDAO();
-					memberDAO.insertMember(new MemberVO(user_id, user_name, user_pwd, user_phone, user_email,
-							user_sex, user_birth, "활성화"));
+					memberDAO.insertMember(new MemberVO(user_id, user_name, user_pwd, user_phone, user_email, user_sex,
+							user_birth, "활성화"));
 					jsonResult.put("status", true);
 					jsonResult.put("url", "/webProjectSJ/Member/loginForm.do");
 					jsonResult.put("message", user_id + "님 회원가입을 축하드립니다!");
@@ -65,18 +66,25 @@ public class MemberAction {
 		return jsonResult;
 	}
 
-	public String registerForm(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	public String registerForm(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
 		return "/RegisterPage.jsp";
 	}
 
-	public void login(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException  {
+	public JSONObject login(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
 		HttpSession session = request.getSession();
 		session.setMaxInactiveInterval(1800);
-		
-		String user_id = request.getParameter("user_id");
-		String user_pwd = request.getParameter("user_pwd");
+
+		BufferedReader in = new BufferedReader(new InputStreamReader(request.getInputStream(), "UTF-8"));
+		String jsonStr = in.readLine();
+
+		JSONObject jsonResult = new JSONObject(jsonStr);
 
 		MemberDAO dao = new MemberDAO();
+		String user_id = jsonResult.getString("user_id");
+		String user_pwd = jsonResult.getString("user_pwd");
+
 		MemberVO memberVO = dao.isExisted(user_id, user_pwd);
 		Boolean login_can = dao.isLoginCan(user_id);
 
@@ -86,35 +94,42 @@ public class MemberAction {
 			session.setAttribute("login_pwd", user_pwd);
 			session.setAttribute("login_name", memberVO.getUser_name());
 
+			jsonResult.put("status", true);
+			jsonResult.put("message", user_id + "님 환영합니다.");
+			jsonResult.put("url", "/webProjectSJ");
+			
 			if (memberVO.getUser_condition().equals("admin")) {
 				session.setAttribute("admin", "admin");
+				jsonResult.put("message", "관리자님 어서오세요.");
 			}
+			
 
-			response.sendRedirect("/webProjectSJ");
 		} else if (!login_can) {
-			request.setAttribute("loginFail", "<script>alert('로그인할 수 없는 계정입니다.');</script>");
 
-			RequestDispatcher dispatch = request.getRequestDispatcher("loginForm.do");
-			dispatch.forward(request, response);
+			jsonResult.put("status", false);
+			jsonResult.put("message", "로그인할 수 없는 계정입니다.");
+			jsonResult.put("url", "loginForm.do");
+			
 
 		} else {
-			request.setAttribute("loginFail", "<script>alert('로그인 실패했습니다. 다시 로그인해주세요.');</script>");
-			
-			RequestDispatcher dispatch = request.getRequestDispatcher("loginForm.do");
-			dispatch.forward(request, response);
+			jsonResult.put("status", false);
+			jsonResult.put("message", "로그인 실패했습니다. 다시 로그인해주세요.");
+			jsonResult.put("url", "loginForm.do");
 		}
+		return jsonResult;
 
 	}
 
-	public String loginForm(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		
+	public String loginForm(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+
 		return "/LoginPage.jsp";
 	}
 
-	public void logout(HttpServletRequest request, HttpServletResponse response)  throws ServletException, IOException {
+	public void logout(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		HttpSession session = request.getSession();
 		session.setMaxInactiveInterval(1800);
-		
+
 		session = request.getSession();
 		session.invalidate();
 
@@ -122,10 +137,11 @@ public class MemberAction {
 
 	}
 
-	public String myPage(HttpServletRequest request, HttpServletResponse response)  throws ServletException, IOException {
+	public String myPage(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
 		HttpSession session = request.getSession();
 		session.setMaxInactiveInterval(1800);
-		
+
 		MemberDAO dao = new MemberDAO();
 		MemberVO memberInfo = dao.memberInfo((String) session.getAttribute("login_id"));
 
@@ -137,8 +153,9 @@ public class MemberAction {
 		return "/MyPage.jsp";
 	}
 
-	public JSONObject dupUidCheck(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		
+	public JSONObject dupUidCheck(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+
 		String user_id = request.getParameter("user_id");
 
 		MemberDAO memberDAO = new MemberDAO();
@@ -161,8 +178,9 @@ public class MemberAction {
 		return jsonResult;
 	}
 
-	public JSONObject pwdCheck(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		
+	public JSONObject pwdCheck(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+
 		String user_pwd = request.getParameter("user_pwd");
 		String pwdConfirm = request.getParameter("pwdConfirm");
 
@@ -178,8 +196,9 @@ public class MemberAction {
 		return jsonResult;
 	}
 
-	public JSONObject searchId(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		
+	public JSONObject searchId(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+
 		String user_name = request.getParameter("user_name");
 		String user_phone = request.getParameter("user_phone");
 
@@ -198,12 +217,14 @@ public class MemberAction {
 		}
 		return jsonResult;
 	}
-	
-	public String searchIdForm(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+
+	public String searchIdForm(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
 		return "/SearchIdPage.jsp";
 	}
 
-	public JSONObject searchPw(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	public JSONObject searchPw(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
 		String user_id = request.getParameter("user_id");
 		String user_name = request.getParameter("user_name");
 		String user_phone = request.getParameter("user_phone");
@@ -223,16 +244,17 @@ public class MemberAction {
 		}
 		return jsonResult;
 	}
-	
-	public String searchPwForm(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+
+	public String searchPwForm(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
 		return "/SearchPwPage.jsp";
 	}
 
-	public JSONObject updateMember(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	public JSONObject updateMember(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
 		HttpSession session = request.getSession();
 		session.setMaxInactiveInterval(1800);
-		
-		
+
 		String user_pwd = request.getParameter("user_pwd");
 		String user_name = request.getParameter("user_name");
 		String user_phone = request.getParameter("user_phone");
@@ -256,10 +278,11 @@ public class MemberAction {
 		return jsonResult;
 	}
 
-	public JSONObject pwdUpdateCheck(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	public JSONObject pwdUpdateCheck(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
 		HttpSession session = request.getSession();
 		session.setMaxInactiveInterval(1800);
-		
+
 		String user_pwd = request.getParameter("user_pwd");
 		String user_id = (String) session.getAttribute("login_id");
 
@@ -278,10 +301,11 @@ public class MemberAction {
 		return jsonResult;
 	}
 
-	public JSONObject memberDelete(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	public JSONObject memberDelete(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
 		HttpSession session = request.getSession();
 		session.setMaxInactiveInterval(1800);
-		
+
 		String user_id = (String) session.getAttribute("login_id");
 		String user_pwd = (String) session.getAttribute("login_pwd");
 
@@ -303,12 +327,14 @@ public class MemberAction {
 		}
 		return jsonResult;
 	}
-	
-	public String memberDeleteForm(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+
+	public String memberDeleteForm(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
 		return "/MemberDeletePage.jsp";
 	}
 
-	public String memberEdit(HttpServletRequest request, HttpServletResponse response)  throws ServletException, IOException {
+	public String memberEdit(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
 		String user_id = request.getParameter("user_id");
 
 		MemberDAO memberDAO = new MemberDAO();
@@ -319,7 +345,8 @@ public class MemberAction {
 		return "/MemberEditPage.jsp";
 	}
 
-	public String adminPage(HttpServletRequest request, HttpServletResponse response)  throws ServletException, IOException {
+	public String adminPage(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
 		int pageNum = 1;
 
 		if (request.getParameter("pageNum") != null) {
@@ -339,7 +366,8 @@ public class MemberAction {
 		return "/MemberListPage.jsp";
 	}
 
-	public void memberCondition(HttpServletRequest request, HttpServletResponse response)  throws ServletException, IOException {
+	public void memberCondition(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
 		String user_id = request.getParameter("user_id");
 
 		MemberDAO dao = new MemberDAO();
@@ -350,7 +378,8 @@ public class MemberAction {
 		response.sendRedirect("adminPage.do");
 	}
 
-	public String memberAdminDelete(HttpServletRequest request, HttpServletResponse response)  throws ServletException, IOException {
+	public String memberAdminDelete(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
 		String user_id = request.getParameter("user_id");
 
 		MemberDAO dao = new MemberDAO();
@@ -365,7 +394,8 @@ public class MemberAction {
 		return "adminPage.do";
 	}
 
-	public String searchAdmin(HttpServletRequest request, HttpServletResponse response)  throws ServletException, IOException {
+	public String searchAdmin(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
 		String searchInput = request.getParameter("searchInput");
 
 		MemberDAO dao = new MemberDAO();

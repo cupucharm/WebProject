@@ -21,41 +21,47 @@ h3 {
 	width: 70%;
 }
 
+#btitleDiv {
+	margin-left: 0px;
+}
+
 .boardBody {
 	width: 80%;
 	border: 1px solid gray;
 	margin: 0 auto;
-	margin-top : 20px;
+	margin-top: 20px;
+	min-height: 300px;
 }
 
-input, h3, button {
+input, h3, button, a {
 	border: none;
 	font-size: 20px;
+	text-decoration: none;
 }
 
 #bno, #bcategory {
 	margin-right: 40px
 }
 
-.boardHeadDiv, .downloadFile {
+.boardHeadDiv, .downloadFile, .uploadFile {
 	width: 80%;
 	margin: 0 auto;
 }
 
 .downloadFile {
-	margin-top : 2%;
-	font-size : 20px;
+	margin-top: 2%;
+	font-size: 20px;
 }
 
-select{
-	font-size : 20px;
+select {
+	font-size: 20px;
 }
 
 #downloadA {
 	text-decoration: none;
 }
 
-#backBtn, #deleteBoardBtn, #editBoardBtn {
+#backBtn, #deleteBoardBtn, #editBoardBtn, #replyBtn {
 	color: white;
 	background-color: #6667AB;
 	border-radius: 3px;
@@ -73,7 +79,7 @@ select{
 	padding: 30px;
 }
 
-#editBoardBtn {
+#editBoardBtn, #replyBtn {
 	margin-right: 15px;
 }
 
@@ -83,4 +89,9 @@ select{
 
 #writer {
 	width: 13%;
+}
+
+.ck ck-content ck-editor__editable ck-rounded-corners ck-editor__editable_inline ck-blurred
+	{
+	min-height: 300px;
 }

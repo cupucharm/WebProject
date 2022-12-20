@@ -7,20 +7,23 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>SooJin : 게시판</title>
-<link rel="stylesheet"
-	href="<c:url value='/css/BoardListPage.css'/>">
+<link rel="stylesheet" href="<c:url value='/css/BoardListPage.css'/>">
 <script type="text/javascript" src="../js/boardSearch.js"></script>
 </head>
 <body>
 	<div id="memberInfoDiv">
 		<c:choose>
 			<c:when test="${not empty login_id}">
-				<a class="choose" class="status" href="/webProjectSJ/Member/myPage.do">${login_id}님</a>
-				<a class="choose" class="status" href="/webProjectSJ/Member/logout.do">로그아웃</a>
+				<a class="choose" class="status"
+					href="/webProjectSJ/Member/myPage.do">${login_id}님</a>
+				<a class="choose" class="status"
+					href="/webProjectSJ/Member/logout.do">로그아웃</a>
 			</c:when>
 			<c:otherwise>
-				<a class="choose" class="status" href="/webProjectSJ/Member/loginForm.do">로그인</a>
-				<a class="choose" class="status" href="/webProjectSJ/Member/registerForm.do">회원가입</a>
+				<a class="choose" class="status"
+					href="/webProjectSJ/Member/loginForm.do">로그인</a>
+				<a class="choose" class="status"
+					href="/webProjectSJ/Member/registerForm.do">회원가입</a>
 			</c:otherwise>
 		</c:choose>
 	</div>
@@ -66,8 +69,14 @@
 						<tr>
 							<td>${i}</td>
 							<td>${boardList.bcategory}</td>
-							<td><a
-								href="/webProjectSJ/Board/boardView.do?bno=${boardList.bno}&num=${i}&page=${pageVO.currentPage}">${boardList.btitle}</a></td>
+							<td style="text-align: left;"><a
+								href="/webProjectSJ/Board/boardView.do?bno=${boardList.bno}&num=${i}&page=${pageVO.currentPage}">
+
+									<c:choose>
+										<c:when test="${boardList.bno == boardList.bparentNo}">${boardList.btitle}</c:when>
+										<c:otherwise>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  ➥&nbsp;[답변] ${boardList.btitle}</c:otherwise>
+									</c:choose>
+							</a></td>
 							<td>${boardList.bwriter}</td>
 							<td>${boardList.bdate}</td>
 							<td>${boardList.bhit}</td>
@@ -79,19 +88,21 @@
 			<div class="paginationDiv">
 				<ul class="pagination">
 					<c:if test="${ pageVO.prev }">
-					<li><a class="bt next"
+						<li><a class="bt next"
 							href="/webProjectSJ/Board/boardList.do?pageNum=1"><<</a></li>
 						<li><a class="bt prev"
 							href="/webProjectSJ/Board/boardList.do?pageNum=${ pageVO.startPage - 1 }"><</a></li>
 					</c:if>
-					<c:forEach begin="${pageVO.startPage}"
-						end="${pageVO.endPage}" var="num">
-						<li><a <c:if test="${num eq pageVO.currentPage }">style="background-color:#6667AB; color:white;"</c:if> href="/webProjectSJ/Board/boardList.do?pageNum=${num}">${num}</a></li>
+					<c:forEach begin="${pageVO.startPage}" end="${pageVO.endPage}"
+						var="num">
+						<li><a
+							<c:if test="${num eq pageVO.currentPage }">style="background-color:#6667AB; color:white;"</c:if>
+							href="/webProjectSJ/Board/boardList.do?pageNum=${num}">${num}</a></li>
 					</c:forEach>
 					<c:if test="${ pageVO.next }">
 						<li><a class="bt next"
 							href="/webProjectSJ/Board/boardList.do?pageNum=${ pageVO.endPage + 1  }">></a></li>
-							<li><a class="bt next"
+						<li><a class="bt next"
 							href="/webProjectSJ/Board/boardList.do?pageNum=${ pageVO.realEnd  }">>></a></li>
 					</c:if>
 				</ul>

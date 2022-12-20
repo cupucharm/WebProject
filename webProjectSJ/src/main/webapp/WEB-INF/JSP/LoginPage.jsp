@@ -10,10 +10,10 @@
 <title>SooJin : LoginPage</title>
 <%-- ${loginFail} --%>
 <link rel="stylesheet" href="<c:url value='/css/LoginPage.css'/>">
+<script type="text/javascript" src="../js/login.js"></script>
 </head>
 <body>
 	<div class="main">
-	${loginFail}
 		<a class="logo" href="<c:url value='/'/>">TALK</a>
 		<div class="container">
 			<div class="frmLogin">

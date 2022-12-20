@@ -33,11 +33,16 @@
 	</div>
 
 	<div class="logo" id="logoDiv">
-		<a class="logo" href="MainPage.jsp">TALK</a>
+		<a class="logo" href="/webProjectSJ">TALK</a>
 	</div>
-	<form action="/webProjectSJ/Board/boardUpload" method="POST"
+	<form action="/webProjectSJ/Board/boardUpload.do" method="POST"
 		class="register" id="boardUpload" enctype="multipart/form-data">
 		<div class="main">
+		
+		<c:if test="${!empty boardVO}">
+			<input type="hidden" name="bcategory" value="${boardVO.bcategory }">
+			<input type="hidden" name="bno" value="${boardVO.bno }">
+		</c:if>
 
 
 			<div class="boardHeadDiv">
@@ -51,11 +56,11 @@
 						readonly="readonly" value="${login_id}">
 
 					<h3 class="boardHead">카테고리</h3>
-					<select name="bcategory" id="bcategory">
-						<option value="" selected="selected">카테고리 선택</option>
-						<option value="공지사항">공지사항</option>
-						<option value="일반게시판">일반게시판</option>
-						<option value="Q&A">Q&A</option>
+					<select name="bcategory" id="bcategory" <c:if test="${!empty boardVO}">disabled</c:if>> 
+						<option value="">카테고리 선택</option>
+						<option value="공지사항" <c:if test="${boardVO.bcategory eq '공지사항'}">selected</c:if>>공지사항</option>
+						<option value="일반게시판" <c:if test="${boardVO.bcategory eq '일반게시판'}">selected</c:if>>일반게시판</option>
+						<option value="Q&A" <c:if test="${boardVO.bcategory eq 'Q&A'}">selected</c:if>>Q&A</option>
 					</select>
 				</div>
 			</div>
@@ -63,10 +68,7 @@
 				<textarea name="bcontents" id="bcontents" placeholder="내용을 입력하세요."></textarea>
 			</div>
 			<div class="uploadFile">
-				<!-- <input type="button" value="첨부파일 추가하기" id="addFileListBtn" name="addFileListBtn" multiple="multiple">
-				<div id = "file_list"></div> -->
-				<!-- 첨부파일 : <input type="file" name="filename1" id="filename1" multiple="multiple"><br /> -->
-
+				
 				<table>
 					<tbody>
 						<tr>
@@ -89,8 +91,13 @@
 			</div>
 		</div>
 		<div class="boardFoot">
+		
+		<c:choose>
+			<c:when test="${!empty boardVO}"><input type="submit" id="replyBtn" value="답변 등록"></c:when>
+			<c:otherwise>
 			<input type="submit" id="uploadBtn" value="게시글 등록">
-
+			</c:otherwise>
+		</c:choose>
 			<button onclick="location.href='/webProjectSJ/Board/boardList.do'">취소</button>
 		</div>
 	</form>

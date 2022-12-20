@@ -41,11 +41,64 @@ window.onload = () => {
 	insertFile.addEventListener("click", insertFileEventHandler);
 
 
+	/*
+		let boardUpload = document.querySelector("#boardUpload");
+		boardUpload.addEventListener("submit", (e) => {
+			e.preventDefault();	//폼 수행을 정지시킨다.
+	
+			fetch('/webProjectSJ/Board/boardUpload.do', {
+	
+				method: 'POST',
+				cache: 'no-cache',
+				body: new FormData(boardUpload)
+			})
+	
+				.then(response => response.json())
+				.then(jsonResult => {
+					alert(jsonResult.message);
+					if (jsonResult.status == true) {
+						location.href = jsonResult.url;
+					}
+				});
+		});
+	*/
 
-	let boardUpload = document.querySelector("#boardUpload");
-	boardUpload.addEventListener("submit", (e) => {
+	let replyBtn = document.querySelector("#replyBtn");
+	if (replyBtn != null) {
+		replyBtn.onclick = e => {
+			reply(e);
+		}
+	}
+
+	function reply(e) {
 		e.preventDefault();	//폼 수행을 정지시킨다.
+		bcontents.value = document.querySelector(".ck-content").innerHTML;
+		fetch('/webProjectSJ/Board/reply.do', {
 
+			method: 'POST',
+			cache: 'no-cache',
+			body: new FormData(boardUpload)
+		})
+
+			.then(response => response.json())
+			.then(jsonResult => {
+				alert(jsonResult.message);
+				if (jsonResult.status == true) {
+					location.href = jsonResult.url;
+				}
+			});
+	}
+
+	let uploadBtn = document.querySelector("#uploadBtn");
+	if (uploadBtn != null) {
+		uploadBtn.onclick = e => {
+			upload(e);
+		}
+	}
+
+	function upload(e) {
+		e.preventDefault();	//폼 수행을 정지시킨다.
+		bcontents.value = document.querySelector(".ck-content").innerHTML;
 		fetch('/webProjectSJ/Board/boardUpload.do', {
 
 			method: 'POST',
@@ -60,6 +113,5 @@ window.onload = () => {
 					location.href = jsonResult.url;
 				}
 			});
-	});
-
+	}
 }

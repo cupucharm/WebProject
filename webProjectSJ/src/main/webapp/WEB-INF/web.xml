@@ -50,6 +50,8 @@
 			/Board/view.do:Board.BoardAction:view
 			/Board/download.do:Board.BoardAction:download
 			/Board/boardWriteForm.do:Board.BoardAction:boardWriteForm
+			/Board/replyForm.do:Board.BoardAction:replyForm
+			/Board/reply.do:Board.BoardAction:reply
 			/Chat/chatListForm.do:Chat.ChatAction:chatListForm
 			/Chat/add.do:Chat.ChatAction:add
   		</param-value>
