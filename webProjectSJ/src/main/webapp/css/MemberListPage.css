@@ -57,6 +57,10 @@ a {
 	text-decoration: none;
 }
 
+a:hover {
+	color: red;
+}
+
 /* ********페이징******** */
 .pagination li {
 	list-style: none;
