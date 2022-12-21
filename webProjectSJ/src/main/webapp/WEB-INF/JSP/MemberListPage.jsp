@@ -7,14 +7,15 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>SooJin : 회원 관리</title>
-<link rel="stylesheet"
-	href="<c:url value='/css/MemberListPage.css'/>">
-	<script type="text/javascript" src="../js/memberList.js"></script> 
+<link rel="stylesheet" href="<c:url value='/css/MemberListPage.css'/>">
+<script type="text/javascript" src="../js/memberList.js"></script>
 </head>
 <body>
 
 	<c:if test="${not empty message}">
-		<script type='text/javascript'>alert('${message}');</script>
+		<script type='text/javascript'>
+			alert('${message}');
+		</script>
 	</c:if>
 
 	<div class="main">
@@ -26,7 +27,7 @@
 				value="아이디로 회원 찾기"> <input type="text" id="searchInput"
 				name="searchInput">
 			<button id="searchBtn">검색</button>
-			
+
 		</div>
 
 		<div class="board">
@@ -59,13 +60,12 @@
 							<td>${memberList.user_email}</td>
 							<td>${memberList.user_sex}</td>
 							<td>${memberList.user_birth}</td>
-							<td><a href="#" class="useYns" data-uid="${memberList.user_id}" data-ucondition="${memberList.user_condition}">${memberList.user_condition}</a>
-							
-							<%-- <button id="memberCondition"
-									onclick="location.href='/webProjectSJ/Member/memberCondition.do?user_id=${memberList.user_id}'">${memberList.user_condition}</button></td> --%>
+							<td><a href="#" class="useYns"
+								data-uid="${memberList.user_id}"
+								data-ucondition="${memberList.user_condition}">${memberList.user_condition}</a>
 							<td><c:if test="${memberList.user_condition eq '비활성화' }">
-									<a href="#"  id="deleteMember"class="deleteUids" data-uid="${memberList.user_id}">회원탈퇴</a>
-										<%-- onclick="location.href='/webProjectSJ/Member/memberAdminDelete.do?user_id=${memberList.user_id}'">회원탈퇴</button> --%>
+									<a href="#" id="deleteMember" class="deleteUids"
+										data-uid="${memberList.user_id}">회원탈퇴</a>
 								</c:if></td>
 							<c:set var="i">${i+1}</c:set>
 						</tr>
@@ -77,19 +77,21 @@
 			<div class="paginationDiv">
 				<ul class="pagination">
 					<c:if test="${ pageVO.prev }">
-					<li><a class="bt prev"
+						<li><a class="bt prev"
 							href="/webProjectSJ/Member/adminPage.do?pageNum=1"><<</a></li>
 						<li><a class="bt prev"
 							href="/webProjectSJ/Member/adminPage.do?pageNum=${ pageVO.startPage - 1 }"><</a></li>
 					</c:if>
-					<c:forEach begin="${pageVO.startPage}"
-						end="${pageVO.endPage}" var="num">
-						<li><a <c:if test="${num eq pageVO.currentPage }">style="background-color:#6667AB; color:white;"</c:if> href="/webProjectSJ/Member/adminPage.do?pageNum=${num}">${num}</a></li>
+					<c:forEach begin="${pageVO.startPage}" end="${pageVO.endPage}"
+						var="num">
+						<li><a
+							<c:if test="${num eq pageVO.currentPage }">style="background-color:#6667AB; color:white;"</c:if>
+							href="/webProjectSJ/Member/adminPage.do?pageNum=${num}">${num}</a></li>
 					</c:forEach>
 					<c:if test="${ pageVO.next }">
 						<li><a class="bt next"
 							href="/webProjectSJ/Member/adminPage.do?pageNum=${ pageVO.endPage + 1  }">></a></li>
-							<li><a class="bt next"
+						<li><a class="bt next"
 							href="/webProjectSJ/Member/adminPage.do?pageNum=${ pageVO.realEnd  }">>></a></li>
 					</c:if>
 				</ul>

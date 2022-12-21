@@ -57,7 +57,7 @@ a {
 	text-decoration: none;
 }
 
-a:hover {
+.useYns:hover, .deleteUids:hover {
 	color: red;
 }
 
