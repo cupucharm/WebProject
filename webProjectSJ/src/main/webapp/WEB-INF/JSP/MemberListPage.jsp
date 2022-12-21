@@ -26,6 +26,7 @@
 				value="아이디로 회원 찾기"> <input type="text" id="searchInput"
 				name="searchInput">
 			<button id="searchBtn">검색</button>
+			
 		</div>
 
 		<div class="board">
@@ -58,11 +59,13 @@
 							<td>${memberList.user_email}</td>
 							<td>${memberList.user_sex}</td>
 							<td>${memberList.user_birth}</td>
-							<td><button id="memberCondition"
-									onclick="location.href='/webProjectSJ/Member/memberCondition.do?user_id=${memberList.user_id}'">${memberList.user_condition}</button></td>
+							<td><a href="#" class="useYns" data-uid="${memberList.user_id}" data-ucondition="${memberList.user_condition}">${memberList.user_condition}</a>
+							
+							<%-- <button id="memberCondition"
+									onclick="location.href='/webProjectSJ/Member/memberCondition.do?user_id=${memberList.user_id}'">${memberList.user_condition}</button></td> --%>
 							<td><c:if test="${memberList.user_condition eq '비활성화' }">
-									<button id="deleteMember"
-										onclick="location.href='/webProjectSJ/Member/memberAdminDelete.do?user_id=${memberList.user_id}'">회원탈퇴</button>
+									<a href="#"  id="deleteMember"class="deleteUids" data-uid="${memberList.user_id}">회원탈퇴</a>
+										<%-- onclick="location.href='/webProjectSJ/Member/memberAdminDelete.do?user_id=${memberList.user_id}'">회원탈퇴</button> --%>
 								</c:if></td>
 							<c:set var="i">${i+1}</c:set>
 						</tr>

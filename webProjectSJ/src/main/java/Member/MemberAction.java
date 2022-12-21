@@ -366,32 +366,59 @@ public class MemberAction {
 		return "/MemberListPage.jsp";
 	}
 
-	public void memberCondition(HttpServletRequest request, HttpServletResponse response)
+	public JSONObject memberCondition(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		String user_id = request.getParameter("user_id");
+		
+		
+		BufferedReader in = new BufferedReader(new InputStreamReader(request.getInputStream(), "UTF-8"));
+		String jsonStr = in.readLine();
 
+		JSONObject jsonMember = new JSONObject(jsonStr);
+		String user_id = jsonMember.getString("user_id");
+		
 		MemberDAO dao = new MemberDAO();
 		String condition = dao.getCondition(user_id);
+		Boolean success = false;
+		
 		if (condition != null) {
-			dao.changeCondition(user_id, condition);
+			success = dao.changeCondition(user_id, condition);
 		}
-		response.sendRedirect("adminPage.do");
+		
+		JSONObject jsonResult = new JSONObject();
+		
+		if (success) {
+			jsonResult.put("status", true);
+			jsonResult.put("message", user_id + "님의 상태를 변경하였습니다.");
+		} else {
+			jsonResult.put("status", false);
+			jsonResult.put("message", user_id + "님의 상태 변경 실패했습니다.");
+		}
+		return jsonResult;
 	}
 
-	public String memberAdminDelete(HttpServletRequest request, HttpServletResponse response)
+	public JSONObject memberAdminDelete(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		String user_id = request.getParameter("user_id");
+		
+		BufferedReader in = new BufferedReader(new InputStreamReader(request.getInputStream(), "UTF-8"));
+		String jsonStr = in.readLine();
 
+		JSONObject jsonMember = new JSONObject(jsonStr);
+		String user_id = jsonMember.getString("user_id");
 		MemberDAO dao = new MemberDAO();
 		Boolean success = dao.memberAdminDelete(user_id);
 
+		JSONObject jsonResult = new JSONObject();
+		
 		if (success) {
-			request.setAttribute("message", user_id + "님이 삭제되었습니다.");
+			jsonResult.put("status", true);
+			jsonResult.put("message", user_id + "님이 삭제되었습니다.");
+			jsonResult.put("url", "adminPage.do");
 		} else {
-			request.setAttribute("message", user_id + "님 삭제를 실패했습니다.");
+			jsonResult.put("status", false);
+			jsonResult.put("message", user_id + "님 삭제를 실패했습니다.");
+			jsonResult.put("url", "adminPage.do");
 		}
-
-		return "adminPage.do";
+		return jsonResult;
 	}
 
 	public String searchAdmin(HttpServletRequest request, HttpServletResponse response)
