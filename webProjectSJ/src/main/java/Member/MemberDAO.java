@@ -496,9 +496,9 @@ public class MemberDAO {
 			conn = dataFactory.getConnection();
 			String query = null;
 
-			query = "select * from tb_member where user_id like ?";
+			query = "select * from tb_member where user_id like concat('%', ?, '%')";
 			pstmt = conn.prepareStatement(query);
-			pstmt.setString(1, "%" + searchInput + "%");
+			pstmt.setString(1, searchInput);
 
 			rs = pstmt.executeQuery();
 			while (rs.next()) {

@@ -380,28 +380,28 @@ public class BoardDAO {
 
 			switch (searchCondition) {
 			case "titleAndContents":
-				query = "select count(*) as total from tb_board where bcontents like ? or btitle like ?";
+				query = "select count(*) as total from tb_board where bcontents like concat('%', ?, '%') or btitle like concat('%', ?, '%')";
 				pstmt = conn.prepareStatement(query);
-				pstmt.setString(1, "%" + searchContent + "%");
-				pstmt.setString(2, "%" + searchContent + "%");
+				pstmt.setString(1, searchContent);
+				pstmt.setString(2, searchContent);
 				break;
 
 			case "title":
-				query = "select count(*) as total from tb_board where btitle like ?";
+				query = "select count(*) as total from tb_board where btitle like concat('%', ?, '%')";
 				pstmt = conn.prepareStatement(query);
-				pstmt.setString(1, "%" + searchContent + "%");
+				pstmt.setString(1, searchContent);
 				break;
 
 			case "contents":
-				query = "select count(*) as total from tb_board where bcontents like ?";
+				query = "select count(*) as total from tb_board where bcontents like concat('%', ?, '%')";
 				pstmt = conn.prepareStatement(query);
-				pstmt.setString(1, "%" + searchContent + "%");
+				pstmt.setString(1, searchContent);
 				break;
 
 			case "writer":
-				query = "select count(*) as total from tb_board where bwriter like ?";
+				query = "select count(*) as total from tb_board where bwriter like concat('%', ?, '%')";
 				pstmt = conn.prepareStatement(query);
-				pstmt.setString(1, "%" + searchContent + "%");
+				pstmt.setString(1, searchContent);
 				break;
 
 			}
@@ -427,38 +427,35 @@ public class BoardDAO {
 		List<BoardVO> list = new ArrayList<>();
 		try {
 			open();
-
-			String query = "SELECT * from (SELECT * ,@ROWNUM:=@ROWNUM+1 as rowNum FROM (SELECT @ROWNUM:=0) AS R, tb_board order by bparentNo desc, bno) t where ?=? limit 10 offset ?";
-
-			pstmt = conn.prepareStatement(query);
+			String query;
 
 			switch (searchCondition) {
 			case "titleAndContents":
-				query = "SELECT * from (SELECT * ,@ROWNUM:=@ROWNUM+1 as rowNum FROM (SELECT @ROWNUM:=0) AS R, tb_board order by bparentNo desc, bno) t where bcontents like ? or btitle like ? limit 10 offset ?";
+				query = "SELECT * from (SELECT * ,@ROWNUM:=@ROWNUM+1 as rowNum FROM (SELECT @ROWNUM:=0) AS R, tb_board order by bparentNo desc, bno) t where bcontents like concat('%', ?, '%') or btitle like concat('%', ?, '%') limit 10 offset ?";
 				pstmt = conn.prepareStatement(query);
-				pstmt.setString(1, "%" + searchContent + "%");
-				pstmt.setString(2, "%" + searchContent + "%");
+				pstmt.setString(1, searchContent);
+				pstmt.setString(2, searchContent);
 				pstmt.setInt(3, pageNum * 10 - 10);
 				break;
 
 			case "title":
-				query = "SELECT * from (SELECT * ,@ROWNUM:=@ROWNUM+1 as rowNum FROM (SELECT @ROWNUM:=0) AS R, tb_board order by bparentNo desc, bno) t where btitle like ? limit 10 offset ?";
+				query = "SELECT * from (SELECT * ,@ROWNUM:=@ROWNUM+1 as rowNum FROM (SELECT @ROWNUM:=0) AS R, tb_board order by bparentNo desc, bno) t where btitle like concat('%', ?, '%') limit 10 offset ?";
 				pstmt = conn.prepareStatement(query);
-				pstmt.setString(1, "%" + searchContent + "%");
+				pstmt.setString(1, searchContent);
 				pstmt.setInt(2, pageNum * 10 - 10);
 				break;
 
 			case "contents":
-				query = "SELECT * from (SELECT * ,@ROWNUM:=@ROWNUM+1 as rowNum FROM (SELECT @ROWNUM:=0) AS R, tb_board order by bparentNo desc, bno) t where bcontents like ? limit 10 offset ?";
+				query = "SELECT * from (SELECT * ,@ROWNUM:=@ROWNUM+1 as rowNum FROM (SELECT @ROWNUM:=0) AS R, tb_board order by bparentNo desc, bno) t where bcontents like concat('%', ?, '%') limit 10 offset ?";
 				pstmt = conn.prepareStatement(query);
-				pstmt.setString(1, "%" + searchContent + "%");
+				pstmt.setString(1, searchContent);
 				pstmt.setInt(2, pageNum * 10 - 10);
 				break;
 
 			case "writer":
-				query = "SELECT * from (SELECT * ,@ROWNUM:=@ROWNUM+1 as rowNum FROM (SELECT @ROWNUM:=0) AS R, tb_board order by bparentNo desc, bno) t where bwriter like ? limit 10 offset ?";
+				query = "SELECT * from (SELECT * ,@ROWNUM:=@ROWNUM+1 as rowNum FROM (SELECT @ROWNUM:=0) AS R, tb_board order by bparentNo desc, bno) t where bwriter like concat('%', ?, '%') limit 10 offset ?";
 				pstmt = conn.prepareStatement(query);
-				pstmt.setString(1, "%" + searchContent + "%");
+				pstmt.setString(1, searchContent);
 				pstmt.setInt(2, pageNum * 10 - 10);
 				break;
 
